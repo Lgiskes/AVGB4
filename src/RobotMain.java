@@ -6,6 +6,8 @@ public class RobotMain {
 
         boolean state = true;
 
+        suckamacock.speak();
+
         while (true) {
             state = !state;
             BoeBot.digitalWrite(0, state);
