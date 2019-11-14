@@ -70,10 +70,10 @@ public class RobotMain {
         right.start();
 
 
-        double omloopConstante=1.08;
-        int meetSnelheid=200;
+        double omloopConstante=1.650;
+        int meetSnelheid=50;
 
-        double tijdMillisec = (graden*omloopConstante*meetSnelheid*1000)/(360.0*Math.abs(draaisnelheid));
+        double tijdMillisec = (graden*omloopConstante*meetSnelheid*1000)/(180.0*Math.abs(draaisnelheid));
         System.out.println(tijdMillisec);
 
         draaien(draaisnelheid);
