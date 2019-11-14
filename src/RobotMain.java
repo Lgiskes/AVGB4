@@ -2,7 +2,7 @@ import TI.BoeBot;
 import TI.Servo;
 import TI.Timer;
 
-import java.util.FormatFlagsConversionMismatchException;
+import java.util.ArrayList;
 
 public class RobotMain {
 
@@ -16,14 +16,13 @@ public class RobotMain {
         while (true){
             BoeBot.wait(20);
 
-            if (BoeBot.digitalRead(5)== false && BoeBot.digitalRead(7) == false){
+            if (BoeBot.digitalRead(5) == false && BoeBot.digitalRead(7) == false){
                 s1.update(1300);
                 s2.update(1700);
                 BoeBot.wait(500);
                 s1.update(1550);
                 s2.update(1550);
                 BoeBot.wait(1670);
-//                draaiGraden(180, 200);
 
             }else if(BoeBot.digitalRead(5) == false) {
 
@@ -117,4 +116,6 @@ public class RobotMain {
 
         }
     }
+
 }
+
