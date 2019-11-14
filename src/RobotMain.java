@@ -19,6 +19,8 @@ public class RobotMain {
                 updatable.update();
             }
 
+            BoeBot.wait(1);
+
         }
 
     }

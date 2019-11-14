@@ -84,21 +84,25 @@ public class MotionController implements Updatable {
             emergencyBrake();
         }
 
-        if (this.rightWhisker.getValue() == 0 && this.leftWhisker.getValue() == 0){
-            emergencyBrake();
-            turnAround();
+        if(turnAroundTimer.isStopped() && turnRightTimer.isStopped() && turnLeftTimer.isStopped()){
+            if (this.rightWhisker.getValue() == 0 && this.leftWhisker.getValue() == 0){
+                emergencyBrake();
+                turnAround();
 
-        }else if(this.rightWhisker.getValue() == 0){
-            //turnLeft();
+            }else if(this.rightWhisker.getValue() == 0){
+                //turnLeft();
 
 
-        }else if(this.leftWhisker.getValue() == 0){
-            //turnRight();
+            }else if(this.leftWhisker.getValue() == 0){
+                //turnRight();
 
-        }else{
-            leftMotor.setSpeed(100);
-            rightMotor.setSpeed(100);
+            }else{
+                leftMotor.setSpeed(100);
+                rightMotor.setSpeed(100);
+            }
         }
+
+
 
     }
 }
