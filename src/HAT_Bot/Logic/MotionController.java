@@ -12,7 +12,9 @@ public class MotionController implements Updatable {
     private Whisker leftWhisker;
     private Whisker rightWhisker;
 
-    private Timer turnAroundTimer;
+    private StoppableTimer turnAroundTimer;
+    private StoppableTimer turnRightTimer;
+    private StoppableTimer turnLeftTimer;
 
     public MotionController(int pinLeftMotor, int pinRightMotor, int pinLeftWhisker, int pinRightWhisker) {
         this.leftMotor = new Motor(pinLeftMotor, false);
@@ -21,11 +23,20 @@ public class MotionController implements Updatable {
         this.leftWhisker = new Whisker(pinLeftWhisker);
         this.rightWhisker = new Whisker(pinRightWhisker);
 
-        this.turnAroundTimer = new Timer(20);
+        this.turnAroundTimer = new StoppableTimer(1000);
+        this.turnRightTimer = new StoppableTimer(1000);
+        this.turnLeftTimer = new StoppableTimer(1000);
+        turnAroundTimer.stop();
+        turnRightTimer.stop();
+        turnLeftTimer.stop();
 
     }
 
     public void turnLeft() {
+        leftMotor.setSpeed(-50);
+        rightMotor.setSpeed(50);
+        turnLeftTimer.setInterval(1000);
+        turnLeftTimer.start();
 
     }
 
@@ -34,6 +45,10 @@ public class MotionController implements Updatable {
     }
 
     public void turnRight(){
+        leftMotor.setSpeed(50);
+        rightMotor.setSpeed(-50);
+        turnRightTimer.setInterval(1000);
+        turnRightTimer.start();
 
     }
 
@@ -45,6 +60,7 @@ public class MotionController implements Updatable {
         leftMotor.setSpeed(-100);
         rightMotor.setSpeed(-100);
         turnAroundTimer.setInterval(500);
+        turnAroundTimer.start();
 
     }
 
@@ -56,7 +72,16 @@ public class MotionController implements Updatable {
     @Override
     public void update() {
         if (turnAroundTimer.timeout()) {
+            turnAroundTimer.stop();
             turnRight(180);
+        }
+        if (turnRightTimer.timeout()) {
+            turnRightTimer.stop();
+            emergencyBrake();
+        }
+        if (turnLeftTimer.timeout()){
+            turnLeftTimer.stop();
+            emergencyBrake();
         }
 
         if (this.rightWhisker.getValue() == 0 && this.leftWhisker.getValue() == 0){
@@ -64,8 +89,11 @@ public class MotionController implements Updatable {
             turnAround();
 
         }else if(this.rightWhisker.getValue() == 0){
+            //turnLeft();
+
 
         }else if(this.leftWhisker.getValue() == 0){
+            //turnRight();
 
         }else{
             leftMotor.setSpeed(100);
