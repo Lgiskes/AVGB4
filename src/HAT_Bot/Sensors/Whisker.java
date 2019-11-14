@@ -2,7 +2,7 @@ package HAT_Bot.Sensors;
 
 import TI.BoeBot;
 
-public class Whisker implements Sensor{
+public class Whisker implements Sensor {
     private int pin;
 
     public Whisker(int pin) {

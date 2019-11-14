@@ -1,5 +1,4 @@
-import HAT_Bot.Actuators.Motor;
-import HAT_Bot.Actuators.Updatable;
+import HAT_Bot.Logic.Updatable;
 import HAT_Bot.Logic.MotionController;
 import TI.BoeBot;
 import TI.Servo;
@@ -11,23 +10,9 @@ import java.util.List;
 public class RobotMain {
 
     public static void main(String[] args) {
-        Servo s1 = new Servo(14);
-        Servo s2 = new Servo(15);
-
-        s1.update(1700);
-        s2.update(1300);
 
         List<Updatable> updatables = new ArrayList<>();
-        updatables.add(new Motor(14));
-        updatables.add(new Motor(15));
-        updatables.add(new MotionController());
-
-        updatables.add(new Updatable() {
-            @Override
-            public void update() {
-                System.out.println("Hallo groep B4");
-            }
-        });
+        updatables.add(new MotionController(14, 15));
 
         while (true){
             BoeBot.wait(20);
@@ -36,35 +21,6 @@ public class RobotMain {
                 updatable.update();
             }
 
-            if (BoeBot.digitalRead(5)== false && BoeBot.digitalRead(7) == false){
-                s1.update(1300);
-                s2.update(1700);
-                BoeBot.wait(500);
-                s1.update(1550);
-                s2.update(1550);
-                BoeBot.wait(1650);
-                break;
-
-            }else if(BoeBot.digitalRead(5) == false) {
-                s1.update(1300);
-                s2.update(1700);
-                BoeBot.wait(250);
-                s1.update(1550);
-                s2.update(1500);
-                BoeBot.wait(825);
-
-            }else if(BoeBot.digitalRead(7) ==  false){
-                s1.update(1300);
-                s2.update(1700);
-                BoeBot.wait(250);
-                s1.update(1500);
-                s2.update(1450);
-                BoeBot.wait(825);
-
-            } else{
-                s1.update(1700);
-                s2.update(1300);
-            }
         }
 
     }
