@@ -8,6 +8,7 @@ public class StoppableTimer extends Timer {
 
     public StoppableTimer(int interval){
         super(interval);
+        this.stopped = false;
     }
 
     public void start(){
