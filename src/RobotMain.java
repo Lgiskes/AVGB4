@@ -16,18 +16,20 @@ public class RobotMain {
         while (true){
             BoeBot.wait(20);
 
-            if (BoeBot.digitalRead(5)== false || BoeBot.digitalRead(7) == false){
+            if (BoeBot.digitalRead(5)== false && BoeBot.digitalRead(7) == false){
                 s1.update(1300);
                 s2.update(1700);
                 BoeBot.wait(500);
-                s1.update(1700);
-                s1.update(1700);
-                BoeBot.wait(950);
+                s1.update(1550);
+                s2.update(1550);
+                BoeBot.wait(1670);
+//                draaiGraden(180, 200);
 
+            }else if(BoeBot.digitalRead(5) == false) {
 
+            }else if(BoeBot.digitalRead(7) ==  false){
 
-
-            }else{
+            } else{
                 s1.update(1700);
                 s2.update(1300);
             }
@@ -36,8 +38,8 @@ public class RobotMain {
     }
 
     public static void draaien(int draaisnelheid){
-        Servo left = new Servo(13);
-        Servo right = new Servo(12);
+        Servo left = new Servo(14);
+        Servo right = new Servo(15);
         left.start();
         right.start();
 
@@ -63,8 +65,8 @@ public class RobotMain {
     }
 
     public static void draaiGraden(int graden, int draaisnelheid){
-        Servo left = new Servo(13);
-        Servo right = new Servo(12);
+        Servo left = new Servo(14);
+        Servo right = new Servo(15);
         left.start();
         right.start();
 
