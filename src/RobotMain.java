@@ -78,10 +78,8 @@ public class RobotMain {
 
         draaien(draaisnelheid);
         Timer timer = new Timer((int)tijdMillisec);
-        Timer timer1 = new Timer(10);
         while (!timer.timeout()){
-            while (timer1.timeout()){
-            }
+
         }
         noodrem();
 
