@@ -15,10 +15,8 @@ public class Motor implements Updatable {
     }
 
     public void setSpeed(int speed) {
-        int speedNew = speed*2+1500;
+        int speedNew = speed * 2 + 1500;
     }
-
-
 
     @Override
     public void update() {
