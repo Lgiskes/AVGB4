@@ -2,10 +2,10 @@ package HAT_Bot.Sensors;
 
 import TI.BoeBot;
 
-public class Feeler implements Sensor{
+public class Whisker implements Sensor{
     private int pin;
 
-    public Feeler(int pin) {
+    public Whisker(int pin) {
         this.pin = pin;
     }
 
