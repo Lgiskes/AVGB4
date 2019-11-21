@@ -2,17 +2,19 @@ package HAT_Bot.Actuators;
 
 import HAT_Bot.Logic.Updatable;
 import TI.Servo;
+import TI.Timer;
 
 public class Motor implements Updatable {
 
     private int pin;
     private boolean inverted;
     private Servo servo;
+    private Timer timer;
 
     public  Motor(int pin, boolean inverted) {
         this.pin = pin;
         this.inverted = inverted;
-
+        this.timer = new Timer(10);
         this.servo = new Servo(pin);
     }
 
@@ -41,5 +43,9 @@ public class Motor implements Updatable {
     @Override
     public void update() {
 
+
+        if (timer.timeout()) {
+            servo.stop();
+        }
     }
 }

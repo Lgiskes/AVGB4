@@ -20,4 +20,8 @@ public class Whisker implements Sensor {
             return 0;
         }
     }
+
+    public boolean getBoolean(){
+        return BoeBot.digitalRead(this.pin);
+    }
 }
