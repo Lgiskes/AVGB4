@@ -42,6 +42,11 @@ public class Infrared implements Sensor, Updatable {
     }
 
     @Override
+    public boolean getBoolean() {
+        return false;
+    }
+
+    @Override
     public void update() {
         getValue();
     }
