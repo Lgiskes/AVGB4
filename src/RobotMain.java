@@ -12,12 +12,12 @@ import java.util.List;
 public class RobotMain {
 
     public static void main(String[] args) {
-       // MotionController m = new MotionController(14, 15);
+        MotionController m = new MotionController(14, 15);
         List<Updatable> updatables = new ArrayList<>();
         updatables.add(new LED(1));
-       // updatables.add(m);
+        updatables.add(m);
 //        updatables.add(new TestClass());
-       // updatables.add(new RemoteControl(2, m));
+        updatables.add(new RemoteControl(2, m));
 
         while (true){
 

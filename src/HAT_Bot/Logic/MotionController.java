@@ -19,6 +19,7 @@ public class MotionController implements Updatable {
 
     private StoppableTimer driveSquareTimer = new StoppableTimer(1000);
     private StoppableTimer driveTriangleTimer = new StoppableTimer(1000);
+    private StoppableTimer driveCircleTimer = new StoppableTimer(5500);
     private int turnsMade=0;
 
     public MotionController(int pinLeftMotor, int pinRightMotor) {
@@ -134,6 +135,11 @@ public class MotionController implements Updatable {
                 this.turnsMade = -1;
             }
         }
+
+        if(driveCircleTimer.timeout()){
+            driveCircleTimer.stop();
+            this.goToSpeed(0);
+        }
     }
 
     private void turnDegrees(int graden,int speed){
@@ -142,8 +148,8 @@ public class MotionController implements Updatable {
         double omloopConstante=1.45;
         int meetSnelheid=100;
         double tijdMillisec = (graden*omloopConstante*meetSnelheid*1000)/(360.0*Math.abs(speed));
-        rightMotor.setSpeed(speed);
-        leftMotor.setSpeed(-speed);
+        rightMotor.setSpeed(-speed);
+        leftMotor.setSpeed(speed);
         this.turnDegreesTimer.setInterval((int)tijdMillisec);
         this.turnDegreesTimer.start();
     }
@@ -188,14 +194,26 @@ public class MotionController implements Updatable {
         this.toSpeed = speed;
     }
 
-    public void turnLeftCurve(){
-        this.leftMotor.setSpeed(25);
-        this.rightMotor.setSpeed(100);
+    public void turnLeftCurve(boolean forward, int speed){
+        if (forward){
+            this.leftMotor.setSpeed(25*speed/100);
+            this.rightMotor.setSpeed(speed);
+        }
+        else {
+            this.leftMotor.setSpeed(-25*speed/100);
+            this.rightMotor.setSpeed(-speed);
+        }
     }
 
-    public void turnRightCurve(){
-        this.leftMotor.setSpeed(100);
-        this.rightMotor.setSpeed(25);
+    public void turnRightCurve(boolean forward, int speed){
+        if (forward){
+            this.leftMotor.setSpeed(speed);
+            this.rightMotor.setSpeed(25*speed/100);
+        }
+        else {
+            this.leftMotor.setSpeed(-speed);
+            this.rightMotor.setSpeed(-25*speed/100);
+        }
     }
 
     public void driveSquare(){
@@ -220,6 +238,13 @@ public class MotionController implements Updatable {
                 }
             };
         }
+
+    }
+
+    public void circle(){
+        driveCircleTimer.start();
+        turnRightCurve(true, 100);
+
 
     }
 
