@@ -14,8 +14,8 @@ public class RobotMain {
         MotionController m = new MotionController(14, 15);
         List<Updatable> updatables = new ArrayList<>();
         updatables.add(m);
-        updatables.add(new TestClass());
-        updatables.add(new RemoteControl(3, m));
+//        updatables.add(new TestClass());
+        updatables.add(new RemoteControl(2, m));
 
 
         while (true){

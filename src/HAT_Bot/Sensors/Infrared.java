@@ -12,6 +12,7 @@ public class Infrared implements Sensor, Updatable {
     public Infrared(int pin) {
         this.pin = pin;
         timerinfrared = new StoppableTimer(10);
+        timerinfrared.start();
     }
 
     public int getValue() {
@@ -53,6 +54,7 @@ public class Infrared implements Sensor, Updatable {
                 }
                 if (validValue) {
                     this.value = bitNumber;
+                    System.out.println(bitNumber);
                 }
                 else {
                     this.value = -1;
