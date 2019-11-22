@@ -15,7 +15,7 @@ public class RobotMain {
         List<Updatable> updatables = new ArrayList<>();
         updatables.add(m);
         updatables.add(new TestClass());
-        updatables.add(new RemoteControl(3));
+        updatables.add(new RemoteControl(3, m));
 
 
 
