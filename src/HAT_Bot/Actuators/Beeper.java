@@ -4,24 +4,14 @@ import HAT_Bot.Logic.StoppableTimer;
 import HAT_Bot.Logic.Updatable;
 import TI.BoeBot;
 
-public class Beeper implements Updatable, Actuator {
+public class Beeper implements Actuator {
     private boolean isOn;
     private int pin;
-    private StoppableTimer beeperTimer = new StoppableTimer(2000);
 
     public Beeper(int pin){
         this.pin = pin;
         this.isOn = false;
-        beeperTimer.start();
     }
-
-    @Override
-    public void update() {
-        if(isOn && beeperTimer.timeout()){
-            BoeBot.freqOut(this.pin,800, 3000);
-        }
-    }
-
     @Override
     public boolean isOn() {
         return this.isOn;
@@ -35,5 +25,12 @@ public class Beeper implements Updatable, Actuator {
     @Override
     public int getPin() {
         return this.pin;
+    }
+
+    public void makeSound(int length){
+        int frequency = 1000;
+        if(this.isOn){
+            BoeBot.freqOut(this.pin, frequency, length);
+        }
     }
 }
