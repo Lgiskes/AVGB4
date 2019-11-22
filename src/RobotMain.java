@@ -1,5 +1,7 @@
+import HAT_Bot.Logic.RemoteControl;
 import HAT_Bot.Logic.Updatable;
 import HAT_Bot.Logic.MotionController;
+import HAT_Bot.Sensors.Infrared;
 import TI.BoeBot;
 import TI.Servo;
 import TI.Timer;
@@ -13,6 +15,7 @@ public class RobotMain {
         List<Updatable> updatables = new ArrayList<>();
         updatables.add(m);
         updatables.add(new TestClass());
+        updatables.add(new RemoteControl(3));
 
 
 
