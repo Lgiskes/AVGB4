@@ -9,10 +9,11 @@ import java.util.List;
 public class RobotMain {
 
     public static void main(String[] args) {
-        MotionController m = new MotionController(14, 15,5 ,7);
+        MotionController m = new MotionController(14, 15);
         List<Updatable> updatables = new ArrayList<>();
         updatables.add(m);
-        updatables.add(new TestClass());
+        TestClass test = new TestClass();
+        updatables.add(test);
 
 
 
