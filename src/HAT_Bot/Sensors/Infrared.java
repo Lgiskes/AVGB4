@@ -51,9 +51,12 @@ public class Infrared implements Sensor, Updatable {
                         validValue = false;
                     }
                 }
-            }
-            if (validValue) {
-                this.value = bitNumber;
+                if (validValue) {
+                    this.value = bitNumber;
+                }
+                else {
+                    this.value = -1;
+                }
             }
             else {
                 this.value = -1;

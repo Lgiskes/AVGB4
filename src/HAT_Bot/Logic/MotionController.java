@@ -157,6 +157,11 @@ public class MotionController implements Updatable {
         leftMotor.setSpeed(-100);
     }
 
+    public void setSpeed(int speed) {
+        leftMotor.setSpeed(speed);
+        rightMotor.setSpeed(speed);
+    }
+
     public void goToSpeed(int speed){
         int rightTime;
         int leftTime;
