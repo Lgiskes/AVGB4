@@ -67,6 +67,8 @@ public class RemoteControl implements Updatable {
                 drive();
                 break;
             case 298: // break button
+                motionController.emergencyBrake();
+                this.speedValue = 0;
                 break;
             case 288: // forward
                 this.forward = true;
@@ -77,16 +79,41 @@ public class RemoteControl implements Updatable {
                 drive();
                 break;
             case 294: // turn left
+                if (speedValue == 0){
+                    motionController.turnLeft();
+                }
+                else{
+                    if (forward){
+                        motionController.turnLeftCurve(true, speedValue);
+                    }
+                    else {
+                        motionController.turnLeftCurve(false, speedValue);
+                    }
+                }
                 break;
             case 292: // turn right
+                if (speedValue == 0){
+                    motionController.turnRight();
+                }
+                else {
+                    if (forward){
+                        motionController.turnRightCurve(true, speedValue);
+                    }
+                    else {
+                        motionController.turnRightCurve(false, speedValue);
+                    }
+                }
                 break;
             case 296: // mute button
                 break;
             case 922: // square
+                motionController.driveSquare();
                 break;
             case 314: // circle
+                motionController.circle();
                 break;
             case 924: // triangle
+                motionController.driveTriangle();
                 break;
             case 926: // other form
                 break;
@@ -95,10 +122,10 @@ public class RemoteControl implements Updatable {
 
     public void drive(){
         if (forward){
-            motionController.goToSpeed(-buttonValue);
+            motionController.goToSpeed(speedValue);
         }
         else {
-            motionController.goToSpeed(buttonValue);
+            motionController.goToSpeed(-speedValue);
         }
     }
 
