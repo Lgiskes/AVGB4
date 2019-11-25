@@ -21,9 +21,6 @@ public class ObstacleDetection implements Updatable {
             motionController.turnLeft();
         }
 
-
     }
 
-
-    
 }
