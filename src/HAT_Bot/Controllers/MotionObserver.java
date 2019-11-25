@@ -1,4 +1,4 @@
-package HAT_Bot.Logic;
+package HAT_Bot.Controllers;
 
 public interface MotionObserver {
 

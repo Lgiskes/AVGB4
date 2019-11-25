@@ -1,12 +1,7 @@
-import HAT_Bot.Actuators.LED;
-import HAT_Bot.Logic.IndicatorController;
-import HAT_Bot.Logic.Updatable;
-import HAT_Bot.Logic.MotionController;
+import HAT_Bot.Controllers.*;
+import HAT_Bot.Sensors.Ultrasone;
 import TI.BoeBot;
-import TI.Servo;
-import TI.Timer;
-import HAT_Bot.Sensors.Infrared;
-import HAT_Bot.Logic.RemoteControl;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,10 +13,15 @@ public class RobotMain {
         IndicatorController i = new IndicatorController(3, 4);
         RemoteControl r = new RemoteControl(2, m, i);
 
+        ObstacleDetection o = new ObstacleDetection(new Ultrasone(0, 1), m);
+
         List<Updatable> updatables = new ArrayList<>();
         updatables.add(m);
         updatables.add(r);
         updatables.add(i);
+        updatables.add(o);
+
+        i.foundObstacleIndication();
 
         while (true){
 

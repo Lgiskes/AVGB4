@@ -1,7 +1,7 @@
 package HAT_Bot.Sensors;
 
 import TI.StoppableTimer;
-import HAT_Bot.Logic.Updatable;
+import HAT_Bot.Controllers.Updatable;
 import TI.BoeBot;
 
 public class Ultrasone implements Sensor, Updatable {
@@ -39,13 +39,17 @@ public class Ultrasone implements Sensor, Updatable {
         if (timerUltrasone.timeout()) {
             BoeBot.digitalWrite(0, true);
             timerShort.start();
-            if (timerShort.timeout()) {
-                timerShort.stop();
-                BoeBot.digitalWrite(0, false);
+            timerUltrasone.stop();
+        }
 
-                int pulse = BoeBot.pulseIn(1, true, 10000);
-                this.value = pulse / 58;
-            }
+        if (timerShort.timeout()) {
+            timerShort.stop();
+            BoeBot.digitalWrite(0, false);
+
+            int pulse = BoeBot.pulseIn(1, true, 10000);
+            this.value = pulse / 58;
+
+            timerUltrasone.start();
         }
     }
 }

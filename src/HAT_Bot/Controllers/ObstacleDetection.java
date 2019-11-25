@@ -1,4 +1,4 @@
-package HAT_Bot.Logic;
+package HAT_Bot.Controllers;
 
 import HAT_Bot.Sensors.Ultrasone;
 
@@ -15,6 +15,8 @@ public class ObstacleDetection implements Updatable {
 
     @Override
     public void update() {
+        ultrasone.update();
+
         if(ultrasone.getValue() < 10){
             motionController.emergencyBrake();
             motionController.goToSpeed(-100);

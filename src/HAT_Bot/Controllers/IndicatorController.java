@@ -1,4 +1,4 @@
-package HAT_Bot.Logic;
+package HAT_Bot.Controllers;
 
 import HAT_Bot.Actuators.Beeper;
 import HAT_Bot.Actuators.LED;
@@ -48,7 +48,7 @@ public class IndicatorController implements Updatable{
         this.ledTimer.stop();
         this.beeperTimer.stop();
         this.ledTimer.setInterval(50);
-        this.beeperTimer.setInterval(3000);
+        this.beeperTimer.setInterval(750);
         this.ledTimer.start();
         this.beeperTimer.start();
         this.status = 3;
@@ -72,9 +72,10 @@ public class IndicatorController implements Updatable{
             case 0:
                 this.led.setOn(true);
                 //this.beeper.setOn(false);
-
+                break;
             case 1:
                 this.led.setOn(false);
+                break;
 
             case 2:
                 if(this.ledTimer.timeout()){
@@ -83,15 +84,16 @@ public class IndicatorController implements Updatable{
                 if(this.beeperTimer.timeout()){
                     this.beeper.makeSound(1000, 250);
                 }
+                break;
 
             case 3:
                 if(this.ledTimer.timeout()){
                     this.led.setOn(!this.led.isOn());
                 }
                 if(this.beeperTimer.timeout()){
-                    this.beeper.makeSound(1000, 2000);
+                    this.beeper.makeSound(1000, 250);
                 }
-
+                break;
             case 4:
                 if(this.ledTimer.timeout()){
                     this.led.setOn(!this.led.isOn());
@@ -99,6 +101,7 @@ public class IndicatorController implements Updatable{
                 if(this.beeperTimer.timeout()){
                     this.beeper.makeSound(1000, 1000);
                 }
+                break;
         }
     }
 }
