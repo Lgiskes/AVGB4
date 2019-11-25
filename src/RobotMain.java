@@ -21,6 +21,8 @@ public class RobotMain {
         updatables.add(i);
         updatables.add(o);
 
+        i.foundObstacleIndication();
+
         while (true){
 
             for (Updatable updatable : updatables) {

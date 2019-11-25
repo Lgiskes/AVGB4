@@ -48,7 +48,7 @@ public class IndicatorController implements Updatable{
         this.ledTimer.stop();
         this.beeperTimer.stop();
         this.ledTimer.setInterval(50);
-        this.beeperTimer.setInterval(3000);
+        this.beeperTimer.setInterval(750);
         this.ledTimer.start();
         this.beeperTimer.start();
         this.status = 3;
@@ -91,7 +91,7 @@ public class IndicatorController implements Updatable{
                     this.led.setOn(!this.led.isOn());
                 }
                 if(this.beeperTimer.timeout()){
-                    this.beeper.makeSound(1000, 2000);
+                    this.beeper.makeSound(1000, 250);
                 }
                 break;
             case 4:
