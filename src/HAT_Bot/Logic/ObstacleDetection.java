@@ -15,10 +15,16 @@ public class ObstacleDetection implements Updatable {
 
     @Override
     public void update() {
+        ultrasone.update();
+
         if(ultrasone.getValue() < 10){
+            System.out.println("STOP");
             motionController.emergencyBrake();
             motionController.goToSpeed(-100);
             motionController.turnLeft();
+        }
+        else{
+            System.out.println("GO");
         }
 
 
