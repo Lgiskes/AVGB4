@@ -54,6 +54,7 @@ public class Infrared implements Sensor, Updatable {
                 }
                 if (validValue) {
                     this.value = bitNumber;
+                    System.out.println(bitNumber);
                 }
                 else {
                     this.value = -1;
