@@ -3,6 +3,7 @@ package HAT_Bot.Logic;
 import HAT_Bot.Logic.Updatable;
 import HAT_Bot.Sensors.Infrared;
 import TI.BoeBot;
+import TI.StoppableTimer;
 
 
 public class RemoteControl implements Updatable {
@@ -12,12 +13,16 @@ public class RemoteControl implements Updatable {
     private int speedValue;
     private boolean forward;
     private MotionController motionController;
+    private IndicatorController indicatorController;
+    private StoppableTimer delayTimer;
 
-    public RemoteControl(int pinInfrared, MotionController motionController) {
+    public RemoteControl(int pinInfrared, MotionController motionController, IndicatorController indicatorController) {
         this.infrared = new Infrared(pinInfrared);
         this.forward = true;
         this.speedValue = 0;
         this.motionController = motionController;
+        this.indicatorController = indicatorController;
+        this.delayTimer = new StoppableTimer(200);
     }
 
     public void actions(){
@@ -105,6 +110,7 @@ public class RemoteControl implements Updatable {
                 }
                 break;
             case 296: // mute button
+                this.indicatorController.mute(!this.indicatorController.getMuteState());
                 break;
             case 922: // square
                 motionController.driveSquare();
@@ -130,12 +136,19 @@ public class RemoteControl implements Updatable {
     }
 
     public void update() {
-        infrared.update();
-        this.buttonValue = infrared.getValue();
-        if (this.buttonValue != -1){
-            System.out.println(this.speedValue);
-            actions();
+
+        if(delayTimer.timeout()){
+            delayTimer.stop();
         }
+        else if(delayTimer.isStopped()) {
+            infrared.update();
+            this.buttonValue = infrared.getValue();
+            if (this.buttonValue != -1){
+                actions();
+                delayTimer.start();
+            }
+        }
+
     }
 
 }

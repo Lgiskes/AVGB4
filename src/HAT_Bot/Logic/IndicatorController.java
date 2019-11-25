@@ -2,6 +2,7 @@ package HAT_Bot.Logic;
 
 import HAT_Bot.Actuators.Beeper;
 import HAT_Bot.Actuators.LED;
+import TI.StoppableTimer;
 
 public class IndicatorController implements Updatable{
     private LED led;
@@ -14,7 +15,17 @@ public class IndicatorController implements Updatable{
     public IndicatorController(int ledPin, int beeperPin){
         this.led = new LED(ledPin);
         this.beeper = new Beeper(beeperPin);
-        int status = 0;
+        this.status = 0;
+
+        this.beeper.setOn(true);
+    }
+
+    public void mute(boolean muteState){
+        this.beeper.setOn(!muteState);
+    }
+
+    public boolean getMuteState(){
+        return !this.beeper.isOn();
     }
 
     public void standingStillIndication(){
@@ -55,20 +66,22 @@ public class IndicatorController implements Updatable{
 
     @Override
     public void update() {
+        this.beeper.update();
+
         switch (this.status){
             case 0:
-                this.led.setOn(false);
-                this.beeper.setOn(false);
+                this.led.setOn(true);
+                //this.beeper.setOn(false);
 
             case 1:
-                this.led.setOn(true);
+                this.led.setOn(false);
 
             case 2:
                 if(this.ledTimer.timeout()){
                     this.led.setOn(!this.led.isOn());
                 }
                 if(this.beeperTimer.timeout()){
-                    this.beeper.makeSound(250);
+                    this.beeper.makeSound(1000, 250);
                 }
 
             case 3:
@@ -76,7 +89,7 @@ public class IndicatorController implements Updatable{
                     this.led.setOn(!this.led.isOn());
                 }
                 if(this.beeperTimer.timeout()){
-                    this.beeper.makeSound(2000);
+                    this.beeper.makeSound(1000, 2000);
                 }
 
             case 4:
@@ -84,7 +97,7 @@ public class IndicatorController implements Updatable{
                     this.led.setOn(!this.led.isOn());
                 }
                 if(this.beeperTimer.timeout()){
-                    this.beeper.makeSound(1000);
+                    this.beeper.makeSound(1000, 1000);
                 }
         }
     }

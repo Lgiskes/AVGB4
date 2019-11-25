@@ -1,7 +1,5 @@
 package HAT_Bot.Actuators;
 
-import HAT_Bot.Logic.StoppableTimer;
-import HAT_Bot.Logic.Updatable;
 import TI.BoeBot;
 
 public class LED implements Actuator {

@@ -1,4 +1,4 @@
-package HAT_Bot.Logic;
+package TI;
 
 import TI.Timer;
 

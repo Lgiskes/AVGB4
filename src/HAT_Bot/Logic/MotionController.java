@@ -4,6 +4,7 @@ import HAT_Bot.Actuators.Motor;
 import HAT_Bot.Sensors.Ultrasone;
 import HAT_Bot.Sensors.Whisker;
 import TI.Timer;
+import TI.StoppableTimer;
 
 public class MotionController implements Updatable {
 
@@ -141,7 +142,6 @@ public class MotionController implements Updatable {
             driveCircleTimer.stop();
             this.goToSpeed(0);
         }
-
     }
 
     private void turnDegrees(int graden,int speed){
