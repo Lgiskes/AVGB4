@@ -1,7 +1,7 @@
 package HAT_Bot.Sensors;
 
 import TI.StoppableTimer;
-import HAT_Bot.Logic.Updatable;
+import HAT_Bot.Controllers.Updatable;
 import TI.BoeBot;
 
 public class Infrared implements Sensor, Updatable {

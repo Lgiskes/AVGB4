@@ -1,4 +1,4 @@
-import HAT_Bot.Logic.Updatable;
+import HAT_Bot.Controllers.Updatable;
 
 public class TestClass implements Updatable {
 

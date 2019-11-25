@@ -1,8 +1,6 @@
-package HAT_Bot.Logic;
+package HAT_Bot.Controllers;
 
-import HAT_Bot.Logic.Updatable;
 import HAT_Bot.Sensors.Infrared;
-import TI.BoeBot;
 import TI.StoppableTimer;
 
 

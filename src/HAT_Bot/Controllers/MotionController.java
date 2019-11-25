@@ -1,9 +1,6 @@
-package HAT_Bot.Logic;
+package HAT_Bot.Controllers;
 
 import HAT_Bot.Actuators.Motor;
-import HAT_Bot.Sensors.Ultrasone;
-import HAT_Bot.Sensors.Whisker;
-import TI.Timer;
 import TI.StoppableTimer;
 
 public class MotionController implements Updatable {

@@ -1,10 +1,6 @@
-import HAT_Bot.Actuators.LED;
-import HAT_Bot.Logic.*;
+import HAT_Bot.Controllers.*;
 import HAT_Bot.Sensors.Ultrasone;
 import TI.BoeBot;
-import TI.Servo;
-import TI.Timer;
-import HAT_Bot.Sensors.Infrared;
 
 import java.util.ArrayList;
 import java.util.List;
