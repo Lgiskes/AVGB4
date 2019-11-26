@@ -45,6 +45,4 @@ public class ObstacleDetection implements Updatable {
 
         }
     }
-
-
 }

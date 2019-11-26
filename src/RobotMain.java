@@ -12,7 +12,7 @@ public class RobotMain {
 
         MotionController m = new MotionController(14, 15);
         IndicatorController i = new IndicatorController(3, 4);
-        RemoteControl r = new RemoteControl(2, m, i);
+        RemoteControl r = new RemoteControl(2, null);
         ObstacleDetection o = new ObstacleDetection(new Ultrasone(0, 1), null);
         OperatingLogic a = new OperatingLogic(i, m, o, r);
 
