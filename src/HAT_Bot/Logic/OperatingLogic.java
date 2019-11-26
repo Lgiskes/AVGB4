@@ -9,6 +9,7 @@ public class OperatingLogic implements Updatable, ObstacleDetectionObserver, Rem
     private MotionController motionController;
     private ObstacleDetection obstacleDetection;
     private RemoteControl remoteControl;
+    private String status;
 
     private boolean forward = true;
     private int currentSpeed = 50;
@@ -20,21 +21,23 @@ public class OperatingLogic implements Updatable, ObstacleDetectionObserver, Rem
         this.remoteControl = remoteControl;
         obstacleDetection.setObserver(this);
         remoteControl.setObserver(this);
+        this.status = "";
     }
 
     public void onObstacleDetected (ObstacleDetection o, String command){
-        System.out.println(command);
         if (command.equals("Slow down")){
             this.motionController.goToSpeed(0);
             this.indicatorController.foundObstacleIndication();
+            this.status = "Slow down";
         }
         else if(command.equals("Stop")){
             this.motionController.emergencyBrake();
             this.indicatorController.inFrontOfObstacleIndication();
+            this.status = "Stop";
         }
         else{
-            this.motionController.goToSpeed(100);
-            this.indicatorController.drivingIndication();
+            this.status = "Okay";
+            this.drive();
         }
 
     }
@@ -77,13 +80,17 @@ public class OperatingLogic implements Updatable, ObstacleDetectionObserver, Rem
                 this.currentSpeed = 90;
                 drive();
                 break;
+            case "setSpeed 100":
+                    this.currentSpeed = 100;
+                    drive();
+                break;
             case "setSpeed 00":
                 this.currentSpeed = 0;
                 drive();
                 break;
             case "emergencyBrake":
                 motionController.emergencyBrake();
-                this.currentSpeed = 0;
+                this.indicatorController.standingStillIndication();
                 break;
             case "forward":
                 this.forward = true;
@@ -126,10 +133,26 @@ public class OperatingLogic implements Updatable, ObstacleDetectionObserver, Rem
 
     public void drive() {
         if (forward) {
-            motionController.goToSpeed(this.currentSpeed);
+            if(this.status.equals("Okay")) {
+                motionController.goToSpeed(this.currentSpeed);
+
+                if(this.currentSpeed == 0){
+                    this.indicatorController.standingStillIndication();
+                }
+                else {
+                    this.indicatorController.drivingIndication();
+                }
+            }
         }
         else {
-            motionController.goToSpeed(this.currentSpeed);
+            motionController.goToSpeed(-this.currentSpeed);
+
+            if(this.currentSpeed == 0){
+                this.indicatorController.standingStillIndication();
+            }
+            else {
+                this.indicatorController.drivingIndication();
+            }
         }
     }
 
