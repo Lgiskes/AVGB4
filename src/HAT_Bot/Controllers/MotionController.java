@@ -142,6 +142,17 @@ public class MotionController implements Updatable {
         }
     }
 
+    public void turningLeft(int speed){
+        this.rightMotor.setSpeed(speed);
+        this.leftMotor.setSpeed(-speed);
+    }
+
+    public void turningRight(int speed){
+        this.rightMotor.setSpeed(-speed);
+        this.leftMotor.setSpeed(speed);
+    }
+
+
     private void turnDegrees(int graden,int speed){
         speed = Math.max(-100, speed);
         speed = Math.min(100,speed);
