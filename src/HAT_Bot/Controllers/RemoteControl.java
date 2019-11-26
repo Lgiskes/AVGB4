@@ -54,7 +54,7 @@ public class RemoteControl implements Updatable {
                 observer.onRemoteControlDetected(this, "setSpeed 100");
                 break;
             case 280: // arrow
-                observer.onRemoteControlDetected(this, "setSpeed 0");
+                observer.onRemoteControlDetected(this, "setSpeed 00");
                 break;
             case 298: // break button
                 observer.onRemoteControlDetected(this, "emergencyBrake");

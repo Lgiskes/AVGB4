@@ -134,6 +134,7 @@ public class MotionController implements Updatable {
                 this.turnsMade = -1;
             }
         }
+        
 
         if(driveCircleTimer.timeout()){
             driveCircleTimer.stop();
@@ -240,7 +241,7 @@ public class MotionController implements Updatable {
 
     }
 
-    public void circle(){
+    public void driveCircle(){
         driveCircleTimer.start();
         turnRightCurve(true, 100);
 
