@@ -3,7 +3,7 @@ package HAT_Bot.Logic;
 import HAT_Bot.Controllers.*;
 import com.sun.jndi.cosnaming.RemoteToCorba;
 
-public class OperatingLogic implements Updatable, ObstacleDetectionObserver {
+public class OperatingLogic implements Updatable, ObstacleDetectionObserver, RemoteControlObserver {
 
     private IndicatorController indicatorController;
     private MotionController motionController;
@@ -16,6 +16,7 @@ public class OperatingLogic implements Updatable, ObstacleDetectionObserver {
         this.obstacleDetection = obstacleDetection;
         this.remoteControl = remoteControl;
         obstacleDetection.setObserver(this);
+        remoteControl.setObserver(this);
     }
 
     public void onObstacleDetected (ObstacleDetection o, String command){
@@ -35,9 +36,12 @@ public class OperatingLogic implements Updatable, ObstacleDetectionObserver {
 
     }
 
+    public void onRemoteControlDetected(RemoteControl r, String command) {
+
+    }
+
     @Override
     public void update() {
 
     }
-
 }
