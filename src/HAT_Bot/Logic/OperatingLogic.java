@@ -26,7 +26,9 @@ public class OperatingLogic implements Updatable, ObstacleDetectionObserver, Rem
 
     public void onObstacleDetected (ObstacleDetection o, String command){
         if (command.equals("Slow down")){
-            this.motionController.goToSpeed(0);
+            if(this.forward) {
+                this.motionController.goToSpeed(0);
+            }
             this.indicatorController.foundObstacleIndication();
             this.status = "Slow down";
         }
@@ -102,7 +104,7 @@ public class OperatingLogic implements Updatable, ObstacleDetectionObserver, Rem
                 break;
             case "turnLeft":
                 if (currentSpeed == 0) {
-                    motionController.turnLeft();
+                    motionController.turningLeft(10);
                 }
                 else {
                     motionController.turnLeftCurve(forward, currentSpeed);
@@ -110,7 +112,7 @@ public class OperatingLogic implements Updatable, ObstacleDetectionObserver, Rem
                 break;
             case "turnRight":
                 if (currentSpeed == 0) {
-                    motionController.turnRight();
+                    motionController.turningRight(10);
                 }
                 else {
                     motionController.turnRightCurve(forward, currentSpeed);
