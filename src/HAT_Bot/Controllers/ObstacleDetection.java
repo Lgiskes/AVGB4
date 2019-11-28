@@ -1,6 +1,6 @@
 package HAT_Bot.Controllers;
 
-import HAT_Bot.Sensors.Ultrasone;
+import HAT_Bot.Hardware.Sensors.Ultrasone;
 
 /**
  * This class converts the measured values from the ultrasone to commands

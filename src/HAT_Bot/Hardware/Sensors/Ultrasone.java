@@ -1,4 +1,4 @@
-package HAT_Bot.Sensors;
+package HAT_Bot.Hardware.Sensors;
 
 import TI.StoppableTimer;
 import HAT_Bot.Controllers.Updatable;

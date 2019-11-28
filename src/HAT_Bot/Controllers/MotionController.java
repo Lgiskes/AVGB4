@@ -1,6 +1,6 @@
 package HAT_Bot.Controllers;
 
-import HAT_Bot.Actuators.Motor;
+import HAT_Bot.Hardware.Actuators.Motor;
 import TI.StoppableTimer;
 
 /**

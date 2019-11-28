@@ -1,6 +1,6 @@
 package HAT_Bot.Controllers;
 
-import HAT_Bot.Sensors.Infrared;
+import HAT_Bot.Hardware.Sensors.Infrared;
 import TI.StoppableTimer;
 
 /**
@@ -109,12 +109,12 @@ public class RemoteControl implements Updatable {
      * pressed button.
      */
     public void update() {
-        if(delayTimer.timeout()){
+        if(this.delayTimer.timeout()){
             this.delayTimer.stop();
         }
-        else if(delayTimer.isStopped()) {
+        else if(this.delayTimer.isStopped()) {
             this.infrared.update();
-            this.buttonValue = infrared.getValue();
+            this.buttonValue = this.infrared.getValue();
             if (this.buttonValue != -1){
                 actions();
                 this.delayTimer.start();

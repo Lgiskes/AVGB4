@@ -1,6 +1,6 @@
 import HAT_Bot.Controllers.*;
 import HAT_Bot.Logic.OperatingLogic;
-import HAT_Bot.Sensors.Ultrasone;
+import HAT_Bot.Hardware.Sensors.Ultrasone;
 import TI.BoeBot;
 
 import java.util.ArrayList;
