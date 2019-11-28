@@ -109,7 +109,7 @@ public class OperatingLogic implements Updatable, ObstacleDetectionObserver, Rem
                 drive();
                 break;
             case "emergencyBrake":
-                motionController.emergencyBrake();
+                this.motionController.emergencyBrake();
                 this.indicatorController.standingStillIndication();
                 break;
             case "forward":
@@ -121,32 +121,32 @@ public class OperatingLogic implements Updatable, ObstacleDetectionObserver, Rem
                 drive();
                 break;
             case "turnLeft":
-                if (currentSpeed == 0) {
-                    motionController.turningLeft(10);
+                if (this.currentSpeed == 0) {
+                    this.motionController.turningLeft(10);
                 }
                 else {
-                    motionController.turnLeftCurve(forward, currentSpeed);
+                   this.motionController.turnLeftCurve(this.forward, this.currentSpeed);
                 }
                 break;
             case "turnRight":
-                if (currentSpeed == 0) {
-                    motionController.turningRight(10);
+                if (this.currentSpeed == 0) {
+                    this.motionController.turningRight(10);
                 }
                 else {
-                    motionController.turnRightCurve(forward, currentSpeed);
+                    this.motionController.turnRightCurve(this.forward, this.currentSpeed);
                 }
                 break;
             case "mute":
-                indicatorController.mute(!indicatorController.getMuteState());
+                this.indicatorController.mute(!this.indicatorController.getMuteState());
                 break;
             case "driveSquare":
-                motionController.driveSquare();
+                this.motionController.driveSquare();
                 break;
             case "driveCircle":
-                motionController.driveCircle();
+                this.motionController.driveCircle();
                 break;
             case "driveTriangle":
-                motionController.driveTriangle();
+                this.motionController.driveTriangle();
                 break;
         }
     }
@@ -155,9 +155,9 @@ public class OperatingLogic implements Updatable, ObstacleDetectionObserver, Rem
      * Drives with a speed equal to this.currenSpeed
      */
     public void drive() {
-        if (forward) {
+        if (this.forward) {
             if(this.status.equals("Okay")) {
-                motionController.goToSpeed(this.currentSpeed);
+                this.motionController.goToSpeed(this.currentSpeed);
 
                 if(this.currentSpeed == 0){
                     this.indicatorController.standingStillIndication();
@@ -168,7 +168,7 @@ public class OperatingLogic implements Updatable, ObstacleDetectionObserver, Rem
             }
         }
         else {
-            motionController.goToSpeed(-this.currentSpeed);
+           this.motionController.goToSpeed(-this.currentSpeed);
 
             if(this.currentSpeed == 0){
                 this.indicatorController.standingStillIndication();

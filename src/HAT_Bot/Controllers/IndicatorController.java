@@ -113,6 +113,7 @@ public class IndicatorController implements Updatable{
                 this.led.setOn(true);
                 //this.beeper.setOn(false);
                 break;
+
             case 1: //when the bot is standing still
                 this.led.setOn(false);
                 break;
@@ -125,6 +126,7 @@ public class IndicatorController implements Updatable{
                     this.beeper.makeSound(1000, 250);
                 }
                 break;
+
             case 3: //when the bot is driving backwards
                 if(this.ledTimer.timeout()){
                     this.led.setOn(!this.led.isOn());

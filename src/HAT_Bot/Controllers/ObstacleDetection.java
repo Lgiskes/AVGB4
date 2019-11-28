@@ -31,26 +31,26 @@ public class ObstacleDetection implements Updatable {
      */
     @Override
     public void update() {
-        ultrasone.update();
+        this.ultrasone.update();
 
-        if (ultrasone.getValue() <= 10) {
+        if (this.ultrasone.getValue() <= 10) {
             if(!this.previousCommand.equals("Stop")){
                 this.previousCommand = "Stop";
-                observer.onObstacleDetected(this, "Stop");
+                this.observer.onObstacleDetected(this, "Stop");
             }
 
         }
-        else if (ultrasone.getValue() <= 30) {
+        else if (this.ultrasone.getValue() <= 30) {
             if( !this.previousCommand.equals("Slow down")){
                 this.previousCommand = "Slow down";
-                observer.onObstacleDetected(this, "Slow down");
+                this.observer.onObstacleDetected(this, "Slow down");
             }
 
         }
         else {
             if(!this.previousCommand.equals("Okay")){
                 this.previousCommand = "Okay";
-                observer.onObstacleDetected(this, "Okay");
+                this.observer.onObstacleDetected(this, "Okay");
             }
 
         }

@@ -25,8 +25,8 @@ public class Ultrasone implements Sensor, Updatable {
     public Ultrasone(int pinTrigger, int pinEcho) {
         this.pinTrigger = pinTrigger;
         this.pinEcho = pinEcho;
-        timerUltrasone = new StoppableTimer(50);
-        timerShort = new StoppableTimer(1);
+        this.timerUltrasone = new StoppableTimer(50);
+        this.timerShort = new StoppableTimer(1);
     }
 
     /**
@@ -58,21 +58,21 @@ public class Ultrasone implements Sensor, Updatable {
     @Override
     public void update() {
         //sends a short burst of sound
-        if (timerUltrasone.timeout()) {
+        if (this.timerUltrasone.timeout()) {
             BoeBot.digitalWrite(0, true);
-            timerShort.start();
-            timerUltrasone.stop();
+            this.timerShort.start();
+            this.timerUltrasone.stop();
         }
 
         //measures the echo of the sound and calculates and saves the distance in cm
-        if (timerShort.timeout()) {
-            timerShort.stop();
+        if (this.timerShort.timeout()) {
+            this.timerShort.stop();
             BoeBot.digitalWrite(0, false);
 
             int pulse = BoeBot.pulseIn(1, true, 10000);
             this.value = pulse / 58;
 
-            timerUltrasone.start();
+            this.timerUltrasone.start();
         }
     }
 }

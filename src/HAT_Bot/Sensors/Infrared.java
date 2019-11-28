@@ -11,7 +11,7 @@ public class Infrared implements Sensor, Updatable {
 
     private int pin;
     private int value;
-    private StoppableTimer timerinfrared;
+    private StoppableTimer timerInfrared;
 
     /**
      * Constructor for the Infrared.
@@ -19,8 +19,8 @@ public class Infrared implements Sensor, Updatable {
      */
     public Infrared(int pin) {
         this.pin = pin;
-        this.timerinfrared = new StoppableTimer(10);
-        this.timerinfrared.start();
+        this.timerInfrared = new StoppableTimer(10);
+        this.timerInfrared.start();
     }
 
     /**
@@ -47,7 +47,7 @@ public class Infrared implements Sensor, Updatable {
      */
     @Override
     public void update() {
-        if (timerinfrared.timeout()) { // Happens only when the timer finished.
+        if (this.timerInfrared.timeout()) { // Happens only when the timer finished.
             boolean validValue = true;
             int pulse = BoeBot.pulseIn(this.pin, false, 6000);
             int bitNumber = 0;
