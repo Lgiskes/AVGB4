@@ -1,4 +1,4 @@
-package HAT_Bot.Sensors;
+package HAT_Bot.Hardware.Sensors;
 
 /**
  * Rules for al the Senor classes.

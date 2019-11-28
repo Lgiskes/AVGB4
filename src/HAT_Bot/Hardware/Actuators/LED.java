@@ -1,4 +1,4 @@
-package HAT_Bot.Actuators;
+package HAT_Bot.Hardware.Actuators;
 
 import TI.BoeBot;
 

@@ -1,7 +1,7 @@
 package HAT_Bot.Controllers;
 
-import HAT_Bot.Actuators.Beeper;
-import HAT_Bot.Actuators.LED;
+import HAT_Bot.Hardware.Actuators.Beeper;
+import HAT_Bot.Hardware.Actuators.LED;
 import TI.StoppableTimer;
 
 /**
