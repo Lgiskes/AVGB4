@@ -11,6 +11,11 @@ public class Motor implements Updatable {
     private Servo servo;
     private Timer timer;
 
+    /**
+     * Controls a Servo
+     * @param pin the number of the pin the servo is connected to
+     * @param inverted true if the turnrotation is inverted, else false
+     */
     public  Motor(int pin, boolean inverted) {
         this.pin = pin;
         this.inverted = inverted;
@@ -18,6 +23,10 @@ public class Motor implements Updatable {
         this.servo = new Servo(pin);
     }
 
+    /**
+     * Gets the speed of the servo from -100 to 100
+     * @return the speed of the servo
+     */
     public int getSpeed() {
         int speed = (this.servo.getPulseWidth() - 1500) / 2;
 
@@ -28,6 +37,10 @@ public class Motor implements Updatable {
         return speed;
     }
 
+    /**
+     * Sets the speed of a servo
+     * @param speed the speed from -100 to 100
+     */
     public void setSpeed(int speed) {
         speed = Math.max(-100, speed);
         speed = Math.min(100, speed);
@@ -40,6 +53,9 @@ public class Motor implements Updatable {
         this.servo.update(newSpeed);
     }
 
+    /**
+     * Updates the servo
+     */
     @Override
     public void update() {
 

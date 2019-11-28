@@ -269,8 +269,8 @@ public class MotionController implements Updatable {
 
         this.goToSpeedRightTimer.setInterval(rightTime);
         this.goToSpeedLeftTimer.setInterval(leftTime);
-        goToSpeedLeftTimer.start();
-        goToSpeedRightTimer.start();
+        this.goToSpeedLeftTimer.start();
+        this.goToSpeedRightTimer.start();
         this.toSpeed = speed;
     }
 
