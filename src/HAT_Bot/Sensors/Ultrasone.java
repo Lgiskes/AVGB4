@@ -4,6 +4,11 @@ import TI.StoppableTimer;
 import HAT_Bot.Controllers.Updatable;
 import TI.BoeBot;
 
+/**
+ * This class takes care of the hardware layer of the ultrasone sensor
+ * It saves the distance between the sensor and an object every 50 ms
+ * This value can be retrieved with the get function for further use
+ */
 public class Ultrasone implements Sensor, Updatable {
 
     private int pinTrigger;
@@ -12,6 +17,11 @@ public class Ultrasone implements Sensor, Updatable {
     private StoppableTimer timerUltrasone;
     private StoppableTimer timerShort;
 
+    /**
+     * Constructor for adding a ultrasone sensor
+     * @param pinTrigger The number of the pin connected to the trigger
+     * @param pinEcho The number of the pin connected to the echo
+     */
     public Ultrasone(int pinTrigger, int pinEcho) {
         this.pinTrigger = pinTrigger;
         this.pinEcho = pinEcho;
@@ -19,11 +29,19 @@ public class Ultrasone implements Sensor, Updatable {
         timerShort = new StoppableTimer(1);
     }
 
+    /**
+     * Getter for the value of the ultrasone
+     * @return The last value measured by the ultrasone sensor
+     */
     @Override
     public int getValue() {
         return this.value;
     }
 
+    /**
+     * Getter for the pin the ultrasone sensor is connected to
+     * @return The pin connection for the ultrasone
+     */
     @Override
     public int getPin() {
         return this.pinEcho;
@@ -34,14 +52,19 @@ public class Ultrasone implements Sensor, Updatable {
         return false;
     }
 
+    /**
+     * The update method measures the distance between the sensor and an object, this happens every 50 ms
+     */
     @Override
     public void update() {
+        //sends a short burst of sound
         if (timerUltrasone.timeout()) {
             BoeBot.digitalWrite(0, true);
             timerShort.start();
             timerUltrasone.stop();
         }
 
+        //measures the echo of the sound and calculates and saves the distance in cm
         if (timerShort.timeout()) {
             timerShort.stop();
             BoeBot.digitalWrite(0, false);
