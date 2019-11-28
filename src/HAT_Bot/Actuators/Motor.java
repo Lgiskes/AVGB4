@@ -60,8 +60,8 @@ public class Motor implements Updatable {
     public void update() {
 
 
-        if (timer.timeout()) {
-            servo.stop();
+        if (this.timer.timeout()) {
+            this.servo.stop();
         }
     }
 }

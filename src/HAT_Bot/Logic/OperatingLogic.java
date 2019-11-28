@@ -11,7 +11,7 @@ public class OperatingLogic implements Updatable, ObstacleDetectionObserver, Rem
     private MotionController motionController;
     private ObstacleDetection obstacleDetection;
     private RemoteControl remoteControl;
-    private String status;
+    private ObstacleDetectionCommand status;
 
     private boolean forward = true;
     private int currentSpeed = 50;
@@ -29,7 +29,7 @@ public class OperatingLogic implements Updatable, ObstacleDetectionObserver, Rem
         this.remoteControl = remoteControl;
         obstacleDetection.setObserver(this);
         remoteControl.setObserver(this);
-        this.status = "";
+        this.status = ObstacleDetectionCommand.None;
     }
 
     /**
@@ -37,21 +37,21 @@ public class OperatingLogic implements Updatable, ObstacleDetectionObserver, Rem
      * @param obstacleDetection an object that manages obstacle detection
      * @param command the command that is enlisted to the controls
      */
-    public void onObstacleDetected (ObstacleDetection obstacleDetection, String command){
-        if (command.equals("Slow down")){
+    public void onObstacleDetected (ObstacleDetection obstacleDetection, ObstacleDetectionCommand command){
+        if (command == ObstacleDetectionCommand.SlowDown){
             if(this.forward) {
                 this.motionController.goToSpeed(0);
             }
             this.indicatorController.foundObstacleIndication();
-            this.status = "Slow down";
+            this.status = ObstacleDetectionCommand.SlowDown;
         }
-        else if(command.equals("Stop")){
+        else if(command == ObstacleDetectionCommand.Stop){
             this.motionController.emergencyBrake();
             this.indicatorController.inFrontOfObstacleIndication();
-            this.status = "Stop";
+            this.status = ObstacleDetectionCommand.Stop;
         }
         else{
-            this.status = "Okay";
+            this.status = ObstacleDetectionCommand.Okay;
             this.drive();
         }
 
@@ -62,91 +62,91 @@ public class OperatingLogic implements Updatable, ObstacleDetectionObserver, Rem
      * @param remoteControl the object that manages the command inputs
      * @param command the command that is enlisted to the bot
      */
-    public void onRemoteControlDetected(RemoteControl remoteControl, RemoteControlCommand command) {
+    public void onRemoteControlDetected(RemoteControl remoteControl, String command) {
         switch (command) {
-            case setSpeed10:
+            case "setSpeed 10":
                 this.currentSpeed = 10;
                 drive();
                 break;
-            case setSpeed20:
+            case "setSpeed 20":
                 this.currentSpeed = 20;
                 drive();
                 break;
-            case setSpeed30:
+            case "setSpeed 30":
                 this.currentSpeed = 30;
                 drive();
                 break;
-            case setSpeed40:
+            case "setSpeed 40":
                 this.currentSpeed = 40;
                 drive();
                 break;
-            case setSpeed50:
+            case "setSpeed 50":
                 this.currentSpeed = 50;
                 drive();
                 break;
-            case setSpeed60:
+            case "setSpeed 60":
                 this.currentSpeed = 60;
                 drive();
                 break;
-            case setSpeed70:
+            case "setSpeed 70":
                 this.currentSpeed = 70;
                 drive();
                 break;
-            case setSpeed80:
+            case "setSpeed 80":
                 this.currentSpeed = 80;
                 drive();
                 break;
-            case setSpeed90:
+            case "setSpeed 90":
                 this.currentSpeed = 90;
                 drive();
                 break;
-            case setSpeed100:
-                this.currentSpeed = 100;
-                drive();
+            case "setSpeed 100":
+                    this.currentSpeed = 100;
+                    drive();
                 break;
-            case setSpeed0:
+            case "setSpeed 00":
                 this.currentSpeed = 0;
                 drive();
                 break;
-            case emergencyBrake:
-                motionController.emergencyBrake();
+            case "emergencyBrake":
+                this.motionController.emergencyBrake();
                 this.indicatorController.standingStillIndication();
                 break;
-            case forward:
+            case "forward":
                 this.forward = true;
                 drive();
                 break;
-            case backward:
+            case "backward":
                 this.forward = false;
                 drive();
                 break;
-            case turnLeft:
-                if (currentSpeed == 0) {
-                    motionController.turningLeft(10);
+            case "turnLeft":
+                if (this.currentSpeed == 0) {
+                    this.motionController.turningLeft(10);
                 }
                 else {
-                    motionController.turnLeftCurve(forward, currentSpeed);
+                   this.motionController.turnLeftCurve(this.forward, this.currentSpeed);
                 }
                 break;
-            case turnRight:
-                if (currentSpeed == 0) {
-                    motionController.turningRight(10);
+            case "turnRight":
+                if (this.currentSpeed == 0) {
+                    this.motionController.turningRight(10);
                 }
                 else {
-                    motionController.turnRightCurve(forward, currentSpeed);
+                    this.motionController.turnRightCurve(this.forward, this.currentSpeed);
                 }
                 break;
-            case mute:
-                indicatorController.mute(!indicatorController.getMuteState());
+            case "mute":
+                this.indicatorController.mute(!this.indicatorController.getMuteState());
                 break;
-            case driveSquare:
-                motionController.driveSquare();
+            case "driveSquare":
+                this.motionController.driveSquare();
                 break;
-            case driveCircle:
-                motionController.driveCircle();
+            case "driveCircle":
+                this.motionController.driveCircle();
                 break;
-            case driveTriangle:
-                motionController.driveTriangle();
+            case "driveTriangle":
+                this.motionController.driveTriangle();
                 break;
         }
     }
@@ -155,9 +155,9 @@ public class OperatingLogic implements Updatable, ObstacleDetectionObserver, Rem
      * Drives with a speed equal to this.currenSpeed
      */
     public void drive() {
-        if (forward) {
+        if (this.forward) {
             if(this.status.equals("Okay")) {
-                motionController.goToSpeed(this.currentSpeed);
+                this.motionController.goToSpeed(this.currentSpeed);
 
                 if(this.currentSpeed == 0){
                     this.indicatorController.standingStillIndication();
@@ -168,7 +168,7 @@ public class OperatingLogic implements Updatable, ObstacleDetectionObserver, Rem
             }
         }
         else {
-            motionController.goToSpeed(-this.currentSpeed);
+           this.motionController.goToSpeed(-this.currentSpeed);
 
             if(this.currentSpeed == 0){
                 this.indicatorController.standingStillIndication();
