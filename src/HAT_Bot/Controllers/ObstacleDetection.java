@@ -2,6 +2,9 @@ package HAT_Bot.Controllers;
 
 import HAT_Bot.Sensors.Ultrasone;
 
+/**
+ * This class converts the measured values from the ultrasone to commands
+ */
 public class ObstacleDetection implements Updatable {
 
     private Ultrasone ultrasone;
@@ -9,6 +12,10 @@ public class ObstacleDetection implements Updatable {
     private String previousCommand;
 
 
+    /**
+     * @param ultrasone The ultrasone sensor
+     * @param observer This sends the correct commands to the OperatingLogic
+     */
     public ObstacleDetection(Ultrasone ultrasone, ObstacleDetectionObserver observer) {
         this.ultrasone = ultrasone;
         this.observer = observer;
@@ -19,6 +26,9 @@ public class ObstacleDetection implements Updatable {
         this.observer = observer;
     }
 
+    /**
+     * This gets the values from the ultrasone class and checks if the robot needs to do something
+     */
     @Override
     public void update() {
         ultrasone.update();
