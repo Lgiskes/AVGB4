@@ -11,7 +11,7 @@ public class OperatingLogic implements Updatable, ObstacleDetectionObserver, Rem
     private MotionController motionController;
     private ObstacleDetection obstacleDetection;
     private RemoteControl remoteControl;
-    private String status;
+    private ObstacleDetectionCommand status;
 
     private boolean forward = true;
     private int currentSpeed = 50;
@@ -29,7 +29,7 @@ public class OperatingLogic implements Updatable, ObstacleDetectionObserver, Rem
         this.remoteControl = remoteControl;
         obstacleDetection.setObserver(this);
         remoteControl.setObserver(this);
-        this.status = "";
+        this.status = ObstacleDetectionCommand.None;
     }
 
     /**
@@ -37,21 +37,21 @@ public class OperatingLogic implements Updatable, ObstacleDetectionObserver, Rem
      * @param obstacleDetection an object that manages obstacle detection
      * @param command the command that is enlisted to the controls
      */
-    public void onObstacleDetected (ObstacleDetection obstacleDetection, String command){
-        if (command.equals("Slow down")){
+    public void onObstacleDetected (ObstacleDetection obstacleDetection, ObstacleDetectionCommand command){
+        if (command == ObstacleDetectionCommand.SlowDown){
             if(this.forward) {
                 this.motionController.goToSpeed(0);
             }
             this.indicatorController.foundObstacleIndication();
-            this.status = "Slow down";
+            this.status = ObstacleDetectionCommand.SlowDown;
         }
-        else if(command.equals("Stop")){
+        else if(command == ObstacleDetectionCommand.Stop){
             this.motionController.emergencyBrake();
             this.indicatorController.inFrontOfObstacleIndication();
-            this.status = "Stop";
+            this.status = ObstacleDetectionCommand.Stop;
         }
         else{
-            this.status = "Okay";
+            this.status = ObstacleDetectionCommand.Okay;
             this.drive();
         }
 
