@@ -10,7 +10,8 @@ import TI.StoppableTimer;
 public class IndicatorController implements Updatable{
     private LED led;
     private Beeper beeper;
-    private int status; // 0 = bot is off.  1 = bot is standing still. 2 = bot is driving. 3 = bot found obstacle. 4 =  bot is in front of obstacle
+    private int status;
+    // 0 =bot is off.  1 =bot is standing still. 2 = bot is driving. 3 = bot is driving backwards 4 = bot found obstacle. 5 =  bot is in front of obstacle
     private StoppableTimer ledTimer = new StoppableTimer(1000);
     private StoppableTimer beeperTimer = new StoppableTimer(1000);
 
@@ -50,7 +51,6 @@ public class IndicatorController implements Updatable{
         this.beeperTimer.stop();
         this.status = 1;
     }
-
     /**
      * Sets the state of the LED and beeper for the case when the bot is driving
      */
@@ -64,6 +64,15 @@ public class IndicatorController implements Updatable{
         this.status = 2;
     }
 
+    public void drivingBackwardsIndication(){
+        this.ledTimer.stop();
+        this.beeperTimer.stop();
+        this.ledTimer.setInterval(500);
+        this.beeperTimer.setInterval(1000);
+        this.ledTimer.start();
+        this.beeperTimer.start();
+        this.status = 3;
+    }
     /**
      * Sets the state of the LED and beeper for the case when the bot has found an obstacle
      */
@@ -74,7 +83,7 @@ public class IndicatorController implements Updatable{
         this.beeperTimer.setInterval(750);
         this.ledTimer.start();
         this.beeperTimer.start();
-        this.status = 3;
+        this.status = 4;
     }
 
     /**
@@ -87,9 +96,8 @@ public class IndicatorController implements Updatable{
         this.beeperTimer.setInterval(1000);
         this.ledTimer.start();
         this.beeperTimer.start();
-        this.status = 4;
+        this.status = 5;
     }
-
     /**
      * Updates the beeper and LED
      */
@@ -114,8 +122,7 @@ public class IndicatorController implements Updatable{
                     this.beeper.makeSound(1000, 250);
                 }
                 break;
-
-            case 3: //when the bot has found an obstacle
+            case 3: //when the bot is driving backwards
                 if(this.ledTimer.timeout()){
                     this.led.setOn(!this.led.isOn());
                 }
@@ -123,7 +130,17 @@ public class IndicatorController implements Updatable{
                     this.beeper.makeSound(1000, 250);
                 }
                 break;
-            case 4: //when the bot is in front of an obstacle
+
+            case 4: //when the bot has found an obstacle
+                if(this.ledTimer.timeout()){
+                    this.led.setOn(!this.led.isOn());
+                }
+                if(this.beeperTimer.timeout()){
+                    this.beeper.makeSound(1000, 250);
+                }
+                break;
+
+            case 5: //when the bot is in front of an obstacle
                 if(this.ledTimer.timeout()){
                     this.led.setOn(!this.led.isOn());
                 }

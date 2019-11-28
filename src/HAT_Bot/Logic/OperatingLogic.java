@@ -153,7 +153,7 @@ public class OperatingLogic implements Updatable, ObstacleDetectionObserver, Rem
                 this.indicatorController.standingStillIndication();
             }
             else {
-                this.indicatorController.drivingIndication();
+                this.indicatorController.drivingBackwardsIndication();
             }
         }
     }
