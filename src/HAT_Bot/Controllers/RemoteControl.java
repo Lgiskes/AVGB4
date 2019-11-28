@@ -16,7 +16,7 @@ public class RemoteControl implements Updatable {
 
     /**
      * Constructor for the remoteCrontol.
-     * @param pinInfrared, This gets the infrared data from the right pin.
+     * @param pinInfrared, This gets the right infrared data from the right pin.
      * @param observer, this looks which button is pushed on the remote control.
      */
     public RemoteControl(int pinInfrared, RemoteControlObserver observer) {
@@ -110,14 +110,14 @@ public class RemoteControl implements Updatable {
      */
     public void update() {
         if(delayTimer.timeout()){
-            delayTimer.stop();
+            this.delayTimer.stop();
         }
         else if(delayTimer.isStopped()) {
-            infrared.update();
+            this.infrared.update();
             this.buttonValue = infrared.getValue();
             if (this.buttonValue != -1){
                 actions();
-                delayTimer.start();
+                this.delayTimer.start();
             }
         }
 
