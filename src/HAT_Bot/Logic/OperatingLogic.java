@@ -2,6 +2,9 @@ package HAT_Bot.Logic;
 
 import HAT_Bot.Controllers.*;
 
+/**
+ * Manages the behavior of the bot
+ */
 public class OperatingLogic implements Updatable, ObstacleDetectionObserver, RemoteControlObserver {
 
     private IndicatorController indicatorController;
@@ -13,6 +16,12 @@ public class OperatingLogic implements Updatable, ObstacleDetectionObserver, Rem
     private boolean forward = true;
     private int currentSpeed = 50;
 
+    /**
+     * @param indicatorController an object that manages the indicators
+     * @param motionController an object that manages the servos
+     * @param obstacleDetection an object that manages the detection of objects
+     * @param remoteControl an objects that manages the control inputs
+     */
     public OperatingLogic(IndicatorController indicatorController, MotionController motionController, ObstacleDetection obstacleDetection, RemoteControl remoteControl) {
         this.indicatorController = indicatorController;
         this.motionController = motionController;
@@ -23,7 +32,12 @@ public class OperatingLogic implements Updatable, ObstacleDetectionObserver, Rem
         this.status = "";
     }
 
-    public void onObstacleDetected (ObstacleDetection o, String command){
+    /**
+     * An observer that manages the controls when an object is detected
+     * @param obstacleDetection an object that manages obstacle detection
+     * @param command the command that is enlisted to the controls
+     */
+    public void onObstacleDetected (ObstacleDetection obstacleDetection, String command){
         if (command.equals("Slow down")){
             if(this.forward) {
                 this.motionController.goToSpeed(0);
@@ -43,7 +57,12 @@ public class OperatingLogic implements Updatable, ObstacleDetectionObserver, Rem
 
     }
 
-    public void onRemoteControlDetected(RemoteControl r, String command) {
+    /**
+     * An observer that manages the commands from the remote controller
+     * @param remoteControl the object that manages the command inputs
+     * @param command the command that is enlisted to the bot
+     */
+    public void onRemoteControlDetected(RemoteControl remoteControl, String command) {
         switch (command) {
             case "setSpeed 10":
                 this.currentSpeed = 10;
@@ -132,6 +151,9 @@ public class OperatingLogic implements Updatable, ObstacleDetectionObserver, Rem
         }
     }
 
+    /**
+     * Drives with a speed equal to this.currenSpeed
+     */
     public void drive() {
         if (forward) {
             if(this.status.equals("Okay")) {
@@ -157,6 +179,9 @@ public class OperatingLogic implements Updatable, ObstacleDetectionObserver, Rem
         }
     }
 
+    /**
+     * Updates OperatingLogic
+     */
     @Override
     public void update() {
 
