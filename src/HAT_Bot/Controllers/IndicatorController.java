@@ -44,6 +44,16 @@ public class IndicatorController implements Updatable{
         this.status = 2;
     }
 
+    public void drivingBackwardsIndication(){
+        this.ledTimer.stop();
+        this.beeperTimer.stop();
+        this.ledTimer.setInterval(500);
+        this.beeperTimer.setInterval(1000);
+        this.ledTimer.start();
+        this.beeperTimer.start();
+        this.status = 3;
+    }
+
     public void foundObstacleIndication(){
         this.ledTimer.stop();
         this.beeperTimer.stop();
@@ -51,7 +61,7 @@ public class IndicatorController implements Updatable{
         this.beeperTimer.setInterval(750);
         this.ledTimer.start();
         this.beeperTimer.start();
-        this.status = 3;
+        this.status = 4;
     }
 
     public void inFrontOfObstacleIndication(){
@@ -61,7 +71,7 @@ public class IndicatorController implements Updatable{
         this.beeperTimer.setInterval(1000);
         this.ledTimer.start();
         this.beeperTimer.start();
-        this.status = 4;
+        this.status = 5;
     }
 
     @Override
@@ -94,7 +104,16 @@ public class IndicatorController implements Updatable{
                     this.beeper.makeSound(1000, 250);
                 }
                 break;
+
             case 4:
+                if(this.ledTimer.timeout()){
+                    this.led.setOn(!this.led.isOn());
+                }
+                if(this.beeperTimer.timeout()){
+                    this.beeper.makeSound(1000, 250);
+                }
+                break;
+            case 5:
                 if(this.ledTimer.timeout()){
                     this.led.setOn(!this.led.isOn());
                 }
