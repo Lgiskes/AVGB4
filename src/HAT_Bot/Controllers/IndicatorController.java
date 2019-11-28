@@ -64,6 +64,9 @@ public class IndicatorController implements Updatable{
         this.status = 2;
     }
 
+    /**
+     * Sets the state of the LED and beeper for the case when the bot is driving backwards
+     */
     public void drivingBackwardsIndication(){
         this.ledTimer.stop();
         this.beeperTimer.stop();
