@@ -116,6 +116,10 @@ public class MotionController implements Updatable {
             onMotionEnd("turnDegrees");
         }
 
+        this.leftMotor.update();
+
+        this.rightMotor.update();
+        /*
         //checks if the goToSpeed action has ended for the right motor
         if(this.goToSpeedRightTimer.timeout()){
             int currentSpeed = this.rightMotor.getSpeed();
@@ -148,7 +152,7 @@ public class MotionController implements Updatable {
                     onMotionEnd("goToSpeed(" + this.toSpeed + ")");
                 }
             }
-        }
+        }*/
 
         //checks if one side of a square has been driven
         if(this.driveSquareTimer.timeout()){
@@ -267,11 +271,14 @@ public class MotionController implements Updatable {
             leftTime = accelerationTime / (Math.abs(speed - this.leftMotor.getSpeed()));
         }
 
-        this.goToSpeedRightTimer.setInterval(rightTime);
-        this.goToSpeedLeftTimer.setInterval(leftTime);
-        this.goToSpeedLeftTimer.start();
-        this.goToSpeedRightTimer.start();
-        this.toSpeed = speed;
+        this.rightMotor.setTimer(rightTime);
+        this.leftMotor.setTimer(leftTime);
+
+        this.rightMotor.setToSpeed(speed);
+        this.leftMotor.setToSpeed(speed);
+
+        this.rightMotor.startTimer();
+        this.leftMotor.startTimer();
     }
 
     /**

@@ -1,7 +1,9 @@
 package HAT_Bot.Hardware.Actuators;
 
+import HAT_Bot.Controllers.MotionObserver;
 import HAT_Bot.Controllers.Updatable;
 import TI.Servo;
+import TI.StoppableTimer;
 import TI.Timer;
 
 public class Motor implements Updatable {
@@ -9,7 +11,9 @@ public class Motor implements Updatable {
     private int pin;
     private boolean inverted;
     private Servo servo;
-    private Timer timer;
+    private StoppableTimer timer;
+    private int toSpeed;
+    private MotionObserver motionObserver;
 
     /**
      * Controls a Servo
@@ -19,8 +23,19 @@ public class Motor implements Updatable {
     public  Motor(int pin, boolean inverted) {
         this.pin = pin;
         this.inverted = inverted;
-        this.timer = new Timer(10);
+        this.toSpeed = 0;
+        this.timer = new StoppableTimer(10);
+        this.timer.stop();
         this.servo = new Servo(pin);
+        this.motionObserver = null;
+    }
+
+    /**
+     * Sets the toSpeed
+     * @param toSpeed the speed the motor is approaching
+     */
+    public void setToSpeed(int toSpeed){
+        this.toSpeed = toSpeed;
     }
 
     /**
@@ -54,14 +69,48 @@ public class Motor implements Updatable {
     }
 
     /**
+     * Sets the timer
+     * @param interval the interval in millseconds
+     */
+    public void setTimer(int interval){
+        this.setTimer(interval);
+    }
+
+    /**
+     * Starts the timer
+     */
+    public void startTimer(){
+        this.timer.start();
+    }
+
+    /**
      * Updates the servo
      */
     @Override
     public void update() {
 
+        if(this.timer.timeout()){
+            int currentSpeed = this.getSpeed();
+            if(currentSpeed < this.toSpeed){
+                this.setSpeed(currentSpeed + 1);
+            }
+            else if(currentSpeed>this.toSpeed){
+                this.setSpeed(currentSpeed - 1);
+            }
+            else{
+                this.timer.stop();
+                    onMotionEnd("goToSpeed(" + this.toSpeed + ")");
+            }
+        }
+    }
 
-        if (this.timer.timeout()) {
-            this.servo.stop();
+    /**
+     * Observes the motion and sends it to the motionController
+     * @param motionFunction
+     */
+    private void onMotionEnd(String motionFunction){
+        if(this.motionObserver != null){
+            this.motionObserver.onMotionEnd(null, motionFunction);
         }
     }
 }

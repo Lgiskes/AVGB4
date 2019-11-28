@@ -152,12 +152,12 @@ public class OperatingLogic implements Updatable, ObstacleDetectionObserver, Rem
     }
 
     /**
-     * Drives with a speed equal to this.currenSpeed
+     * Drives with a speed equal to this.currentSpeed
      */
     public void drive() {
         if (this.forward) {
             if(this.status.equals("Okay")) {
-                this.motionController.goToSpeed(this.currentSpeed);
+               this.motionController.goToSpeed(this.currentSpeed);
 
                 if(this.currentSpeed == 0){
                     this.indicatorController.standingStillIndication();
@@ -168,7 +168,7 @@ public class OperatingLogic implements Updatable, ObstacleDetectionObserver, Rem
             }
         }
         else {
-           this.motionController.goToSpeed(-this.currentSpeed);
+            this.motionController.goToSpeed(-this.currentSpeed);
 
             if(this.currentSpeed == 0){
                 this.indicatorController.standingStillIndication();
