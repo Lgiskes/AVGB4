@@ -3,7 +3,10 @@ package HAT_Bot.Controllers;
 import HAT_Bot.Sensors.Infrared;
 import TI.StoppableTimer;
 
-
+/**
+ * This class is for the remoteControl and is part of the hardware layer that sends information from the remote control
+ * to the interface layer.
+ */
 public class RemoteControl implements Updatable {
 
     private int buttonValue;
@@ -11,46 +14,59 @@ public class RemoteControl implements Updatable {
     private StoppableTimer delayTimer;
     private RemoteControlObserver observer;
 
+    /**
+     * Constructor for the remoteCrontol.
+     * @param pinInfrared, This gets the infrared data from the right pin.
+     * @param observer, this looks which button is pushed on the remote control.
+     */
     public RemoteControl(int pinInfrared, RemoteControlObserver observer) {
         this.infrared = new Infrared(pinInfrared);
         this.observer = observer;
         this.delayTimer = new StoppableTimer(200);
     }
 
+
+    /**
+     * @param observer, this is a setter for observer.
+     */
     public void setObserver(RemoteControlObserver observer) {
         this.observer = observer;
     }
 
+
+    /**
+     * This actions method sends a command to the OperatingLogic to make the Boe-bot doe the right action.
+     */
     public void actions(){
         switch (this.buttonValue){
-            case 256: // 1
+            case 256: // button 1
                 observer.onRemoteControlDetected(this, "setSpeed 10");
                 break;
-            case 258: // 2
+            case 258: // button 2
                 observer.onRemoteControlDetected(this, "setSpeed 20");
                 break;
-            case 260: // 3
+            case 260: // button 3
                 observer.onRemoteControlDetected(this, "setSpeed 30");
                 break;
-            case 262: // 4
+            case 262: // button 4
                 observer.onRemoteControlDetected(this, "setSpeed 40");
                 break;
-            case 264: // 5
+            case 264: // button 5
                 observer.onRemoteControlDetected(this, "setSpeed 50");
                 break;
-            case 266: // 6
+            case 266: // button 6
                 observer.onRemoteControlDetected(this, "setSpeed 60");
                 break;
-            case 268: // 7
+            case 268: // button 7
                 observer.onRemoteControlDetected(this, "setSpeed 70");
                 break;
-            case 270: // 8
+            case 270: // button 8
                 observer.onRemoteControlDetected(this, "setSpeed 80");
                 break;
-            case 272: // 9
+            case 272: // button 9
                 observer.onRemoteControlDetected(this, "setSpeed 90");
                 break;
-            case 274: // 0
+            case 274: // button 0
                 observer.onRemoteControlDetected(this, "setSpeed 100");
                 break;
             case 280: // arrow
@@ -74,22 +90,25 @@ public class RemoteControl implements Updatable {
             case 296: // mute button
                 observer.onRemoteControlDetected(this, "mute");
                 break;
-            case 922: // square
+            case 922: // drive square
                 observer.onRemoteControlDetected(this, "driveSquare");
                 break;
-            case 314: // circle
+            case 314: // drive circle
                 observer.onRemoteControlDetected(this, "driveCircle");
                 break;
-            case 924: // triangle
+            case 924: // drive triangle
                 observer.onRemoteControlDetected(this, "driveTriangle");
-                break;
-            case 926: // other form
                 break;
         }
     }
 
+    /**
+     * The delayTimer manages a timer, so when a button is pressed on the remote it only gives one value back every
+     * 0.2 seconds. If the timer is stopped the infrared attribute kan be updated again, so that means there can be
+     * pressed a button again. but only if the infrared gives valid values, otherwise there will be no reaction on the
+     * pressed button.
+     */
     public void update() {
-
         if(delayTimer.timeout()){
             delayTimer.stop();
         }
