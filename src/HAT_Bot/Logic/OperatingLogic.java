@@ -1,7 +1,6 @@
 package HAT_Bot.Logic;
 
 import HAT_Bot.Controllers.*;
-import com.sun.jndi.cosnaming.RemoteToCorba;
 
 public class OperatingLogic implements Updatable, ObstacleDetectionObserver, RemoteControlObserver {
 
