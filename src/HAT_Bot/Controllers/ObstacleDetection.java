@@ -9,7 +9,7 @@ public class ObstacleDetection implements Updatable {
 
     private Ultrasone ultrasone;
     private ObstacleDetectionObserver observer;
-    private String previousCommand;
+    private ObstacleDetectionCommand previousCommand;
 
 
     /**
@@ -19,7 +19,7 @@ public class ObstacleDetection implements Updatable {
     public ObstacleDetection(Ultrasone ultrasone, ObstacleDetectionObserver observer) {
         this.ultrasone = ultrasone;
         this.observer = observer;
-        this.previousCommand = "";
+        this.previousCommand = ObstacleDetectionCommand.None;
     }
 
     public void setObserver(ObstacleDetectionObserver observer) {
@@ -34,23 +34,23 @@ public class ObstacleDetection implements Updatable {
         this.ultrasone.update();
 
         if (this.ultrasone.getValue() <= 10) {
-            if(!this.previousCommand.equals("Stop")){
-                this.previousCommand = "Stop";
-                this.observer.onObstacleDetected(this, "Stop");
+            if(this.previousCommand != ObstacleDetectionCommand.Stop){
+                this.previousCommand = ObstacleDetectionCommand.Stop;
+                this.observer.onObstacleDetected(this, ObstacleDetectionCommand.Stop);
             }
 
         }
         else if (this.ultrasone.getValue() <= 30) {
-            if( !this.previousCommand.equals("Slow down")){
-                this.previousCommand = "Slow down";
-                this.observer.onObstacleDetected(this, "Slow down");
+            if(this.previousCommand != ObstacleDetectionCommand.SlowDown){
+                this.previousCommand = ObstacleDetectionCommand.SlowDown;
+                this.observer.onObstacleDetected(this, ObstacleDetectionCommand.SlowDown);
             }
 
         }
         else {
-            if(!this.previousCommand.equals("Okay")){
-                this.previousCommand = "Okay";
-                this.observer.onObstacleDetected(this, "Okay");
+            if(this.previousCommand != ObstacleDetectionCommand.Okay){
+                this.previousCommand = ObstacleDetectionCommand.Okay;
+                this.observer.onObstacleDetected(this, ObstacleDetectionCommand.Okay);
             }
 
         }

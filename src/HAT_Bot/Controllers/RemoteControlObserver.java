@@ -1,5 +1,5 @@
 package HAT_Bot.Controllers;
 
 public interface RemoteControlObserver {
-    void onRemoteControlDetected(RemoteControl r, String command);
+    void onRemoteControlDetected(RemoteControl r, RemoteControlCommand command);
 }

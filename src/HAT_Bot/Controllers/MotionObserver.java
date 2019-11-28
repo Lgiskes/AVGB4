@@ -1,10 +1,11 @@
 package HAT_Bot.Controllers;
 
-import HAT_Bot.Hardware.Actuators.Motor;
+/**
+ * Rules for the motion classes.
+ */
 
 public interface MotionObserver {
 
     void onMotionEnd(MotionController sender, String motionFunction);
-
 
 }
