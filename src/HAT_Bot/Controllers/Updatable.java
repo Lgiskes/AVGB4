@@ -1,7 +1,10 @@
 package HAT_Bot.Controllers;
 
+/**
+ * Rules for the updatables.
+ */
 public interface Updatable {
 
-    void update();
+    void update(); // Updates everything.
 
 }
