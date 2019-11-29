@@ -5,12 +5,13 @@ import HAT_Bot.Controllers.*;
 /**
  * Manages the behavior of the bot
  */
-public class OperatingLogic implements Updatable, ObstacleDetectionObserver, RemoteControlObserver {
+public class OperatingLogic implements Updatable, ObstacleDetectionObserver, RemoteControlObserver, LineDetectionObserver {
 
     private IndicatorController indicatorController;
     private MotionController motionController;
     private ObstacleDetection obstacleDetection;
     private RemoteControl remoteControl;
+    private LineDetectionController lineDetectionController;
     private ObstacleDetectionCommand status;
 
     private boolean forward = true;
@@ -22,11 +23,12 @@ public class OperatingLogic implements Updatable, ObstacleDetectionObserver, Rem
      * @param obstacleDetection an object that manages the detection of objects
      * @param remoteControl an objects that manages the control inputs
      */
-    public OperatingLogic(IndicatorController indicatorController, MotionController motionController, ObstacleDetection obstacleDetection, RemoteControl remoteControl) {
+    public OperatingLogic(IndicatorController indicatorController, MotionController motionController, ObstacleDetection obstacleDetection, RemoteControl remoteControl, LineDetectionController lineDetectionController) {
         this.indicatorController = indicatorController;
         this.motionController = motionController;
         this.obstacleDetection = obstacleDetection;
         this.remoteControl = remoteControl;
+        this.lineDetectionController = lineDetectionController;
         obstacleDetection.setObserver(this);
         remoteControl.setObserver(this);
         this.status = ObstacleDetectionCommand.None;
@@ -151,8 +153,30 @@ public class OperatingLogic implements Updatable, ObstacleDetectionObserver, Rem
         }
     }
 
+    @Override
+    public void onLineDetected(LineDetectionController l, LineDetectionCommand command) {
+        switch (command) {
+            case left:
+                motionController.turnLeft();
+                break;
+            case right:
+                motionController.turnRight();
+                break;
+            case slightLeft:
+                motionController.turnLeftCurve(true, 50);
+                break;
+            case slightRight:
+                motionController.turnRightCurve(true, 50);
+                break;
+            case forward:
+                motionController.goToSpeed(100);
+                break;
+        }
+    }
+
+
     /**
-     * Drives with a speed equal to this.currenSpeed
+     * Drives with a speed equal to this.currentSpeed
      */
     public void drive() {
         if (this.forward) {

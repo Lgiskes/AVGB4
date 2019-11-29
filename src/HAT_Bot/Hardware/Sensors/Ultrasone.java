@@ -25,7 +25,7 @@ public class Ultrasone implements Sensor, Updatable {
     public Ultrasone(int pinTrigger, int pinEcho) {
         this.pinTrigger = pinTrigger;
         this.pinEcho = pinEcho;
-        this.timerUltrasone = new StoppableTimer(50);
+        this.timerUltrasone = new StoppableTimer(250);
         this.timerShort = new StoppableTimer(1);
     }
 
