@@ -22,6 +22,7 @@ public class OperatingLogic implements Updatable, ObstacleDetectionObserver, Rem
      * @param motionController an object that manages the servos
      * @param obstacleDetection an object that manages the detection of objects
      * @param remoteControl an objects that manages the control inputs
+     * @param lineDetectionController
      */
     public OperatingLogic(IndicatorController indicatorController, MotionController motionController, ObstacleDetection obstacleDetection, RemoteControl remoteControl, LineDetectionController lineDetectionController) {
         this.indicatorController = indicatorController;
@@ -31,6 +32,7 @@ public class OperatingLogic implements Updatable, ObstacleDetectionObserver, Rem
         this.lineDetectionController = lineDetectionController;
         obstacleDetection.setObserver(this);
         remoteControl.setObserver(this);
+        lineDetectionController.setObserver(this);
         this.status = ObstacleDetectionCommand.None;
     }
 
@@ -157,16 +159,16 @@ public class OperatingLogic implements Updatable, ObstacleDetectionObserver, Rem
     public void onLineDetected(LineDetectionController l, LineDetectionCommand command) {
         switch (command) {
             case left:
-                motionController.turnLeft();
+                motionController.turnLeftCurve(true, 25);
                 break;
             case right:
-                motionController.turnRight();
+                motionController.turnRightCurve(true, 25);
                 break;
             case slightLeft:
-                motionController.turnLeftCurve(true, 50);
+                motionController.turnLeftCurve(true, 75);
                 break;
             case slightRight:
-                motionController.turnRightCurve(true, 50);
+                motionController.turnRightCurve(true, 75);
                 break;
             case forward:
                 motionController.goToSpeed(100);

@@ -2,15 +2,15 @@ package HAT_Bot.Controllers;
 
 import HAT_Bot.Hardware.Sensors.LineFollower;
 
-public class LineDetectionController implements Updatable{
+public class LineDetectionController implements Updatable {
     private LineFollower leftLineFollower;
-    private LineFollower middelLineFollower;
+    private LineFollower middleLineFollower;
     private LineFollower rightLineFollower;
     private LineDetectionObserver observer;
 
-    public LineDetectionController(LineFollower leftLineFollower, LineFollower middelLineFollower, LineFollower rightLineFollower, LineDetectionObserver observer) {
+    public LineDetectionController(LineFollower leftLineFollower, LineFollower middleLineFollower, LineFollower rightLineFollower, LineDetectionObserver observer) {
         this.leftLineFollower = leftLineFollower;
-        this.middelLineFollower = middelLineFollower;
+        this.middleLineFollower = middleLineFollower;
         this.rightLineFollower = rightLineFollower;
         this.observer = observer;
     }
@@ -21,8 +21,14 @@ public class LineDetectionController implements Updatable{
 
     @Override
     public void update() {
+        leftLineFollower.update();
+        middleLineFollower.update();
+        rightLineFollower.update();
+        System.out.println(leftLineFollower.getValue());
+        System.out.println(middleLineFollower.getValue());
+        System.out.println(rightLineFollower.getValue());
         if (leftLineFollower.getBoolean()) {
-            if (middelLineFollower.getBoolean()) {
+            if (middleLineFollower.getBoolean()) {
                 observer.onLineDetected(this, LineDetectionCommand.slightLeft);
             }
             else {
@@ -30,14 +36,14 @@ public class LineDetectionController implements Updatable{
             }
         }
         else if (rightLineFollower.getBoolean()) {
-            if (middelLineFollower.getBoolean()) {
+            if (middleLineFollower.getBoolean()) {
                 observer.onLineDetected(this, LineDetectionCommand.slightRight);
             }
             else {
                 observer.onLineDetected(this, LineDetectionCommand.right);
             }
         }
-        else if (middelLineFollower.getBoolean()) {
+        else if (middleLineFollower.getBoolean()) {
             observer.onLineDetected(this, LineDetectionCommand.forward);
         }
     }

@@ -27,7 +27,7 @@ public class LineFollower implements Sensor, Updatable {
 
     @Override
     public boolean getBoolean() {
-        if (this.value > --- && this.value < ---) {
+        if (this.value > 1000 && this.value < 1750) {
             return true;
         }
         return false;
@@ -37,6 +37,7 @@ public class LineFollower implements Sensor, Updatable {
     public void update() {
         if (timerLineSensor.timeout()) {
             this.value = BoeBot.analogRead(this.pin);
+
         }
     }
 }
