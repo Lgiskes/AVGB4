@@ -1,6 +1,9 @@
 package HAT_Bot.Logic;
 
 import HAT_Bot.Controllers.*;
+import TI.BoeBot;
+
+import java.awt.*;
 
 /**
  * Manages the behavior of the bot
@@ -157,23 +160,43 @@ public class OperatingLogic implements Updatable, ObstacleDetectionObserver, Rem
 
     @Override
     public void onLineDetected(LineDetectionController l, LineDetectionCommand command) {
+        final int speed = 80;
+
+        for(int i = 0; i < 6; i++){
+            BoeBot.rgbSet(i, Color.BLACK);
+        }
+
         switch (command) {
             case left:
-                motionController.turnLeftCurve(true, 25);
+                BoeBot.rgbSet(2, Color.RED);
+                BoeBot.rgbSet(3, Color.RED);
+                motionController.turningLeft(30);
                 break;
             case right:
-                motionController.turnRightCurve(true, 25);
+                BoeBot.rgbSet(0, Color.RED);
+                BoeBot.rgbSet(5, Color.RED);
+                motionController.turningRight(30);
                 break;
             case slightLeft:
-                motionController.turnLeftCurve(true, 75);
+                BoeBot.rgbSet(2, Color.ORANGE);
+                BoeBot.rgbSet(3, Color.ORANGE);
+                motionController.turnLeftCurve(true, speed);
                 break;
             case slightRight:
-                motionController.turnRightCurve(true, 75);
+                BoeBot.rgbSet(0, Color.ORANGE);
+                BoeBot.rgbSet(5, Color.ORANGE);
+                motionController.turnRightCurve(true, speed);
                 break;
             case forward:
-                motionController.goToSpeed(100);
+                BoeBot.rgbSet(3, Color.GREEN);
+                BoeBot.rgbSet(4, Color.GREEN);
+                BoeBot.rgbSet(5, Color.GREEN);
+
+                motionController.goToSpeed(speed, 50);
                 break;
         }
+
+        BoeBot.rgbShow();
     }
 
 

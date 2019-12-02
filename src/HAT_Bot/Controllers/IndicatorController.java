@@ -24,7 +24,7 @@ public class IndicatorController implements Updatable{
         this.beeper = new Beeper(beeperPin);
         this.status = 0;
 
-        this.beeper.setOn(true);
+        //this.beeper.setOn(true);
     }
 
     /**

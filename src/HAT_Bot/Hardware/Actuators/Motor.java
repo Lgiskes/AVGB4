@@ -34,8 +34,10 @@ public class Motor implements Updatable {
      * Sets the toSpeed
      * @param toSpeed the speed the motor is approaching
      */
-    public void setToSpeed(int toSpeed){
+    public void setToSpeed(int toSpeed, int interval){
         this.toSpeed = toSpeed;
+        this.timer.setInterval(interval);
+        this.timer.start();
     }
 
     /**
@@ -57,6 +59,17 @@ public class Motor implements Updatable {
      * @param speed the speed from -100 to 100
      */
     public void setSpeed(int speed) {
+        this.setSpeed(speed, false);
+    }
+
+    private void setSpeed(int speed, boolean goToSpeed){
+        if(!goToSpeed){
+            if(!this.timer.isStopped()){
+                this.timer.stop();
+                onMotionEnd("goToSpeed(" + this.toSpeed + ")");
+            }
+        }
+
         speed = Math.max(-100, speed);
         speed = Math.min(100, speed);
 
@@ -69,21 +82,6 @@ public class Motor implements Updatable {
     }
 
     /**
-     * Sets the timer
-     * @param interval the interval in millseconds
-     */
-    public void setTimer(int interval){
-        this.setTimer(interval);
-    }
-
-    /**
-     * Starts the timer
-     */
-    public void startTimer(){
-        this.timer.start();
-    }
-
-    /**
      * Updates the servo
      */
     @Override
@@ -92,10 +90,10 @@ public class Motor implements Updatable {
         if(this.timer.timeout()){
             int currentSpeed = this.getSpeed();
             if(currentSpeed < this.toSpeed){
-                this.setSpeed(currentSpeed + 1);
+                this.setSpeed(currentSpeed + 1, true);
             }
             else if(currentSpeed>this.toSpeed){
-                this.setSpeed(currentSpeed - 1);
+                this.setSpeed(currentSpeed - 1, true);
             }
             else{
                 this.timer.stop();

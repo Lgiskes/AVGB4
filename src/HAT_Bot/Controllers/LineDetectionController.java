@@ -2,17 +2,22 @@ package HAT_Bot.Controllers;
 
 import HAT_Bot.Hardware.Sensors.LineFollower;
 
+import javax.sound.sampled.Line;
+
 public class LineDetectionController implements Updatable {
     private LineFollower leftLineFollower;
     private LineFollower middleLineFollower;
     private LineFollower rightLineFollower;
     private LineDetectionObserver observer;
 
+    private LineDetectionCommand previousCommand;
+
     public LineDetectionController(LineFollower leftLineFollower, LineFollower middleLineFollower, LineFollower rightLineFollower, LineDetectionObserver observer) {
         this.leftLineFollower = leftLineFollower;
         this.middleLineFollower = middleLineFollower;
         this.rightLineFollower = rightLineFollower;
         this.observer = observer;
+        this.previousCommand = LineDetectionCommand.none;
     }
 
     public void setObserver(LineDetectionObserver observer) {
@@ -24,27 +29,48 @@ public class LineDetectionController implements Updatable {
         leftLineFollower.update();
         middleLineFollower.update();
         rightLineFollower.update();
-        System.out.println(leftLineFollower.getValue());
-        System.out.println(middleLineFollower.getValue());
-        System.out.println(rightLineFollower.getValue());
+
         if (leftLineFollower.getBoolean()) {
             if (middleLineFollower.getBoolean()) {
-                observer.onLineDetected(this, LineDetectionCommand.slightLeft);
+                if(this.previousCommand != LineDetectionCommand.slightLeft){
+                    if(this.previousCommand == LineDetectionCommand.left){
+                        this.previousCommand = LineDetectionCommand.forward;
+                        observer.onLineDetected(this, LineDetectionCommand.forward);
+                    }
+                    this.previousCommand = LineDetectionCommand.slightLeft;
+                    observer.onLineDetected(this, LineDetectionCommand.slightLeft);
+                }
             }
             else {
-                observer.onLineDetected(this, LineDetectionCommand.left);
+                if(this.previousCommand != LineDetectionCommand.left){
+                    this.previousCommand = LineDetectionCommand.left;
+                    observer.onLineDetected(this, LineDetectionCommand.left);
+                }
             }
         }
         else if (rightLineFollower.getBoolean()) {
             if (middleLineFollower.getBoolean()) {
-                observer.onLineDetected(this, LineDetectionCommand.slightRight);
+                if(this.previousCommand != LineDetectionCommand.slightRight){
+                    if(this.previousCommand == LineDetectionCommand.right){
+                        this.previousCommand = LineDetectionCommand.forward;
+                        observer.onLineDetected(this, LineDetectionCommand.forward);
+                    }
+                    this.previousCommand = LineDetectionCommand.slightRight;
+                    observer.onLineDetected(this, LineDetectionCommand.slightRight);
+                }
             }
             else {
-                observer.onLineDetected(this, LineDetectionCommand.right);
+                if(this.previousCommand != LineDetectionCommand.right){
+                    this.previousCommand = LineDetectionCommand.right;
+                    observer.onLineDetected(this, LineDetectionCommand.right);
+                }
             }
         }
         else if (middleLineFollower.getBoolean()) {
-            observer.onLineDetected(this, LineDetectionCommand.forward);
+            if(this.previousCommand != LineDetectionCommand.forward){
+                this.previousCommand = LineDetectionCommand.forward;
+                observer.onLineDetected(this, LineDetectionCommand.forward);
+            }
         }
     }
 }

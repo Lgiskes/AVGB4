@@ -255,30 +255,28 @@ public class MotionController implements Updatable {
      * @param speed the speed to which the bot accelerates
      */
     public void goToSpeed(int speed){
+        this.goToSpeed(speed, 1000);
+    }
+
+    public void goToSpeed(int speed, int accelerationTime){
         int rightTime;
         int leftTime;
-        int accelerationTime = 1000;
+
         if(speed-this.rightMotor.getSpeed() == 0){
-            rightTime = 1000;
+            rightTime = accelerationTime;
         }
         else {
             rightTime = accelerationTime / (Math.abs(speed - this.rightMotor.getSpeed()));
         }
         if(speed - this.leftMotor.getSpeed() == 0){
-            leftTime = 1000;
+            leftTime = accelerationTime;
         }
         else{
             leftTime = accelerationTime / (Math.abs(speed - this.leftMotor.getSpeed()));
         }
 
-        this.rightMotor.setTimer(rightTime);
-        this.leftMotor.setTimer(leftTime);
-
-        this.rightMotor.setToSpeed(speed);
-        this.leftMotor.setToSpeed(speed);
-
-        this.rightMotor.startTimer();
-        this.leftMotor.startTimer();
+        this.rightMotor.setToSpeed(speed, rightTime);
+        this.leftMotor.setToSpeed(speed, leftTime);
     }
 
     /**
@@ -305,11 +303,11 @@ public class MotionController implements Updatable {
     public void turnRightCurve(boolean forward, int speed){
         if (forward){
             this.leftMotor.setSpeed(speed);
-            this.rightMotor.setSpeed(25*speed/100);
+            this.rightMotor.setSpeed(10*speed/100);
         }
         else {
             this.leftMotor.setSpeed(-speed);
-            this.rightMotor.setSpeed(-25*speed/100);
+            this.rightMotor.setSpeed(-10*speed/100);
         }
     }
 
