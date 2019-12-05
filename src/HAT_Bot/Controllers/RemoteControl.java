@@ -1,5 +1,6 @@
 package HAT_Bot.Controllers;
 
+import HAT_Bot.Hardware.Sensors.Bluetooth;
 import HAT_Bot.Hardware.Sensors.Infrared;
 import TI.StoppableTimer;
 
@@ -13,6 +14,7 @@ public class RemoteControl implements Updatable {
     private Infrared infrared;
     private StoppableTimer delayTimer;
     private RemoteControlObserver observer;
+    private Bluetooth bluetooth = new Bluetooth();
 
     /**
      * Constructor for the remoteCrontol.
@@ -37,8 +39,8 @@ public class RemoteControl implements Updatable {
     /**
      * This actions method sends a command to the OperatingLogic to make the Boe-bot doe the right action.
      */
-    public void actions(){
-        switch (this.buttonValue){
+    public void actions(int buttonValue){
+        switch (buttonValue){
             case 256: // button 1
                 observer.onRemoteControlDetected(this, RemoteControlCommand.setSpeed10);
                 break;
@@ -109,6 +111,11 @@ public class RemoteControl implements Updatable {
      * pressed button.
      */
     public void update() {
+        // The understanding if statement is too get the value from the bluetooth class and add 255, to match the values
+        // from the actions method, so we can use the method twice.
+        if (this.bluetooth.getBoolean()){
+            actions(this.bluetooth.getValue() + 255);
+        }
         if(this.delayTimer.timeout()){
             this.delayTimer.stop();
         }
@@ -116,7 +123,7 @@ public class RemoteControl implements Updatable {
             this.infrared.update();
             this.buttonValue = this.infrared.getValue();
             if (this.buttonValue != -1){
-                actions();
+                actions(this.buttonValue);
                 this.delayTimer.start();
             }
         }
