@@ -1,6 +1,7 @@
 package HAT_Bot.Controllers;
 
 public enum LineDetectionCommand {
+    crossroad,
     slightLeft,
     slightRight,
     right,
