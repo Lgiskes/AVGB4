@@ -16,6 +16,7 @@ public class OperatingLogic implements Updatable, ObstacleDetectionObserver, Rem
     private RemoteControl remoteControl;
     private LineDetectionController lineDetectionController;
     private ObstacleDetectionCommand status;
+    private HATState currentState;
 
     private boolean forward = true;
     private int currentSpeed = 50;
@@ -38,6 +39,25 @@ public class OperatingLogic implements Updatable, ObstacleDetectionObserver, Rem
         remoteControl.setObserver(this);
         lineDetectionController.setObserver(this);
         this.status = ObstacleDetectionCommand.None;
+        changeState(HATState.remoteControlled);
+    }
+
+    public void changeState(HATState newState) {
+
+        this.currentState = newState;
+
+        switch (newState) {
+            case remoteControlled:
+                break;
+            case obstacleDetected:
+                break;
+            case lineFollowing:
+                break;
+            case manoeuvre:
+                break;
+            case routeFollowing:
+                break;
+        }
     }
 
     /**
@@ -62,7 +82,6 @@ public class OperatingLogic implements Updatable, ObstacleDetectionObserver, Rem
             this.status = ObstacleDetectionCommand.Okay;
             this.drive();
         }
-
     }
 
     /**
