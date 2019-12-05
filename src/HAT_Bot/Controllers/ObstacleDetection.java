@@ -3,21 +3,23 @@ package HAT_Bot.Controllers;
 import HAT_Bot.Hardware.Sensors.Ultrasone;
 
 /**
- * This class converts the measured values from the ultrasone to commands
+ * This class converts the measured values from the ultrasoneFront to commands
  */
 public class ObstacleDetection implements Updatable {
 
-    private Ultrasone ultrasone;
+    private Ultrasone ultrasoneFront;
+    private Ultrasone ultrasoneBack;
     private ObstacleDetectionObserver observer;
     private ObstacleDetectionCommand previousCommand;
 
 
     /**
-     * @param ultrasone The ultrasone sensor
+     * @param ultrasoneFront The ultrasoneFront sensor
      * @param observer This sends the correct commands to the OperatingLogic
      */
-    public ObstacleDetection(Ultrasone ultrasone, ObstacleDetectionObserver observer) {
-        this.ultrasone = ultrasone;
+    public ObstacleDetection(Ultrasone ultrasoneFront, Ultrasone ultrasoneBack, ObstacleDetectionObserver observer) {
+        this.ultrasoneFront = ultrasoneFront;
+        this.ultrasoneBack = ultrasoneBack;
         this.observer = observer;
         this.previousCommand = ObstacleDetectionCommand.None;
     }
@@ -27,30 +29,47 @@ public class ObstacleDetection implements Updatable {
     }
 
     /**
-     * This gets the values from the ultrasone class and checks if the robot needs to do something
+     * This gets the values from the ultrasoneFront class and checks if the robot needs to do something
      */
     @Override
     public void update() {
-        this.ultrasone.update();
+        this.ultrasoneFront.update();
+        this.ultrasoneBack.update();
 
-        if (this.ultrasone.getValue() <= 10) {
+        if (this.ultrasoneFront.getValue() <= 10 || this.ultrasoneBack.getValue() <= 10) {
             if(this.previousCommand != ObstacleDetectionCommand.Stop){
                 this.previousCommand = ObstacleDetectionCommand.Stop;
-                this.observer.onObstacleDetected(this, ObstacleDetectionCommand.Stop);
+                ObstacleDetectionSide side = ObstacleDetectionSide.None;
+                if (this.ultrasoneFront.getValue() <= 10 && this.ultrasoneBack.getValue() <= 10){
+                    side = ObstacleDetectionSide.Both;
+                } else if (this.ultrasoneFront.getValue() <= 10){
+                    side = ObstacleDetectionSide.Front;
+                } else if (this.ultrasoneBack.getValue() <= 10){
+                    side = ObstacleDetectionSide.Back;
+                }
+                this.observer.onObstacleDetected(this, ObstacleDetectionCommand.Stop, side);
             }
 
         }
-        else if (this.ultrasone.getValue() <= 30) {
+        else if (this.ultrasoneFront.getValue() <= 30 || this.ultrasoneBack.getValue() <= 30) {
             if(this.previousCommand != ObstacleDetectionCommand.SlowDown){
                 this.previousCommand = ObstacleDetectionCommand.SlowDown;
-                this.observer.onObstacleDetected(this, ObstacleDetectionCommand.SlowDown);
+                ObstacleDetectionSide side = ObstacleDetectionSide.None;
+                if (this.ultrasoneFront.getValue() <= 30 && this.ultrasoneBack.getValue() <= 30){
+                    side = ObstacleDetectionSide.Both;
+                } else if (this.ultrasoneFront.getValue() <= 30){
+                    side = ObstacleDetectionSide.Front;
+                } else if (this.ultrasoneBack.getValue() <= 30){
+                    side = ObstacleDetectionSide.Back;
+                }
+                this.observer.onObstacleDetected(this, ObstacleDetectionCommand.SlowDown, side);
             }
 
         }
         else {
             if(this.previousCommand != ObstacleDetectionCommand.Okay){
                 this.previousCommand = ObstacleDetectionCommand.Okay;
-                this.observer.onObstacleDetected(this, ObstacleDetectionCommand.Okay);
+                this.observer.onObstacleDetected(this, ObstacleDetectionCommand.Okay, ObstacleDetectionSide.None);
             }
 
         }
