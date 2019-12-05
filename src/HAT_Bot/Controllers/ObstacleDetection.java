@@ -29,6 +29,24 @@ public class ObstacleDetection implements Updatable {
     }
 
     /**
+     * Gets the sides that are blocked by an object
+     * @return
+     */
+    public ObstacleDetectionSide getBlockedSide(){
+        ObstacleDetectionSide side = ObstacleDetectionSide.None;
+
+        if (this.ultrasoneFront.getValue() <= 30 && this.ultrasoneBack.getValue() <= 30){
+            side = ObstacleDetectionSide.Both;
+        } else if (this.ultrasoneFront.getValue() <= 30){
+            side = ObstacleDetectionSide.Front;
+        } else if (this.ultrasoneBack.getValue() <= 30){
+            side = ObstacleDetectionSide.Back;
+        }
+
+        return side;
+    }
+
+    /**
      * This gets the values from the ultrasoneFront class and checks if the robot needs to do something
      */
     @Override
@@ -39,14 +57,7 @@ public class ObstacleDetection implements Updatable {
         if (this.ultrasoneFront.getValue() <= 10 || this.ultrasoneBack.getValue() <= 10) {
             if(this.previousCommand != ObstacleDetectionCommand.Stop){
                 this.previousCommand = ObstacleDetectionCommand.Stop;
-                ObstacleDetectionSide side = ObstacleDetectionSide.None;
-                if (this.ultrasoneFront.getValue() <= 10 && this.ultrasoneBack.getValue() <= 10){
-                    side = ObstacleDetectionSide.Both;
-                } else if (this.ultrasoneFront.getValue() <= 10){
-                    side = ObstacleDetectionSide.Front;
-                } else if (this.ultrasoneBack.getValue() <= 10){
-                    side = ObstacleDetectionSide.Back;
-                }
+                ObstacleDetectionSide side = getBlockedSide();
                 this.observer.onObstacleDetected(this, ObstacleDetectionCommand.Stop, side);
             }
 
@@ -54,14 +65,7 @@ public class ObstacleDetection implements Updatable {
         else if (this.ultrasoneFront.getValue() <= 30 || this.ultrasoneBack.getValue() <= 30) {
             if(this.previousCommand != ObstacleDetectionCommand.SlowDown){
                 this.previousCommand = ObstacleDetectionCommand.SlowDown;
-                ObstacleDetectionSide side = ObstacleDetectionSide.None;
-                if (this.ultrasoneFront.getValue() <= 30 && this.ultrasoneBack.getValue() <= 30){
-                    side = ObstacleDetectionSide.Both;
-                } else if (this.ultrasoneFront.getValue() <= 30){
-                    side = ObstacleDetectionSide.Front;
-                } else if (this.ultrasoneBack.getValue() <= 30){
-                    side = ObstacleDetectionSide.Back;
-                }
+                ObstacleDetectionSide side = getBlockedSide();
                 this.observer.onObstacleDetected(this, ObstacleDetectionCommand.SlowDown, side);
             }
 
