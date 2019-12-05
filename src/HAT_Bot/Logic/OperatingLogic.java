@@ -169,7 +169,8 @@ public class OperatingLogic implements Updatable, ObstacleDetectionObserver, Rem
 
     @Override
     public void onLineDetected(LineDetectionController l, LineDetectionCommand command) {
-        final int speed = 50;
+
+        final int speed = 80;
 
         for(int i = 0; i < 6; i++){
             BoeBot.rgbSet(i, Color.BLACK);
