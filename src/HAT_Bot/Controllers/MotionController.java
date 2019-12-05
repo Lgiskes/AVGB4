@@ -101,6 +101,9 @@ public class MotionController implements Updatable {
     public void emergencyBrake (){
         this.leftMotor.setSpeed(0);
         this.rightMotor.setSpeed(0);
+        this.rightMotor.setToSpeed(0, 1);
+        this.leftMotor.setToSpeed(0, 1);
+        this.toSpeed = 0;
     }
 
     /**

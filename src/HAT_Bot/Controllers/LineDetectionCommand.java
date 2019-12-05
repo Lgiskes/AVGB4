@@ -6,5 +6,6 @@ public enum LineDetectionCommand {
     right,
     left,
     forward,
+    stop,
     none
 }

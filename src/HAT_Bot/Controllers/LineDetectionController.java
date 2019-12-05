@@ -1,14 +1,14 @@
 package HAT_Bot.Controllers;
 
 import HAT_Bot.Hardware.Sensors.LineFollower;
-
-import javax.sound.sampled.Line;
+import TI.StoppableTimer;
 
 public class LineDetectionController implements Updatable {
     private LineFollower leftLineFollower;
     private LineFollower middleLineFollower;
     private LineFollower rightLineFollower;
     private LineDetectionObserver observer;
+    private StoppableTimer lineDetectionTimer;
 
     private LineDetectionCommand previousCommand;
 
@@ -18,10 +18,15 @@ public class LineDetectionController implements Updatable {
         this.rightLineFollower = rightLineFollower;
         this.observer = observer;
         this.previousCommand = LineDetectionCommand.none;
+        lineDetectionTimer = new StoppableTimer(10);
     }
 
     public void setObserver(LineDetectionObserver observer) {
         this.observer = observer;
+    }
+
+    public void setPreviousCommand(LineDetectionCommand previousCommand) {
+        this.previousCommand = previousCommand;
     }
 
     @Override
@@ -30,6 +35,7 @@ public class LineDetectionController implements Updatable {
         middleLineFollower.update();
         rightLineFollower.update();
 
+        if (this.lineDetectionTimer.timeout()) {
         if (leftLineFollower.getBoolean()) {
             if (middleLineFollower.getBoolean()) {
                 if(this.previousCommand != LineDetectionCommand.slightLeft){
@@ -71,6 +77,11 @@ public class LineDetectionController implements Updatable {
                 this.previousCommand = LineDetectionCommand.forward;
                 observer.onLineDetected(this, LineDetectionCommand.forward);
             }
+        }
+        else if(this.previousCommand != LineDetectionCommand.stop) {
+            this.previousCommand = LineDetectionCommand.stop;
+            observer.onLineDetected(this, LineDetectionCommand.stop);
+        }
         }
     }
 }

@@ -19,6 +19,7 @@ public class OperatingLogic implements Updatable, ObstacleDetectionObserver, Rem
 
     private boolean forward = true;
     private int currentSpeed = 50;
+    private boolean isValid = true;
 
     /**
      * @param indicatorController an object that manages the indicators
@@ -70,6 +71,7 @@ public class OperatingLogic implements Updatable, ObstacleDetectionObserver, Rem
      * @param command the command that is enlisted to the bot
      */
     public void onRemoteControlDetected(RemoteControl remoteControl, RemoteControlCommand command) {
+        this.isValid = false;
         switch (command) {
             case setSpeed10:
                 this.currentSpeed = 10;
@@ -118,6 +120,7 @@ public class OperatingLogic implements Updatable, ObstacleDetectionObserver, Rem
             case emergencyBrake:
                 this.motionController.emergencyBrake();
                 this.indicatorController.standingStillIndication();
+                this.currentSpeed = 0;
                 break;
             case forward:
                 this.forward = true;
@@ -155,47 +158,58 @@ public class OperatingLogic implements Updatable, ObstacleDetectionObserver, Rem
             case driveTriangle:
                this. motionController.driveTriangle();
                 break;
+            case resume:
+                if (this.status  != ObstacleDetectionCommand.Stop) {
+                    this.isValid = true;
+                    lineDetectionController.setPreviousCommand(LineDetectionCommand.none);
+                }
+                break;
         }
     }
 
     @Override
     public void onLineDetected(LineDetectionController l, LineDetectionCommand command) {
-        final int speed = 80;
+        final int speed = 50;
 
         for(int i = 0; i < 6; i++){
             BoeBot.rgbSet(i, Color.BLACK);
         }
-
-        switch (command) {
-            case left:
-                BoeBot.rgbSet(2, Color.RED);
-                BoeBot.rgbSet(3, Color.RED);
-                motionController.turningLeft(30);
-                break;
-            case right:
-                BoeBot.rgbSet(0, Color.RED);
-                BoeBot.rgbSet(5, Color.RED);
-                motionController.turningRight(30);
-                break;
-            case slightLeft:
-                BoeBot.rgbSet(2, Color.ORANGE);
-                BoeBot.rgbSet(3, Color.ORANGE);
-                motionController.turnLeftCurve(true, speed);
-                break;
-            case slightRight:
-                BoeBot.rgbSet(0, Color.ORANGE);
-                BoeBot.rgbSet(5, Color.ORANGE);
-                motionController.turnRightCurve(true, speed);
-                break;
-            case forward:
-                BoeBot.rgbSet(3, Color.GREEN);
-                BoeBot.rgbSet(4, Color.GREEN);
-                BoeBot.rgbSet(5, Color.GREEN);
-
-                motionController.goToSpeed(speed, 50);
-                break;
+        if (isValid) {
+            switch (command) {
+                case left:
+                    BoeBot.rgbSet(2, Color.RED);
+                    BoeBot.rgbSet(3, Color.RED);
+                    motionController.turningLeft(30);
+                    break;
+                case right:
+                    BoeBot.rgbSet(0, Color.RED);
+                    BoeBot.rgbSet(5, Color.RED);
+                    motionController.turningRight(30);
+                    break;
+                case slightLeft:
+                    BoeBot.rgbSet(2, Color.ORANGE);
+                    BoeBot.rgbSet(3, Color.ORANGE);
+                    motionController.turnLeftCurve(true, speed);
+                    break;
+                case slightRight:
+                    BoeBot.rgbSet(0, Color.ORANGE);
+                    BoeBot.rgbSet(5, Color.ORANGE);
+                    motionController.turnRightCurve(true, speed);
+                    break;
+                case forward:
+                    BoeBot.rgbSet(3, Color.GREEN);
+                    BoeBot.rgbSet(4, Color.GREEN);
+                    BoeBot.rgbSet(5, Color.GREEN);
+                    motionController.goToSpeed(speed, 50);
+                    break;
+                case stop:
+                    for (int i = 0; i < 6; i++) {
+                        BoeBot.rgbSet(i, Color.WHITE);
+                    }
+                    motionController.goToSpeed(0, 50);
+                    break;
+            }
         }
-
         BoeBot.rgbShow();
     }
 
@@ -205,7 +219,7 @@ public class OperatingLogic implements Updatable, ObstacleDetectionObserver, Rem
      */
     public void drive() {
         if (this.forward) {
-            if(this.status.equals("Okay")) {
+            if(this.status == ObstacleDetectionCommand.Okay) {
                 this.motionController.goToSpeed(this.currentSpeed);
 
                 if(this.currentSpeed == 0){

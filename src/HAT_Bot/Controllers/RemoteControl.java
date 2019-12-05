@@ -99,6 +99,9 @@ public class RemoteControl implements Updatable {
             case 924: // drive triangle
                 observer.onRemoteControlDetected(this, RemoteControlCommand.driveTriangle);
                 break;
+            case 330:
+                observer.onRemoteControlDetected(this, RemoteControlCommand.resume);
+                break;
         }
     }
 
@@ -118,8 +121,10 @@ public class RemoteControl implements Updatable {
             if (this.buttonValue != -1){
                 actions();
                 this.delayTimer.start();
+                System.out.println(this.buttonValue);
             }
         }
+
 
     }
 }
