@@ -5,7 +5,7 @@ package HAT_Bot.Controllers;
  */
 public interface ObstacleDetectionObserver {
 
-    void onObstacleDetected (ObstacleDetection o, ObstacleDetectionCommand command); // Looks if there is an obstacle.
+    void onObstacleDetected (ObstacleDetection o, ObstacleDetectionCommand command, ObstacleDetectionSide side); // Looks if there is an obstacle.
 
 }
 

@@ -44,7 +44,7 @@ public class OperatingLogic implements Updatable, ObstacleDetectionObserver, Rem
      * @param obstacleDetection an object that manages obstacle detection
      * @param command the command that is enlisted to the controls
      */
-    public void onObstacleDetected (ObstacleDetection obstacleDetection, ObstacleDetectionCommand command){
+    public void onObstacleDetected (ObstacleDetection obstacleDetection, ObstacleDetectionCommand command, ObstacleDetectionSide side){
         if (command == ObstacleDetectionCommand.SlowDown){
             if(this.forward) {
                 this.motionController.goToSpeed(0);

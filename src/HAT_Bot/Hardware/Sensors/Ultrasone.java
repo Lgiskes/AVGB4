@@ -15,7 +15,6 @@ public class Ultrasone implements Sensor, Updatable {
     private int pinEcho;
     private int value;
     private StoppableTimer timerUltrasone;
-    private StoppableTimer timerShort;
 
     /**
      * Constructor for adding a ultrasone sensor
@@ -26,7 +25,7 @@ public class Ultrasone implements Sensor, Updatable {
         this.pinTrigger = pinTrigger;
         this.pinEcho = pinEcho;
         this.timerUltrasone = new StoppableTimer(250);
-        this.timerShort = new StoppableTimer(1);
+        //this.timerShort = new StoppableTimer(10);
     }
 
     /**
@@ -59,17 +58,12 @@ public class Ultrasone implements Sensor, Updatable {
     public void update() {
         //sends a short burst of sound
         if (this.timerUltrasone.timeout()) {
-            BoeBot.digitalWrite(0, true);
-            this.timerShort.start();
+            BoeBot.digitalWrite(this.pinTrigger, true);
+            BoeBot.wait(1);
             this.timerUltrasone.stop();
-        }
+            BoeBot.digitalWrite(this.pinTrigger, false);
 
-        //measures the echo of the sound and calculates and saves the distance in cm
-        if (this.timerShort.timeout()) {
-            this.timerShort.stop();
-            BoeBot.digitalWrite(0, false);
-
-            int pulse = BoeBot.pulseIn(1, true, 10000);
+            int pulse = BoeBot.pulseIn(pinEcho, true, 10000);
             this.value = pulse / 58;
 
             this.timerUltrasone.start();
