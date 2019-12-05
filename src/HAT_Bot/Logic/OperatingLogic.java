@@ -206,7 +206,7 @@ public class OperatingLogic implements Updatable, ObstacleDetectionObserver, Rem
      */
     public void drive() {
         if (this.forward) {
-            if(this.status.equals("Okay")) {
+            if(this.status == ObstacleDetectionCommand.Okay) {
                 this.motionController.goToSpeed(this.currentSpeed);
 
                 if(this.currentSpeed == 0){
