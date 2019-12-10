@@ -1,6 +1,11 @@
 package HAT_Bot.Logic;
 
 import HAT_Bot.Controllers.*;
+import TI.BoeBot;
+
+import java.awt.*;
+
+import static HAT_Bot.Controllers.HATState.*;
 
 /**
  * Manages the behavior of the bot
@@ -13,9 +18,11 @@ public class OperatingLogic implements Updatable, ObstacleDetectionObserver, Rem
     private RemoteControl remoteControl;
     private LineDetectionController lineDetectionController;
     private ObstacleDetectionCommand status;
+    private HATState currentState;
 
     private boolean forward = true;
     private int currentSpeed = 50;
+    private boolean isValid = true;
 
     /**
      * @param indicatorController an object that manages the indicators
@@ -34,6 +41,25 @@ public class OperatingLogic implements Updatable, ObstacleDetectionObserver, Rem
         remoteControl.setObserver(this);
         lineDetectionController.setObserver(this);
         this.status = ObstacleDetectionCommand.None;
+        changeState(remoteControlled);
+    }
+
+    public void changeState(HATState newState) {
+
+        this.currentState = newState;
+
+        switch (newState) {
+            case remoteControlled:
+                break;
+            case obstacleDetected:
+                break;
+            case lineFollowing:
+                break;
+            case manoeuvre:
+                break;
+            case routeFollowing:
+                break;
+        }
     }
 
     /**
@@ -58,7 +84,6 @@ public class OperatingLogic implements Updatable, ObstacleDetectionObserver, Rem
             this.status = ObstacleDetectionCommand.Okay;
             this.drive();
         }
-
     }
 
     /**
@@ -67,6 +92,7 @@ public class OperatingLogic implements Updatable, ObstacleDetectionObserver, Rem
      * @param command the command that is enlisted to the bot
      */
     public void onRemoteControlDetected(RemoteControl remoteControl, RemoteControlCommand command) {
+        this.isValid = false;
         switch (command) {
             case setSpeed10:
                 this.currentSpeed = 10;
@@ -115,6 +141,7 @@ public class OperatingLogic implements Updatable, ObstacleDetectionObserver, Rem
             case emergencyBrake:
                 this.motionController.emergencyBrake();
                 this.indicatorController.standingStillIndication();
+                this.currentSpeed = 0;
                 break;
             case forward:
                 this.forward = true;
@@ -152,28 +179,59 @@ public class OperatingLogic implements Updatable, ObstacleDetectionObserver, Rem
             case driveTriangle:
                this. motionController.driveTriangle();
                 break;
+            case resume:
+                if (this.status  != ObstacleDetectionCommand.Stop) {
+                    this.isValid = true;
+                    lineDetectionController.setPreviousCommand(LineDetectionCommand.none);
+                }
+                break;
         }
     }
 
     @Override
     public void onLineDetected(LineDetectionController l, LineDetectionCommand command) {
-        switch (command) {
-            case left:
-                motionController.turnLeftCurve(true, 25);
-                break;
-            case right:
-                motionController.turnRightCurve(true, 25);
-                break;
-            case slightLeft:
-                motionController.turnLeftCurve(true, 75);
-                break;
-            case slightRight:
-                motionController.turnRightCurve(true, 75);
-                break;
-            case forward:
-                motionController.goToSpeed(100);
-                break;
+        final int speed = 80;
+
+        for(int i = 0; i < 6; i++){
+            BoeBot.rgbSet(i, Color.BLACK);
         }
+        if (isValid) {
+            switch (command) {
+                case left:
+                    BoeBot.rgbSet(2, Color.RED);
+                    BoeBot.rgbSet(3, Color.RED);
+                    motionController.turningLeft(30);
+                    break;
+                case right:
+                    BoeBot.rgbSet(0, Color.RED);
+                    BoeBot.rgbSet(5, Color.RED);
+                    motionController.turningRight(30);
+                    break;
+                case slightLeft:
+                    BoeBot.rgbSet(2, Color.ORANGE);
+                    BoeBot.rgbSet(3, Color.ORANGE);
+                    motionController.turnLeftCurve(true, speed);
+                    break;
+                case slightRight:
+                    BoeBot.rgbSet(0, Color.ORANGE);
+                    BoeBot.rgbSet(5, Color.ORANGE);
+                    motionController.turnRightCurve(true, speed);
+                    break;
+                case forward:
+                    BoeBot.rgbSet(3, Color.GREEN);
+                    BoeBot.rgbSet(4, Color.GREEN);
+                    BoeBot.rgbSet(5, Color.GREEN);
+                    motionController.goToSpeed(speed, 50);
+                    break;
+                case stop:
+                    for (int i = 0; i < 6; i++) {
+                        BoeBot.rgbSet(i, Color.WHITE);
+                    }
+                    motionController.goToSpeed(0, 50);
+                    break;
+            }
+        }
+        BoeBot.rgbShow();
     }
 
 
@@ -182,7 +240,7 @@ public class OperatingLogic implements Updatable, ObstacleDetectionObserver, Rem
      */
     public void drive() {
         if (this.forward) {
-            if(this.status.equals("Okay")) {
+            if(this.status == ObstacleDetectionCommand.Okay) {
                 this.motionController.goToSpeed(this.currentSpeed);
 
                 if(this.currentSpeed == 0){
