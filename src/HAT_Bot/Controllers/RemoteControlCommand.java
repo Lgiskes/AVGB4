@@ -24,5 +24,6 @@ public enum RemoteControlCommand {
     mute, // toggles the sound all the sounds on / off
     driveSquare, // drive a square
     driveTriangle, // drive a triangle
-    driveCircle // drive a circle
+    driveCircle, // drive a circle
+    resume //
 }

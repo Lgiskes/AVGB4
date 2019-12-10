@@ -12,10 +12,10 @@ public class RobotMain {
 
     public static void main(String[] args) {
 
-        MotionController m = new MotionController(14, 15);
+        MotionController m = new MotionController(12, 13);
         IndicatorController i = new IndicatorController(3, 4);
         RemoteControl r = new RemoteControl(2, null);
-        ObstacleDetection o = new ObstacleDetection(new Ultrasone(0, 1), null);
+        ObstacleDetection o = new ObstacleDetection(new Ultrasone(0, 1), new Ultrasone(7,8), null);
         LineDetectionController l = new LineDetectionController(new LineFollower(0), new LineFollower(1), new LineFollower(2), null);
         OperatingLogic a = new OperatingLogic(i, m, o, r, l);
 
