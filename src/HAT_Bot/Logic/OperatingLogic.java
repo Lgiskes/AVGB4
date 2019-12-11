@@ -263,10 +263,6 @@ public class OperatingLogic implements Updatable, ObstacleDetectionObserver, Rem
         if (this.currentState == HATState.lineFollowing) {
             final int speed = 80;
 
-            for(int i = 0; i < 6; i++){
-                BoeBot.rgbSet(i, Color.BLACK);
-            }
-
             switch (command) {
                 case left:
                     motionController.turnLeft();
