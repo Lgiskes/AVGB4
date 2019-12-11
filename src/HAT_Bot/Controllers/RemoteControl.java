@@ -2,7 +2,10 @@ package HAT_Bot.Controllers;
 
 import HAT_Bot.Hardware.Sensors.Bluetooth;
 import HAT_Bot.Hardware.Sensors.Infrared;
+import TI.BoeBot;
 import TI.StoppableTimer;
+
+import java.awt.*;
 
 /**
  * This class is for the remoteControl and is part of the hardware layer that sends information from the remote control
@@ -104,6 +107,9 @@ public class RemoteControl implements Updatable {
             case 330:
                 observer.onRemoteControlDetected(this, RemoteControlCommand.resume);
                 break;
+            case 368:
+                observer.onRemoteControlDetected(this, RemoteControlCommand.toggleLights);
+                break;
         }
     }
 
@@ -117,8 +123,12 @@ public class RemoteControl implements Updatable {
         // The understanding if statement is too get the value from the bluetooth class and add 255, to match the values
         // from the actions method, so we can use the method twice.
         if (this.bluetooth.getBoolean()){
-            actions(this.bluetooth.getValue() + 255);
+            int btValue = this.bluetooth.getValue() + 255;
+            actions(btValue);
+            System.out.println(btValue);
+
         }
+
         if(this.delayTimer.timeout()){
             this.delayTimer.stop();
         }
@@ -128,7 +138,6 @@ public class RemoteControl implements Updatable {
             if (this.buttonValue != -1){
                 actions(this.buttonValue);
                 this.delayTimer.start();
-                System.out.println(this.buttonValue);
             }
         }
 

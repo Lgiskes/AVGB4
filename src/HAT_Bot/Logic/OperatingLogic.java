@@ -220,6 +220,9 @@ public class OperatingLogic implements Updatable, ObstacleDetectionObserver, Rem
                     changeState(HATState.lineFollowing);
                     lineDetectionController.setPreviousCommand(LineDetectionCommand.none);
                     break;
+                case toggleLights:
+                    indicatorController.toggleRGBCycle();
+                    break;
             }
         }
     }

@@ -25,5 +25,6 @@ public enum RemoteControlCommand {
     driveSquare, // drive a square
     driveTriangle, // drive a triangle
     driveCircle, // drive a circle
-    resume //
+    resume, //
+    toggleLights
 }

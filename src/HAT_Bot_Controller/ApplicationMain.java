@@ -20,7 +20,7 @@ public class ApplicationMain extends Application {
 
         GridPane mainPane = new GridPane();
 
-        SerialPort serialPort = new SerialPort("COM4");
+        SerialPort serialPort = new SerialPort("COM5");
         try{
             serialPort.openPort();
 
@@ -80,11 +80,22 @@ public class ApplicationMain extends Application {
             }
         }));
 
+        Button toggleLights = new Button("Lights");
+        toggleLights.setOnAction((event -> {
+            try{
+                serialPort.writeString("q"); //Toggle Lights
+            }
+            catch (SerialPortException ex){
+                System.out.println(ex.getMessage());
+            }
+        }));
+
         mainPane.add(forwardButton, 1, 0);
         mainPane.add(backwardButton, 1, 2);
         mainPane.add(leftButton, 0, 1);
         mainPane.add(rightButton, 2, 1);
         mainPane.add(brakeButton, 1, 1);
+        mainPane.add(toggleLights, 2, 2);
 
         Scene scene = new Scene(mainPane);
         primaryStage.setScene(scene);
