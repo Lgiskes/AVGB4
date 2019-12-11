@@ -254,7 +254,6 @@ public class OperatingLogic implements Updatable, ObstacleDetectionObserver, Rem
             case toggleLights:
                 indicatorController.toggleRGBCycle();
                 break;
-            }
         }
     }
 
