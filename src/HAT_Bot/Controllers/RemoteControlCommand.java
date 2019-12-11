@@ -25,6 +25,6 @@ public enum RemoteControlCommand {
     driveSquare, // drive a square
     driveTriangle, // drive a triangle
     driveCircle, // drive a circle
-    resume, //
-    toggleLights
+    resume, //resumes the line following-protocol
+    toggleLights // toggles the RGB lights of the bot
 }

@@ -67,11 +67,8 @@ public class Motor implements Updatable {
     /**
      * Sets the speed of a servo
      * @param speed the speed from -100 to 100
+     * @param goToSpeed true if this function is called from the goToSpeed function
      */
-    public void setSpeed(int speed) {
-        this.setSpeed(speed, false);
-    }
-
     private void setSpeed(int speed, boolean goToSpeed){
         if(!goToSpeed){
             if(!this.timer.isStopped()){
@@ -89,6 +86,10 @@ public class Motor implements Updatable {
 
         int newSpeed = speed * 2 + 1500;
         this.servo.update(newSpeed);
+    }
+
+    public void setSpeed(int speed) {
+        this.setSpeed(speed, false);
     }
 
     /**

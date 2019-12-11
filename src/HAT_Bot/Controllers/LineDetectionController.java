@@ -12,6 +12,14 @@ public class LineDetectionController implements Updatable {
 
     private LineDetectionCommand previousCommand;
 
+    /**
+     * Computes the signals from all the LineFollowers
+     * @param leftLineFollower
+     * @param middleLineFollower
+     * @param rightLineFollower
+     * @param observer
+     */
+
     public LineDetectionController(LineFollower leftLineFollower, LineFollower middleLineFollower, LineFollower rightLineFollower, LineDetectionObserver observer) {
         this.leftLineFollower = leftLineFollower;
         this.middleLineFollower = middleLineFollower;
@@ -43,11 +51,13 @@ public class LineDetectionController implements Updatable {
                         this.previousCommand = LineDetectionCommand.forward;
                         observer.onLineDetected(this, LineDetectionCommand.forward);
                     }
+                    //if the left and middle are detecting a line; turn slightly left
                     this.previousCommand = LineDetectionCommand.slightLeft;
                     observer.onLineDetected(this, LineDetectionCommand.slightLeft);
                 }
             }
             else {
+                //if only the left detects a line, stand still and turn left
                 if(this.previousCommand != LineDetectionCommand.left){
                     this.previousCommand = LineDetectionCommand.left;
                     observer.onLineDetected(this, LineDetectionCommand.left);
@@ -61,12 +71,14 @@ public class LineDetectionController implements Updatable {
                         this.previousCommand = LineDetectionCommand.forward;
                         observer.onLineDetected(this, LineDetectionCommand.forward);
                     }
+                    //if the middle and right detect a line, turn slightly right
                     this.previousCommand = LineDetectionCommand.slightRight;
                     observer.onLineDetected(this, LineDetectionCommand.slightRight);
                 }
             }
             else {
                 if(this.previousCommand != LineDetectionCommand.right){
+                    //if the right detects a line, stand still and turn right
                     this.previousCommand = LineDetectionCommand.right;
                     observer.onLineDetected(this, LineDetectionCommand.right);
                 }
@@ -74,11 +86,13 @@ public class LineDetectionController implements Updatable {
         }
         else if (middleLineFollower.getBoolean()) {
             if(this.previousCommand != LineDetectionCommand.forward){
+                //if the middle detects a line, go forward
                 this.previousCommand = LineDetectionCommand.forward;
                 observer.onLineDetected(this, LineDetectionCommand.forward);
             }
         }
         else if(this.previousCommand != LineDetectionCommand.stop) {
+            //stops
             this.previousCommand = LineDetectionCommand.stop;
             observer.onLineDetected(this, LineDetectionCommand.stop);
         }
