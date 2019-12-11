@@ -12,7 +12,7 @@ public class LineFollower implements Sensor, Updatable {
     public LineFollower(int pin) {
         this.pin = pin;
         this.value = 0;
-        this.timerLineSensor = new StoppableTimer(100);
+        this.timerLineSensor = new StoppableTimer(10);
     }
 
     @Override
