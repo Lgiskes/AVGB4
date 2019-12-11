@@ -1,6 +1,7 @@
 package HAT_Bot.Controllers;
 
 import HAT_Bot.Hardware.Actuators.Motor;
+import TI.BoeBot;
 import TI.StoppableTimer;
 
 /**
@@ -35,7 +36,6 @@ public class MotionController implements Updatable {
     public MotionController(int pinLeftMotor, int pinRightMotor) {
         this.leftMotor = new Motor(pinLeftMotor, false);
         this.rightMotor = new Motor(pinRightMotor, true);
-        this.observer = observer;
         this.manoeuvreObserver = null;
 
         this.toSpeed = 0;
@@ -73,10 +73,10 @@ public class MotionController implements Updatable {
      * Moves the bot slightly forward after passing a intersection
      * @param milliSeconds the time the bot drives forward in milliseconds
      */
-    public void slightlyForward(int milliSeconds) {
-        forward();
-        this.slightlyForwartTimer.setInterval(milliSeconds);
-        this.slightlyForwartTimer.start();
+    public void slightlyForward(int speed, int milliSeconds) {
+        setSpeed(speed);
+        BoeBot.wait(milliSeconds);
+        this.manoeuvreObserver.onManoeuvreDetected(this, this.command);
     }
 
     /**
@@ -147,13 +147,6 @@ public class MotionController implements Updatable {
             this.emergencyBrake();
             this.turnDegreesTimer.stop();
             onMotionEnd("turnDegrees");
-            this.manoeuvreObserver.onManoeuvreDetected(this, this.command);
-        }
-
-        //checks if the slightlyForward action has ended
-        if (this.slightlyForwartTimer.timeout()) {
-            this.goToSpeed(0);
-            this.slightlyForwartTimer.stop();
             this.manoeuvreObserver.onManoeuvreDetected(this, this.command);
         }
 

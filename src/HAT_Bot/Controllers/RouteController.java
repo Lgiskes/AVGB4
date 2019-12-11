@@ -14,6 +14,7 @@ public class RouteController {
 
     public RouteController() {
         this.observer = null;
+        this.route = new ArrayList<>();
     }
 
     public void setObserver(RouteObserver observer) {

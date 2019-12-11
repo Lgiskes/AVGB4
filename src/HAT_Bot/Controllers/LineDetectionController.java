@@ -8,7 +8,6 @@ public class LineDetectionController implements Updatable {
     private LineFollower middleLineFollower;
     private LineFollower rightLineFollower;
     private LineDetectionObserver observer;
-    private StoppableTimer lineDetectionTimer;
 
     private LineDetectionCommand previousCommand;
 
@@ -26,7 +25,6 @@ public class LineDetectionController implements Updatable {
         this.rightLineFollower = rightLineFollower;
         this.observer = observer;
         this.previousCommand = LineDetectionCommand.none;
-        lineDetectionTimer = new StoppableTimer(10);
     }
 
     public void setObserver(LineDetectionObserver observer) {
@@ -43,17 +41,25 @@ public class LineDetectionController implements Updatable {
         middleLineFollower.update();
         rightLineFollower.update();
 
-        if (this.lineDetectionTimer.timeout()) {
-        if (leftLineFollower.getBoolean()) {
+        if(leftLineFollower.getBoolean() && middleLineFollower.getBoolean() && rightLineFollower.getBoolean()){
+            if(this.previousCommand != LineDetectionCommand.crossroad){
+                this.previousCommand = LineDetectionCommand.crossroad;
+                observer.onLineDetected(this, LineDetectionCommand.crossroad);
+            }
+        }
+        else if (leftLineFollower.getBoolean()) {
             if (middleLineFollower.getBoolean()) {
                 if(this.previousCommand != LineDetectionCommand.slightLeft){
                     if(this.previousCommand == LineDetectionCommand.left){
                         this.previousCommand = LineDetectionCommand.forward;
                         observer.onLineDetected(this, LineDetectionCommand.forward);
                     }
-                    //if the left and middle are detecting a line; turn slightly left
-                    this.previousCommand = LineDetectionCommand.slightLeft;
-                    observer.onLineDetected(this, LineDetectionCommand.slightLeft);
+                    else{
+                        //if the left and middle are detecting a line; turn slightly left
+                        this.previousCommand = LineDetectionCommand.slightLeft;
+                        observer.onLineDetected(this, LineDetectionCommand.slightLeft);
+                    }
+
                 }
             }
             else {
@@ -71,9 +77,11 @@ public class LineDetectionController implements Updatable {
                         this.previousCommand = LineDetectionCommand.forward;
                         observer.onLineDetected(this, LineDetectionCommand.forward);
                     }
-                    //if the middle and right detect a line, turn slightly right
-                    this.previousCommand = LineDetectionCommand.slightRight;
-                    observer.onLineDetected(this, LineDetectionCommand.slightRight);
+                    else{
+                        //if the middle and right detect a line, turn slightly right
+                        this.previousCommand = LineDetectionCommand.slightRight;
+                        observer.onLineDetected(this, LineDetectionCommand.slightRight);
+                    }
                 }
             }
             else {
@@ -95,7 +103,6 @@ public class LineDetectionController implements Updatable {
             //stops
             this.previousCommand = LineDetectionCommand.stop;
             observer.onLineDetected(this, LineDetectionCommand.stop);
-        }
         }
     }
 }

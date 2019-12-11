@@ -42,9 +42,19 @@ public class OperatingLogic implements Updatable, ObstacleDetectionObserver, Rem
         remoteControl.setObserver(this);
         lineDetectionController.setObserver(this);
         this.motionController.setManoeuvreObserver(this);
+        this.routeController.setObserver(this);
         this.status = ObstacleDetectionCommand.None;
         changeState(HATState.remoteControlled);
         this.obstacleSide = ObstacleDetectionSide.None;
+        ArrayList<RouteCommand> route = new ArrayList<>();
+        route.add(RouteCommand.left);
+        route.add(RouteCommand.straight);
+        route.add(RouteCommand.right);
+        route.add(RouteCommand.straight);
+        route.add(RouteCommand.right);
+        route.add(RouteCommand.left);
+        routeController.setRoute(route);
+        onRemoteControlDetected(null, RemoteControlCommand.emergencyBrake);
     }
 
     /**
@@ -52,8 +62,6 @@ public class OperatingLogic implements Updatable, ObstacleDetectionObserver, Rem
      * @param newState this is the object that changes the current state into the favoured state.
      */
     public void changeState(HATState newState) {
-
-        System.out.println(newState);
 
         HATState previousState = this.currentState;
 
@@ -115,7 +123,7 @@ public class OperatingLogic implements Updatable, ObstacleDetectionObserver, Rem
         }
         else{
             this.status = ObstacleDetectionCommand.Okay;
-            this.drive();
+            this.indicatorController.standingStillIndication();
         }
 
     }
@@ -251,6 +259,7 @@ public class OperatingLogic implements Updatable, ObstacleDetectionObserver, Rem
                 break;
             case resume:
                 changeState(HATState.lineFollowing);
+                indicatorController.drivingIndication();
                 lineDetectionController.setPreviousCommand(LineDetectionCommand.none);
                 break;
             case toggleLights:
@@ -263,22 +272,24 @@ public class OperatingLogic implements Updatable, ObstacleDetectionObserver, Rem
     public void onLineDetected(LineDetectionController l, LineDetectionCommand command) {
 
         if (this.currentState == HATState.lineFollowing) {
-            final int speed = 80;
-
-            System.out.println(command);
+            final int speed = 40;
 
             switch (command) {
                 case left:
-                    motionController.turnLeft();
+                    motionController.setCommand(ManoeuvreCommand.lineFollowing);
+                    motionController.turningLeft(30);
                     break;
                 case right:
-                    motionController.turnRight();
+                    motionController.setCommand(ManoeuvreCommand.lineFollowing);
+                    motionController.turningRight(30);
                     break;
                 case forward:
+                    motionController.setCommand(ManoeuvreCommand.lineFollowing);
                     motionController.setSpeed(speed);
                     break;
                 case stop:
-                    motionController.goToSpeed(0, 50);
+                    motionController.setCommand(ManoeuvreCommand.lineFollowing);
+                    motionController.emergencyBrake();
                     break;
                 case crossroad:
                     changeState(HATState.routeFollowing);
@@ -294,28 +305,30 @@ public class OperatingLogic implements Updatable, ObstacleDetectionObserver, Rem
     public void onCrossroadDetected(RouteController r, RouteCommand command) {
         changeState(HATState.manoeuvre);
         if (this.currentState == HATState.manoeuvre) {
+            motionController.slightlyForward(40, 50); // Een klein stukje over het kruispunt heen rijden
             switch (command) {
                 case straight:
                     motionController.setCommand(ManoeuvreCommand.lineFollowing);
-                    motionController.slightlyForward(1000);
                     break;
                 case right:
                     motionController.setCommand(ManoeuvreCommand.lineFollowing);
                     motionController.turnRight();
+                    BoeBot.wait(200); // Zodat de BoeBot de bocht kan maken
                     break;
                 case left:
                     motionController.setCommand(ManoeuvreCommand.lineFollowing);
                     motionController.turnLeft();
+                    BoeBot.wait(200); // Zodat de BoeBot de bocht kan maken
                     break;
                 case turnAround:
                     motionController.setCommand(ManoeuvreCommand.lineFollowing);
-                    motionController.turnAround();
                     break;
                 case stop:
                     changeState(HATState.lineFollowing);
-                    motionController.goToSpeed(0);
+                    motionController.emergencyBrake();
                     break;
             }
+
         }
     }
 
