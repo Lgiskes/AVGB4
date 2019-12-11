@@ -23,7 +23,6 @@ public class OperatingLogic implements Updatable, ObstacleDetectionObserver, Rem
 
     private boolean forward = true;
     private int currentSpeed = 50;
-    private boolean isValid = true;
 
     /**
      * @param indicatorController an object that manages the indicators
@@ -42,6 +41,7 @@ public class OperatingLogic implements Updatable, ObstacleDetectionObserver, Rem
         obstacleDetection.setObserver(this);
         remoteControl.setObserver(this);
         lineDetectionController.setObserver(this);
+        this.motionController.setManoeuvreObserver(this);
         this.status = ObstacleDetectionCommand.None;
         changeState(HATState.remoteControlled);
         this.obstacleSide = ObstacleDetectionSide.None;
@@ -52,6 +52,8 @@ public class OperatingLogic implements Updatable, ObstacleDetectionObserver, Rem
      * @param newState this is the object that changes the current state into the favoured state.
      */
     public void changeState(HATState newState) {
+
+        System.out.println(newState);
 
         HATState previousState = this.currentState;
 
@@ -263,18 +265,14 @@ public class OperatingLogic implements Updatable, ObstacleDetectionObserver, Rem
         if (this.currentState == HATState.lineFollowing) {
             final int speed = 80;
 
+            System.out.println(command);
+
             switch (command) {
                 case left:
                     motionController.turnLeft();
                     break;
                 case right:
                     motionController.turnRight();
-                    break;
-                case slightLeft:
-                    motionController.turnLeftCurve(true, 30);
-                    break;
-                case slightRight:
-                    motionController.turnRightCurve(true, 30);
                     break;
                 case forward:
                     motionController.setSpeed(speed);

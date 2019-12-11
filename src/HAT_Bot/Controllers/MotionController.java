@@ -61,6 +61,8 @@ public class MotionController implements Updatable {
 
     public void setManoeuvreObserver(ManoeuvreObserver manoeuvreObserver) {
         this.manoeuvreObserver = manoeuvreObserver;
+        this.rightMotor.setManoeuvreObserver(manoeuvreObserver);
+        this.leftMotor.setManoeuvreObserver(manoeuvreObserver);
     }
 
     public void slightlyForward(int milliSeconds) {
