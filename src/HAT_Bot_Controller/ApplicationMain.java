@@ -90,6 +90,18 @@ public class ApplicationMain extends Application {
             }
         }));
 
+        mainPane.setHgap(5);
+        mainPane.setVgap(5);
+
+        final int buttonSize = 100;
+        forwardButton.setPrefSize(buttonSize, buttonSize);
+        rightButton.setPrefSize(buttonSize, buttonSize);
+        leftButton.setPrefSize(buttonSize, buttonSize);
+        backwardButton.setPrefSize(buttonSize, buttonSize);
+        brakeButton.setPrefSize(buttonSize, buttonSize);
+        toggleLights.setPrefSize(buttonSize, buttonSize);
+
+
         mainPane.add(forwardButton, 1, 0);
         mainPane.add(backwardButton, 1, 2);
         mainPane.add(leftButton, 0, 1);
