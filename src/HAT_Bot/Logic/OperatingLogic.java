@@ -5,7 +5,6 @@ import TI.BoeBot;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * Manages the behavior of the bot
@@ -249,6 +248,10 @@ public class OperatingLogic implements Updatable, ObstacleDetectionObserver, Rem
                 changeState(HATState.lineFollowing);
                 lineDetectionController.setPreviousCommand(LineDetectionCommand.none);
                 break;
+            case toggleLights:
+                indicatorController.toggleRGBCycle();
+                break;
+            }
         }
     }
 

@@ -2,7 +2,10 @@ package HAT_Bot.Controllers;
 
 import HAT_Bot.Hardware.Actuators.Beeper;
 import HAT_Bot.Hardware.Actuators.LED;
+import TI.BoeBot;
 import TI.StoppableTimer;
+
+import java.awt.*;
 
 /**
  * Controls the beeper and the LED
@@ -15,6 +18,9 @@ public class IndicatorController implements Updatable{
     private StoppableTimer ledTimer = new StoppableTimer(1000);
     private StoppableTimer beeperTimer = new StoppableTimer(1000);
 
+    private StoppableTimer BTLightTimer;
+    private int BTLightCounter = 0;
+
     /**
      * @param ledPin the number of the pin connected to the LED
      * @param beeperPin the number of the pin connected to the beeper
@@ -23,6 +29,14 @@ public class IndicatorController implements Updatable{
         this.led = new LED(ledPin);
         this.beeper = new Beeper(beeperPin);
         this.status = 0;
+
+        this.BTLightTimer = new StoppableTimer(100);
+        this.BTLightTimer.stop();
+
+        for (int i = 0; i < 6; i++) {
+            BoeBot.rgbSet(i, Color.BLACK);
+        }
+        BoeBot.rgbShow();
 
         //this.beeper.setOn(true);
     }
@@ -101,6 +115,21 @@ public class IndicatorController implements Updatable{
         this.beeperTimer.start();
         this.status = 5;
     }
+
+    public void toggleRGBCycle(){
+        if (this.BTLightTimer.isStopped()) {
+            this.BTLightCounter = 0;
+            this.BTLightTimer.start();
+        }
+        else{
+            for (int i = 0; i < 6; i++) {
+                BoeBot.rgbSet(i, Color.BLACK);
+            }
+            BoeBot.rgbShow();
+            this.BTLightTimer.stop();
+        }
+    }
+
     /**
      * Updates the beeper and LED
      */
@@ -153,6 +182,17 @@ public class IndicatorController implements Updatable{
                     this.beeper.makeSound(1000, 1000);
                 }
                 break;
+        }
+
+        if (!this.BTLightTimer.isStopped()) {
+
+            if (this.BTLightTimer.timeout()) {
+                for (int i = 0; i < 6; i++) {
+                    BoeBot.rgbSet(i, Color.getHSBColor(((((i + this.BTLightCounter) % 6) * 60) / 360f), 1, 1.0f));
+                }
+                BoeBot.rgbShow();
+                this.BTLightCounter++;
+            }
         }
     }
 }
