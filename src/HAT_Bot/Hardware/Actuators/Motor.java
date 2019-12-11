@@ -1,5 +1,7 @@
 package HAT_Bot.Hardware.Actuators;
 
+import HAT_Bot.Controllers.ManoeuvreCommand;
+import HAT_Bot.Controllers.ManoeuvreObserver;
 import HAT_Bot.Controllers.MotionObserver;
 import HAT_Bot.Controllers.Updatable;
 import TI.Servo;
@@ -14,6 +16,8 @@ public class Motor implements Updatable {
     private StoppableTimer timer;
     private int toSpeed;
     private MotionObserver motionObserver;
+    private ManoeuvreObserver manoeuvreObserver;
+    private ManoeuvreCommand command;
 
     /**
      * Controls a Servo
@@ -28,6 +32,15 @@ public class Motor implements Updatable {
         this.timer.stop();
         this.servo = new Servo(pin);
         this.motionObserver = null;
+        this.manoeuvreObserver = null;
+    }
+
+    public void setManoeuvreObserver(ManoeuvreObserver manoeuvreObserver) {
+        this.manoeuvreObserver = manoeuvreObserver;
+    }
+
+    public void setCommand(ManoeuvreCommand command) {
+        this.command = command;
     }
 
     /**
@@ -98,6 +111,7 @@ public class Motor implements Updatable {
             else{
                 this.timer.stop();
                     onMotionEnd("goToSpeed(" + this.toSpeed + ")");
+                    this.manoeuvreObserver.onManoeuvreDetected(null, this.command);
             }
         }
     }

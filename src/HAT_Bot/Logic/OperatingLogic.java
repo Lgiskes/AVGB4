@@ -4,17 +4,19 @@ import HAT_Bot.Controllers.*;
 import TI.BoeBot;
 
 import java.awt.*;
+import java.util.ArrayList;
 
 /**
  * Manages the behavior of the bot
  */
-public class OperatingLogic implements Updatable, ObstacleDetectionObserver, RemoteControlObserver, LineDetectionObserver {
+public class OperatingLogic implements Updatable, ObstacleDetectionObserver, RemoteControlObserver, LineDetectionObserver, RouteObserver, ManoeuvreObserver {
 
     private IndicatorController indicatorController;
     private MotionController motionController;
     private ObstacleDetection obstacleDetection;
     private RemoteControl remoteControl;
     private LineDetectionController lineDetectionController;
+    private RouteController routeController;
     private ObstacleDetectionCommand status;
     private HATState currentState;
     private ObstacleDetectionSide obstacleSide;
@@ -30,12 +32,13 @@ public class OperatingLogic implements Updatable, ObstacleDetectionObserver, Rem
      * @param remoteControl an objects that manages the control inputs
      * @param lineDetectionController
      */
-    public OperatingLogic(IndicatorController indicatorController, MotionController motionController, ObstacleDetection obstacleDetection, RemoteControl remoteControl, LineDetectionController lineDetectionController) {
+    public OperatingLogic(IndicatorController indicatorController, MotionController motionController, ObstacleDetection obstacleDetection, RemoteControl remoteControl, LineDetectionController lineDetectionController, RouteController routeController) {
         this.indicatorController = indicatorController;
         this.motionController = motionController;
         this.obstacleDetection = obstacleDetection;
         this.remoteControl = remoteControl;
         this.lineDetectionController = lineDetectionController;
+        this.routeController = routeController;
         obstacleDetection.setObserver(this);
         remoteControl.setObserver(this);
         lineDetectionController.setObserver(this);
@@ -63,10 +66,8 @@ public class OperatingLogic implements Updatable, ObstacleDetectionObserver, Rem
 
         switch (newState) {
             case remoteControlled:
-
                 break;
             case obstacleDetected:
-
                 break;
             case lineFollowing:
                 if (previousState == HATState.routeFollowing){
@@ -102,11 +103,13 @@ public class OperatingLogic implements Updatable, ObstacleDetectionObserver, Rem
 
             this.indicatorController.foundObstacleIndication();
             this.status = ObstacleDetectionCommand.SlowDown;
+            changeState(HATState.obstacleDetected);
         }
         else if(command == ObstacleDetectionCommand.Stop){
             this.motionController.emergencyBrake();
             this.indicatorController.inFrontOfObstacleIndication();
             this.status = ObstacleDetectionCommand.Stop;
+            changeState(HATState.obstacleDetected);
         }
         else{
             this.status = ObstacleDetectionCommand.Okay;
@@ -124,114 +127,133 @@ public class OperatingLogic implements Updatable, ObstacleDetectionObserver, Rem
 
         changeState(HATState.remoteControlled);
 
-        if (this.currentState == HATState.remoteControlled) {
-            switch (command) {
-                case setSpeed10:
-                    changeState(HATState.manoeuvre);
-                    this.currentSpeed = 10;
-                    drive();
-                    break;
-                case setSpeed20:
-                    changeState(HATState.manoeuvre);
-                    this.currentSpeed = 20;
-                    drive();
-                    break;
-                case setSpeed30:
-                    changeState(HATState.manoeuvre);
-                    this.currentSpeed = 30;
-                    drive();
-                    break;
-                case setSpeed40:
-                    changeState(HATState.manoeuvre);
-                    this.currentSpeed = 40;
-                    drive();
-                    break;
-                case setSpeed50:
-                    changeState(HATState.manoeuvre);
-                    this.currentSpeed = 50;
-                    drive();
-                    break;
-                case setSpeed60:
-                    changeState(HATState.manoeuvre);
-                    this.currentSpeed = 60;
-                    drive();
-                    break;
-                case setSpeed70:
-                    changeState(HATState.manoeuvre);
-                    this.currentSpeed = 70;
-                    drive();
-                    break;
-                case setSpeed80:
-                    changeState(HATState.manoeuvre);
-                    this.currentSpeed = 80;
-                    drive();
-                    break;
-                case setSpeed90:
-                    changeState(HATState.manoeuvre);
-                    this.currentSpeed = 90;
-                    drive();
-                    break;
-                case setSpeed100:
-                    changeState(HATState.manoeuvre);
-                    this.currentSpeed = 100;
-                    drive();
-                    break;
-                case setSpeed0:
-                    changeState(HATState.manoeuvre);
-                    this.currentSpeed = 0;
-                    drive();
-                    break;
-                case emergencyBrake:
-                    this.motionController.emergencyBrake();
-                    this.indicatorController.standingStillIndication();
-                    this.currentSpeed = 0;
-                    break;
-                case forward:
+        switch (command) {
+            case setSpeed10:
+                changeState(HATState.manoeuvre);
+                motionController.setCommand(ManoeuvreCommand.remoteControl);
+                this.currentSpeed = 10;
+                drive();
+                break;
+            case setSpeed20:
+                changeState(HATState.manoeuvre);
+                motionController.setCommand(ManoeuvreCommand.remoteControl);
+                this.currentSpeed = 20;
+                drive();
+                break;
+            case setSpeed30:
+                changeState(HATState.manoeuvre);
+                motionController.setCommand(ManoeuvreCommand.remoteControl);
+                this.currentSpeed = 30;
+                drive();
+                break;
+            case setSpeed40:
+                changeState(HATState.manoeuvre);
+                motionController.setCommand(ManoeuvreCommand.remoteControl);
+                this.currentSpeed = 40;
+                drive();
+                break;
+            case setSpeed50:
+                changeState(HATState.manoeuvre);
+                motionController.setCommand(ManoeuvreCommand.remoteControl);
+                this.currentSpeed = 50;
+                drive();
+                break;
+            case setSpeed60:
+                changeState(HATState.manoeuvre);
+                motionController.setCommand(ManoeuvreCommand.remoteControl);
+                this.currentSpeed = 60;
+                drive();
+                break;
+            case setSpeed70:
+                changeState(HATState.manoeuvre);
+                motionController.setCommand(ManoeuvreCommand.remoteControl);
+                this.currentSpeed = 70;
+                drive();
+                break;
+            case setSpeed80:
+                changeState(HATState.manoeuvre);
+                motionController.setCommand(ManoeuvreCommand.remoteControl);
+                this.currentSpeed = 80;
+                drive();
+                break;
+            case setSpeed90:
+                changeState(HATState.manoeuvre);
+                motionController.setCommand(ManoeuvreCommand.remoteControl);
+                this.currentSpeed = 90;
+                drive();
+                break;
+            case setSpeed100:
+                changeState(HATState.manoeuvre);
+                motionController.setCommand(ManoeuvreCommand.remoteControl);
+                this.currentSpeed = 100;
+                drive();
+                break;
+            case setSpeed0:
+                changeState(HATState.manoeuvre);
+                motionController.setCommand(ManoeuvreCommand.remoteControl);
+                this.currentSpeed = 0;
+                drive();
+                break;
+            case emergencyBrake:
+                this.motionController.emergencyBrake();
+                this.indicatorController.standingStillIndication();
+                this.currentSpeed = 0;
+                break;
+            case forward:
+                if (this.currentState == HATState.remoteControlled) {
                     this.forward = true;
                     drive();
-                    break;
-                case backward:
-                    this.forward = false;
-                    drive();
-                    break;
-                case turnLeft:
-                    if (this.currentSpeed == 0) {
-                        this.motionController.turningLeft(10);
-                    }
-                    else {
-                        this.motionController.turnLeftCurve(this.forward, this.currentSpeed);
-                    }
-                    break;
-                case turnRight:
-                    if (this.currentSpeed == 0) {
-                        this.motionController.turningRight(10);
-                    }
-                    else {
-                        this.motionController.turnRightCurve(this.forward, this.currentSpeed);
-                    }
-                    break;
-                case mute:
-                    this.indicatorController.mute(!this.indicatorController.getMuteState());
-                    break;
-                case driveSquare:
+                }
+                break;
+            case backward:
+                this.forward = false;
+                drive();
+                break;
+            case turnLeft:
+                if (this.currentSpeed == 0 || this.currentState == HATState.obstacleDetected) {
+                    this.motionController.turningLeft(10);
+                } else {
+                    this.motionController.turnLeftCurve(this.forward, this.currentSpeed);
+                }
+                break;
+            case turnRight:
+                if (this.currentSpeed == 0 || this.currentState == HATState.obstacleDetected) {
+                    this.motionController.turningRight(10);
+                } else {
+                    this.motionController.turnRightCurve(this.forward, this.currentSpeed);
+                }
+                break;
+            case mute:
+                this.indicatorController.mute(!this.indicatorController.getMuteState());
+                break;
+            case driveSquare:
+                if (this.currentState == HATState.remoteControlled) {
                     changeState(HATState.manoeuvre);
+                    motionController.setCommand(ManoeuvreCommand.remoteControl);
                     this.motionController.driveSquare();
-                    break;
-                case driveCircle:
+                }
+                break;
+            case driveCircle:
+                if (this.currentState == HATState.remoteControlled) {
                     changeState(HATState.manoeuvre);
+                    motionController.setCommand(ManoeuvreCommand.remoteControl);
                     this.motionController.driveCircle();
-                    break;
-                case driveTriangle:
+                }
+                break;
+            case driveTriangle:
+                if (this.currentState == HATState.remoteControlled) {
                     changeState(HATState.manoeuvre);
-                    this. motionController.driveTriangle();
-                    break;
-                case resume:
-                    changeState(HATState.lineFollowing);
-                    lineDetectionController.setPreviousCommand(LineDetectionCommand.none);
-                    break;
-                case toggleLights:
-                    indicatorController.toggleRGBCycle();
-                    break;
+                    motionController.setCommand(ManoeuvreCommand.remoteControl);
+                    this.motionController.driveTriangle();
+                }
+                break;
+            case resume:
+                changeState(HATState.lineFollowing);
+                lineDetectionController.setPreviousCommand(LineDetectionCommand.none);
+                break;
+            case toggleLights:
+                indicatorController.toggleRGBCycle();
+                break;
             }
         }
     }
@@ -267,12 +289,53 @@ public class OperatingLogic implements Updatable, ObstacleDetectionObserver, Rem
                     break;
                 case crossroad:
                     changeState(HATState.routeFollowing);
+                    routeController.crossroadManoeuvre();
                     break;
             }
         }
 
     }
 
+
+    @Override
+    public void onCrossroadDetected(RouteController r, RouteCommand command) {
+        changeState(HATState.manoeuvre);
+        if (this.currentState == HATState.manoeuvre) {
+            switch (command) {
+                case straight:
+                    motionController.setCommand(ManoeuvreCommand.lineFollowing);
+                    motionController.slightlyForward(1000);
+                    break;
+                case right:
+                    motionController.setCommand(ManoeuvreCommand.lineFollowing);
+                    motionController.turnRight();
+                    break;
+                case left:
+                    motionController.setCommand(ManoeuvreCommand.lineFollowing);
+                    motionController.turnLeft();
+                    break;
+                case turnAround:
+                    motionController.setCommand(ManoeuvreCommand.lineFollowing);
+                    motionController.turnAround();
+                    break;
+                case stop:
+                    changeState(HATState.lineFollowing);
+                    motionController.goToSpeed(0);
+                    break;
+            }
+        }
+    }
+
+
+    @Override
+    public void onManoeuvreDetected(MotionController m, ManoeuvreCommand command) {
+        if (command == ManoeuvreCommand.lineFollowing) {
+            changeState(HATState.lineFollowing);
+        }
+        else {
+            changeState(HATState.remoteControlled);
+        }
+    }
 
     /**
      * Drives with a speed equal to this.currentSpeed

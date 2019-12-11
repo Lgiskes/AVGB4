@@ -17,7 +17,10 @@ public class RobotMain {
         RemoteControl r = new RemoteControl(2, null);
         ObstacleDetection o = new ObstacleDetection(new Ultrasone(0, 1), new Ultrasone(7,8), null);
         LineDetectionController l = new LineDetectionController(new LineFollower(0), new LineFollower(1), new LineFollower(2), null);
-        OperatingLogic a = new OperatingLogic(i, m, o, r, l);
+        RouteController e = new RouteController();
+        OperatingLogic a = new OperatingLogic(i, m, o, r, l, e);
+
+
 
         List<Updatable> updatables = new ArrayList<>();
         updatables.add(m);

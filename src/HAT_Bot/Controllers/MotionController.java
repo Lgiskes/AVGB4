@@ -17,8 +17,11 @@ public class MotionController implements Updatable {
     private StoppableTimer goToSpeedLeftTimer;
     private StoppableTimer goToSpeedRightTimer;
     private StoppableTimer turnDegreesTimer;
+    private StoppableTimer slightlyForwartTimer;
 
     private int toSpeed;
+    private ManoeuvreObserver manoeuvreObserver;
+    private ManoeuvreCommand command;
 
     private StoppableTimer driveSquareTimer = new StoppableTimer(1000);
     private StoppableTimer driveTriangleTimer = new StoppableTimer(1000);
@@ -29,11 +32,11 @@ public class MotionController implements Updatable {
      * @param pinLeftMotor number of the pin connected to the left motor
      * @param pinRightMotor the number of the pin connected to the left motor
      */
-
     public MotionController(int pinLeftMotor, int pinRightMotor) {
         this.leftMotor = new Motor(pinLeftMotor, false);
         this.rightMotor = new Motor(pinRightMotor, true);
         this.observer = observer;
+        this.manoeuvreObserver = null;
 
         this.toSpeed = 0;
 
@@ -41,11 +44,29 @@ public class MotionController implements Updatable {
         this.goToSpeedRightTimer = new StoppableTimer(1000);
         this.goToSpeedLeftTimer = new StoppableTimer(1000);
         this.turnDegreesTimer = new StoppableTimer(1000);
+        this.slightlyForwartTimer = new StoppableTimer(1000);
         this.turnAroundTimer.stop();
         this.turnDegreesTimer.stop();
         this.goToSpeedLeftTimer.stop();
         this.goToSpeedRightTimer.stop();
+        this.slightlyForwartTimer.stop();
 
+    }
+
+    public void setCommand(ManoeuvreCommand command) {
+        this.command = command;
+        leftMotor.setCommand(command);
+        rightMotor.setCommand(command);
+    }
+
+    public void setManoeuvreObserver(ManoeuvreObserver manoeuvreObserver) {
+        this.manoeuvreObserver = manoeuvreObserver;
+    }
+
+    public void slightlyForward(int milliSeconds) {
+        forward();
+        this.slightlyForwartTimer.setInterval(milliSeconds);
+        this.slightlyForwartTimer.start();
     }
 
     /**
@@ -86,7 +107,6 @@ public class MotionController implements Updatable {
     /**
      * turns the bot 180 degrees
      */
-
     public void turnAround(){
         this.leftMotor.setSpeed(-100);
         this.rightMotor.setSpeed(-100);
@@ -117,6 +137,13 @@ public class MotionController implements Updatable {
             this.emergencyBrake();
             this.turnDegreesTimer.stop();
             onMotionEnd("turnDegrees");
+            this.manoeuvreObserver.onManoeuvreDetected(this, this.command);
+        }
+
+        if (this.slightlyForwartTimer.timeout()) {
+            this.goToSpeed(0);
+            this.slightlyForwartTimer.stop();
+            this.manoeuvreObserver.onManoeuvreDetected(this, this.command);
         }
 
         this.leftMotor.update();
@@ -168,6 +195,7 @@ public class MotionController implements Updatable {
                 this.driveSquareTimer.stop();
                 this.observer = null;
                 this.turnsMade=-1;
+                this.manoeuvreObserver.onManoeuvreDetected(this, this.command);
             }
         }
 
@@ -182,6 +210,7 @@ public class MotionController implements Updatable {
                 this.driveTriangleTimer.stop();
                 this.observer = null;
                 this.turnsMade = -1;
+                this.manoeuvreObserver.onManoeuvreDetected(this, this.command);
             }
         }
 
@@ -189,6 +218,7 @@ public class MotionController implements Updatable {
         if(this.driveCircleTimer.timeout()){
             this.driveCircleTimer.stop();
             this.goToSpeed(0);
+            this.manoeuvreObserver.onManoeuvreDetected(this, this.command);
         }
     }
 
