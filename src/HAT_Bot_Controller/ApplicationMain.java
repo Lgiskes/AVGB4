@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import jssc.SerialPort;
 import jssc.SerialPortException;
@@ -17,7 +18,7 @@ public class ApplicationMain extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
 
-        BorderPane mainPane = new BorderPane();
+        GridPane mainPane = new GridPane();
 
         SerialPort serialPort = new SerialPort("COM4");
         try{
@@ -79,11 +80,11 @@ public class ApplicationMain extends Application {
             }
         }));
 
-        mainPane.setTop(forwardButton);
-        mainPane.setBottom(backwardButton);
-        mainPane.setLeft(leftButton);
-        mainPane.setRight(rightButton);
-        mainPane.setCenter(brakeButton);
+        mainPane.add(forwardButton, 1, 0);
+        mainPane.add(backwardButton, 1, 2);
+        mainPane.add(leftButton, 0, 1);
+        mainPane.add(rightButton, 2, 1);
+        mainPane.add(brakeButton, 1, 1);
 
         Scene scene = new Scene(mainPane);
         primaryStage.setScene(scene);
