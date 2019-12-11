@@ -184,6 +184,7 @@ public class IndicatorController implements Updatable{
                 break;
         }
 
+        //the RGBLights
         if (!this.BTLightTimer.isStopped()) {
 
             if (this.BTLightTimer.timeout()) {

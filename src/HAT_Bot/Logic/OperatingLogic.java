@@ -322,6 +322,11 @@ public class OperatingLogic implements Updatable, ObstacleDetectionObserver, Rem
     }
 
 
+    /**
+     * Changes the state according to the previous state
+     * @param m the motioncontroller
+     * @param command the state to change to
+     */
     @Override
     public void onManoeuvreDetected(MotionController m, ManoeuvreCommand command) {
         if (command == ManoeuvreCommand.lineFollowing) {

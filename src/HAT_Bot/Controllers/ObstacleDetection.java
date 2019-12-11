@@ -54,6 +54,7 @@ public class ObstacleDetection implements Updatable {
         this.ultrasoneFront.update();
         this.ultrasoneBack.update();
 
+        //if there is an object directly in front or behind the bot
         if (this.ultrasoneFront.getValue() <= 10 || this.ultrasoneBack.getValue() <= 10) {
             if(this.previousCommand != ObstacleDetectionCommand.Stop){
                 this.previousCommand = ObstacleDetectionCommand.Stop;
@@ -62,6 +63,7 @@ public class ObstacleDetection implements Updatable {
             }
 
         }
+        // if there is an object near the front or the back of the bot
         else if (this.ultrasoneFront.getValue() <= 30 || this.ultrasoneBack.getValue() <= 30) {
             if(this.previousCommand != ObstacleDetectionCommand.SlowDown){
                 this.previousCommand = ObstacleDetectionCommand.SlowDown;
@@ -70,6 +72,7 @@ public class ObstacleDetection implements Updatable {
             }
 
         }
+        //if no obstacles are near the bot
         else {
             if(this.previousCommand != ObstacleDetectionCommand.Okay){
                 this.previousCommand = ObstacleDetectionCommand.Okay;

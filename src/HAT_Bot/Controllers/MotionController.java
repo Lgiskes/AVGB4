@@ -53,6 +53,10 @@ public class MotionController implements Updatable {
 
     }
 
+    /**
+     * Sets the command
+     * @param command the command the changState function executes after the manoeuvre has ended
+     */
     public void setCommand(ManoeuvreCommand command) {
         this.command = command;
         leftMotor.setCommand(command);
@@ -63,6 +67,10 @@ public class MotionController implements Updatable {
         this.manoeuvreObserver = manoeuvreObserver;
     }
 
+    /**
+     * Moves the bot slightly forward after passing a intersection
+     * @param milliSeconds the time the bot drives forward in milliseconds
+     */
     public void slightlyForward(int milliSeconds) {
         forward();
         this.slightlyForwartTimer.setInterval(milliSeconds);
@@ -140,49 +148,29 @@ public class MotionController implements Updatable {
             this.manoeuvreObserver.onManoeuvreDetected(this, this.command);
         }
 
+        //checks if the slightlyForward action has ended
         if (this.slightlyForwartTimer.timeout()) {
             this.goToSpeed(0);
             this.slightlyForwartTimer.stop();
             this.manoeuvreObserver.onManoeuvreDetected(this, this.command);
         }
 
-        this.leftMotor.update();
-
-        this.rightMotor.update();
-        /*
-        //checks if the goToSpeed action has ended for the right motor
-        if(this.goToSpeedRightTimer.timeout()){
-            int currentSpeed = this.rightMotor.getSpeed();
-            if(currentSpeed < this.toSpeed){
-                this.rightMotor.setSpeed(currentSpeed + 1);
-            }
-            else if(currentSpeed>this.toSpeed){
-               this.rightMotor.setSpeed(currentSpeed - 1);
-            }
-            else{
-                this.goToSpeedRightTimer.stop();
-                if(this.goToSpeedLeftTimer.isStopped()){
-                    onMotionEnd("goToSpeed(" + this.toSpeed + ")");
-                }
+        //checks if the goToSpeed action for the left Motor has ended
+        if(this.goToSpeedLeftTimer.timeout()) {
+            this.leftMotor.update();
+            if(this.leftMotor.getSpeed() == this.toSpeed){
+                this.goToSpeedLeftTimer.stop();
             }
         }
 
-        //checks if the goToSpeed action has ended for the left motor
-        if(this.goToSpeedLeftTimer.timeout()){
-            int currentSpeed = this.leftMotor.getSpeed();
-            if(currentSpeed<this.toSpeed){
-                this.leftMotor.setSpeed(currentSpeed+1);
+        //checks if the goToSpeed action for the right Motor has ended
+        if(this.goToSpeedRightTimer.timeout()) {
+            this.rightMotor.update();
+            if(this.rightMotor.getSpeed() == this.toSpeed){
+                this.goToSpeedRightTimer.stop();
             }
-            else if(currentSpeed>this.toSpeed){
-                this.leftMotor.setSpeed(currentSpeed-1);
-            }
-            else{
-                this.goToSpeedLeftTimer.stop();
-                if(this.goToSpeedRightTimer.isStopped()){
-                    onMotionEnd("goToSpeed(" + this.toSpeed + ")");
-                }
-            }
-        }*/
+        }
+
 
         //checks if one side of a square has been driven
         if(this.driveSquareTimer.timeout()){
@@ -286,30 +274,36 @@ public class MotionController implements Updatable {
     /**
      * Slowly accelerates the bot to the given speed
      * @param speed the speed to which the bot accelerates
+     * @param accelerationTime the time it takes to reach the desired speed
      */
-    public void goToSpeed(int speed){
-        this.goToSpeed(speed, 1000);
-    }
-
     public void goToSpeed(int speed, int accelerationTime){
         int rightTime;
         int leftTime;
-
         if(speed-this.rightMotor.getSpeed() == 0){
-            rightTime = accelerationTime;
+            rightTime = 1000;
         }
         else {
             rightTime = accelerationTime / (Math.abs(speed - this.rightMotor.getSpeed()));
         }
         if(speed - this.leftMotor.getSpeed() == 0){
-            leftTime = accelerationTime;
+            leftTime = 1000;
         }
         else{
             leftTime = accelerationTime / (Math.abs(speed - this.leftMotor.getSpeed()));
         }
 
-        this.rightMotor.setToSpeed(speed, rightTime);
-        this.leftMotor.setToSpeed(speed, leftTime);
+        this.goToSpeedLeftTimer.setInterval(leftTime);
+        this.goToSpeedRightTimer.setInterval(rightTime);
+        this.goToSpeedLeftTimer.start();
+        this.goToSpeedRightTimer.start();
+
+        this.toSpeed = speed;
+        this.rightMotor.setToSpeed(speed,rightTime);
+        this.leftMotor.setToSpeed(speed,leftTime);
+    }
+
+    public void goToSpeed(int speed){
+        goToSpeed(speed, 1000);
     }
 
     /**
@@ -336,11 +330,11 @@ public class MotionController implements Updatable {
     public void turnRightCurve(boolean forward, int speed){
         if (forward){
             this.leftMotor.setSpeed(speed);
-            this.rightMotor.setSpeed(10*speed/100);
+            this.rightMotor.setSpeed(25*speed/100);
         }
         else {
             this.leftMotor.setSpeed(-speed);
-            this.rightMotor.setSpeed(-10*speed/100);
+            this.rightMotor.setSpeed(-25*speed/100);
         }
     }
 
