@@ -220,6 +220,7 @@ public class OperatingLogic implements Updatable, ObstacleDetectionObserver, Rem
                 drive();
                 break;
             case turnLeft:
+                this.indicatorController.drivingIndication();
                 if (this.currentSpeed == 0 || this.currentState == HATState.obstacleDetected) {
                     this.motionController.turningLeft(10);
                 } else {
@@ -227,6 +228,7 @@ public class OperatingLogic implements Updatable, ObstacleDetectionObserver, Rem
                 }
                 break;
             case turnRight:
+                this.indicatorController.drivingIndication();
                 if (this.currentSpeed == 0 || this.currentState == HATState.obstacleDetected) {
                     this.motionController.turningRight(10);
                 } else {
