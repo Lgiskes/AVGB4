@@ -35,11 +35,11 @@ public class ObstacleDetection implements Updatable {
     public ObstacleDetectionSide getBlockedSide(){
         ObstacleDetectionSide side = ObstacleDetectionSide.None;
 
-        if (this.ultrasoneFront.getValue() <= 30 && this.ultrasoneBack.getValue() <= 30){
+        if (this.ultrasoneFront.getValue() <= 20 && this.ultrasoneBack.getValue() <= 20){
             side = ObstacleDetectionSide.Both;
-        } else if (this.ultrasoneFront.getValue() <= 30){
+        } else if (this.ultrasoneFront.getValue() <= 20){
             side = ObstacleDetectionSide.Front;
-        } else if (this.ultrasoneBack.getValue() <= 30){
+        } else if (this.ultrasoneBack.getValue() <= 20){
             side = ObstacleDetectionSide.Back;
         }
 
