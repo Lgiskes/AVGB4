@@ -364,15 +364,17 @@ public class OperatingLogic implements Updatable, ObstacleDetectionObserver, Rem
             }
         }
         else {
-            if(this.status == ObstacleDetectionCommand.Okay || this.obstacleSide != ObstacleDetectionSide.Back && this.obstacleSide != ObstacleDetectionSide.Both)
-            this.motionController.goToSpeed(-this.currentSpeed);
+            if(this.status == ObstacleDetectionCommand.Okay || this.obstacleSide != ObstacleDetectionSide.Back && this.obstacleSide != ObstacleDetectionSide.Both){
+                this.motionController.goToSpeed(-this.currentSpeed);
 
-            if(this.currentSpeed == 0){
-                this.indicatorController.standingStillIndication();
+                if(this.currentSpeed == 0){
+                    this.indicatorController.standingStillIndication();
+                }
+                else {
+                    this.indicatorController.drivingBackwardsIndication();
+                }
             }
-            else {
-                this.indicatorController.drivingBackwardsIndication();
-            }
+
         }
     }
 

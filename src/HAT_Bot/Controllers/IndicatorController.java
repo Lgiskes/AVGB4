@@ -38,7 +38,7 @@ public class IndicatorController implements Updatable{
         }
         BoeBot.rgbShow();
 
-        //this.beeper.setOn(true);
+        this.beeper.setOn(true);
     }
 
     /**
