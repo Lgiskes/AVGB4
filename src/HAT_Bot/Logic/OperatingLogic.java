@@ -47,12 +47,12 @@ public class OperatingLogic implements Updatable, ObstacleDetectionObserver, Rem
         changeState(HATState.remoteControlled);
         this.obstacleSide = ObstacleDetectionSide.None;
         ArrayList<RouteCommand> route = new ArrayList<>();
-        route.add(RouteCommand.left);
         route.add(RouteCommand.straight);
         route.add(RouteCommand.right);
-        route.add(RouteCommand.straight);
         route.add(RouteCommand.right);
-        route.add(RouteCommand.left);
+        route.add(RouteCommand.right);
+        route.add(RouteCommand.right);
+        route.add(RouteCommand.right);
         routeController.setRoute(route);
         onRemoteControlDetected(null, RemoteControlCommand.emergencyBrake);
     }
@@ -297,7 +297,6 @@ public class OperatingLogic implements Updatable, ObstacleDetectionObserver, Rem
                     break;
             }
         }
-
     }
 
 
@@ -305,7 +304,7 @@ public class OperatingLogic implements Updatable, ObstacleDetectionObserver, Rem
     public void onCrossroadDetected(RouteController r, RouteCommand command) {
         changeState(HATState.manoeuvre);
         if (this.currentState == HATState.manoeuvre) {
-            motionController.slightlyForward(40, 50); // Een klein stukje over het kruispunt heen rijden
+            motionController.slightlyForward(40, 100); // Een klein stukje over het kruispunt heen rijden
             switch (command) {
                 case straight:
                     motionController.setCommand(ManoeuvreCommand.lineFollowing);
@@ -313,12 +312,12 @@ public class OperatingLogic implements Updatable, ObstacleDetectionObserver, Rem
                 case right:
                     motionController.setCommand(ManoeuvreCommand.lineFollowing);
                     motionController.turnRight();
-                    BoeBot.wait(200); // Zodat de BoeBot de bocht kan maken
+                    BoeBot.wait(400); // Zodat de BoeBot de bocht kan maken
                     break;
                 case left:
                     motionController.setCommand(ManoeuvreCommand.lineFollowing);
                     motionController.turnLeft();
-                    BoeBot.wait(200); // Zodat de BoeBot de bocht kan maken
+                    BoeBot.wait(400); // Zodat de BoeBot de bocht kan maken
                     break;
                 case turnAround:
                     motionController.setCommand(ManoeuvreCommand.lineFollowing);

@@ -20,7 +20,7 @@ public class ApplicationMain extends Application {
 
         GridPane mainPane = new GridPane();
 
-        SerialPort serialPort = new SerialPort("COM7");
+        SerialPort serialPort = new SerialPort("COM6");
         try{
             serialPort.openPort();
 
@@ -30,6 +30,7 @@ public class ApplicationMain extends Application {
             System.out.println(ex.getMessage());
         }
 
+        //button writestring == ascii waarde + 255 == remotecontrol value
         Button forwardButton = new Button("\u2191");
         forwardButton.setOnAction((event -> {
             try{
