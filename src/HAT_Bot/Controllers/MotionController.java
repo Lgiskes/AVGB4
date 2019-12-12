@@ -27,7 +27,7 @@ public class MotionController implements Updatable {
 
     private StoppableTimer driveSquareTimer = new StoppableTimer(1000);
     private StoppableTimer driveTriangleTimer = new StoppableTimer(1000);
-    private StoppableTimer driveCircleTimer = new StoppableTimer(5500);
+    private StoppableTimer driveCircleTimer = new StoppableTimer(7000);
     private int turnsMade=0;
 
     /**
@@ -203,7 +203,7 @@ public class MotionController implements Updatable {
         //checks if the circle action has been completed
         if(this.driveCircleTimer.timeout()){
             this.driveCircleTimer.stop();
-            this.goToSpeed(0);
+            this.emergencyBrake();
             this.manoeuvreObserver.onManoeuvreDetected(this, this.command);
         }
     }

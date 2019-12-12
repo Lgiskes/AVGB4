@@ -64,7 +64,7 @@ public class ObstacleDetection implements Updatable {
 
         }
         // if there is an object near the front or the back of the bot
-        else if (this.ultrasoneFront.getValue() <= 30 || this.ultrasoneBack.getValue() <= 30) {
+        else if (this.ultrasoneFront.getValue() <= 20 || this.ultrasoneBack.getValue() <= 20) {
             if(this.previousCommand != ObstacleDetectionCommand.SlowDown){
                 this.previousCommand = ObstacleDetectionCommand.SlowDown;
                 ObstacleDetectionSide side = getBlockedSide();
