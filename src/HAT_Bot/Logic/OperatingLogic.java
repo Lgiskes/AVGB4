@@ -108,7 +108,7 @@ public class OperatingLogic implements Updatable, ObstacleDetectionObserver, Rem
 
         if (command == ObstacleDetectionCommand.SlowDown){
             if(this.forward && side == ObstacleDetectionSide.Front || !this.forward && side == ObstacleDetectionSide.Back || side == ObstacleDetectionSide.Both) {
-                this.motionController.goToSpeed(0);
+                this.motionController.goToSpeed(0,500);
             }
 
             this.indicatorController.foundObstacleIndication();

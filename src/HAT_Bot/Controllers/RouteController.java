@@ -53,12 +53,12 @@ public class RouteController {
      * hanldes the motion when the bot is at an intersection
      */
     public void crossroadManoeuvre() {
-        if (this.index < route.size()) {
-            observer.onCrossroadDetected(this, this.route.get(this.index));
+        if (this.index < this.route.size()) {
+            this.observer.onCrossroadDetected(this, this.route.get(this.index));
             this.index++;
         }
         else {
-            observer.onCrossroadDetected(this, RouteCommand.stop);
+            this.observer.onCrossroadDetected(this, RouteCommand.stop);
         }
     }
 }
