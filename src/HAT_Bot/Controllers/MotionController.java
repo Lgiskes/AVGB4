@@ -191,7 +191,6 @@ public class MotionController implements Updatable {
             if(this.turnsMade<3){
                 this.goToSpeed(0);
                 this.driveTriangleTimer.stop();
-                this.observer = this.oldObserver;
             }
             else {
                 this.goToSpeed(0);
