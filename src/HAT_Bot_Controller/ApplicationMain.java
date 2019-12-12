@@ -20,7 +20,7 @@ public class ApplicationMain extends Application {
 
         GridPane mainPane = new GridPane();
 
-        SerialPort serialPort = new SerialPort("COM6");
+        SerialPort serialPort = new SerialPort("COM5");
         try{
             serialPort.openPort();
 
