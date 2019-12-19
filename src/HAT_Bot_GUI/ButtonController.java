@@ -1,7 +1,5 @@
 package HAT_Bot_GUI;
 
-import java.util.ArrayList;
-
 public class ButtonController {
     private String text;
     private byte command;

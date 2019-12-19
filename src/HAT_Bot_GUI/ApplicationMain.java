@@ -9,7 +9,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -58,8 +57,9 @@ import java.util.ArrayList;
             tabPane.getTabs().addAll(manualControlTab, roundButtonGridpane());
             tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
 
-            Scene scene = new Scene(tabPane, 600, 450, Color.WHITE);
+            Scene scene = new Scene(tabPane, 602, 700, Color.WHITE);
             primaryStage.setScene(scene);
+            primaryStage.setResizable(false);
             primaryStage.show();
 
             scene.setOnKeyPressed(event -> {
@@ -141,15 +141,16 @@ import java.util.ArrayList;
         }
 
         private Tab roundButtonGridpane(){
+            HBox hbox = new HBox();
             GridPane gridPane = new GridPane();
-            gridPane.setVgap(90);
-            gridPane.setHgap(90);
+            gridPane.setVgap(76);
+            gridPane.setHgap(75);
 
             Tab routeControlTab = new Tab("Route Control");
             // new Image(url)
             Image image = new Image("file:Resources/Grid.png");
             // new BackgroundSize(width, height, widthAsPercentage, heightAsPercentage, contain, cover)
-            BackgroundSize backgroundSize = new BackgroundSize(100, 411, true, false, true, false);
+            BackgroundSize backgroundSize = new BackgroundSize(100, 100, true, true, true, false);
             // new BackgroundImage(image, repeatX, repeatY, position, size)
             BackgroundImage backgroundImage = new BackgroundImage(image, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, backgroundSize);
             // new Background(images...)
@@ -170,6 +171,8 @@ import java.util.ArrayList;
                     gridPane.add(button, x, y);
                 }
             }
+            gridPane.getColumnConstraints().add(new ColumnConstraints(6));
+            gridPane.getRowConstraints().add(new RowConstraints(6));
             routeControlTab.setContent(gridPane);
 
             return routeControlTab;
