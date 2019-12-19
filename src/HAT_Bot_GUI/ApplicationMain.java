@@ -55,24 +55,7 @@ import java.util.ArrayList;
             Tab manualControlTab = new Tab("Manual Control");
             manualControlTab.setContent(group);
 
-            Tab routeControlTab = new Tab("Route Control");
-            GridPane gridPane = new GridPane();
-            // new Image(url)
-            Image image = new Image("file:Resources/Grid.png");
-            // new BackgroundSize(width, height, widthAsPercentage, heightAsPercentage, contain, cover)
-            BackgroundSize backgroundSize = new BackgroundSize(100, 411, true, false, true, false);
-            // new BackgroundImage(image, repeatX, repeatY, position, size)
-            BackgroundImage backgroundImage = new BackgroundImage(image, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, backgroundSize);
-            // new Background(images...)
-            Background background = new Background(backgroundImage);
-            gridPane.setBackground(background);
-
-            gridPane.setVgap(90);
-            gridPane.setHgap(90);
-            gridPane.add(new Label("hello"), 1, 1);
-            routeControlTab.setContent(gridPane);
-
-            tabPane.getTabs().addAll(manualControlTab, routeControlTab);
+            tabPane.getTabs().addAll(manualControlTab, roundButtonGridpane());
             tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
 
             Scene scene = new Scene(tabPane, 600, 450, Color.WHITE);
@@ -156,4 +139,40 @@ import java.util.ArrayList;
 
             return emergencyBreak;
         }
+
+        private Tab roundButtonGridpane(){
+            GridPane gridPane = new GridPane();
+            gridPane.setVgap(90);
+            gridPane.setHgap(90);
+
+            Tab routeControlTab = new Tab("Route Control");
+            // new Image(url)
+            Image image = new Image("file:Resources/Grid.png");
+            // new BackgroundSize(width, height, widthAsPercentage, heightAsPercentage, contain, cover)
+            BackgroundSize backgroundSize = new BackgroundSize(100, 411, true, false, true, false);
+            // new BackgroundImage(image, repeatX, repeatY, position, size)
+            BackgroundImage backgroundImage = new BackgroundImage(image, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, backgroundSize);
+            // new Background(images...)
+            Background background = new Background(backgroundImage);
+            gridPane.setBackground(background);
+
+            for(int x = 1; x < 6; x++){
+                for(int y = 1; y < 5; y++){
+                    RoundButtonController roundButton = new RoundButtonController("", x, y);
+                    Button button = new Button(roundButton.getName());
+                    button.setStyle(
+                            "-fx-background-radius: 5em; " +
+                                    "-fx-min-width: 30px; " +
+                                    "-fx-min-height: 30px; " +
+                                    "-fx-max-width: 30px; " +
+                                    "-fx-max-height: 30px;"
+                    );
+                    gridPane.add(button, x, y);
+                }
+            }
+            routeControlTab.setContent(gridPane);
+
+            return routeControlTab;
+        }
+
     }
