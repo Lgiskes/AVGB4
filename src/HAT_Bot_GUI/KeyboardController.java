@@ -1,5 +1,6 @@
 package HAT_Bot_GUI;
 
+import HAT_Bot.Hardware.Sensors.Bluetooth;
 import javafx.scene.input.KeyEvent;
 
 public class KeyboardController {
@@ -12,55 +13,55 @@ public class KeyboardController {
     public void keyPressedHandler(KeyEvent event) {
         switch (event.getCode()) {
             case W:
-                System.out.println("Forward");
+                bluetoothController.sendBinary( BluetoothCommands.FORWARD) ;
                 break;
             case A:
-                System.out.println("Left");
-                break;
+                bluetoothController.sendBinary(BluetoothCommands.LEFT);
+            break;
             case S:
-                System.out.println("Backwards");
+                bluetoothController.sendBinary(BluetoothCommands.BACKWARD);
                 break;
             case D:
-                System.out.println("Right");
+                bluetoothController.sendBinary(BluetoothCommands.RIGHT);
                 break;
             case NUMPAD1:
-                System.out.println("goToSpeed 10");
+                bluetoothController.sendBinary(BluetoothCommands.SPEED10);
                 break;
             case NUMPAD2:
-                System.out.println("goToSpeed 20");
+                bluetoothController.sendBinary(BluetoothCommands.SPEED20);
                 break;
             case NUMPAD3:
-                System.out.println("goToSpeed 30");
+                bluetoothController.sendBinary(BluetoothCommands.SPEED30);
                 break;
             case NUMPAD4:
-                System.out.println("goToSpeed 40");
+                bluetoothController.sendBinary(BluetoothCommands.SPEED40);
                 break;
             case NUMPAD5:
-                System.out.println("goToSpeed 50");
+                bluetoothController.sendBinary(BluetoothCommands.SPEED50);
                 break;
             case NUMPAD6:
-                System.out.println("goToSpeed 60");
+                bluetoothController.sendBinary(BluetoothCommands.SPEED60);
                 break;
             case NUMPAD7:
-                System.out.println("goToSpeed 70");
+                bluetoothController.sendBinary(BluetoothCommands.SPEED70);
                 break;
             case NUMPAD8:
-                System.out.println("goToSpeed 80");
+                bluetoothController.sendBinary(BluetoothCommands.SPEED80);
                 break;
             case NUMPAD9:
-                System.out.println("goToSpeed 90");
+                bluetoothController.sendBinary(BluetoothCommands.SPEED90);
                 break;
             case NUMPAD0:
-                System.out.println("goToSpeed 100");
+                bluetoothController.sendBinary(BluetoothCommands.SPEED100);
                 break;
             case DECIMAL:
-                System.out.println("goToSpeed 0");
+                bluetoothController.sendBinary(BluetoothCommands.STOP);
                 break;
             case L:
-                System.out.println("DISCO POLO TRINGELINGELING");
+                bluetoothController.sendBinary(BluetoothCommands.LIGHTS);
                 break;
-            case ENTER: // werkt niet (klikt op de geselecteerde knop)
-                System.out.println("E-Break");
+            case ENTER:
+                bluetoothController.sendBinary(BluetoothCommands.EMERGENCY_BRAKE);
                 break;
         }
     }
