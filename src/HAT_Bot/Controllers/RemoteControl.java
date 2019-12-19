@@ -17,7 +17,6 @@ public class RemoteControl implements Updatable {
     private Infrared infrared;
     private StoppableTimer delayTimer;
     private RemoteControlObserver observer;
-    private Bluetooth bluetooth = new Bluetooth();
 
     /**
      * Constructor for the remoteCrontol.
@@ -120,15 +119,6 @@ public class RemoteControl implements Updatable {
      * pressed button.
      */
     public void update() {
-        // The understanding if statement is too get the value from the bluetooth class and add 255, to match the values
-        // from the actions method, so we can use the method twice.
-        if (this.bluetooth.getBoolean()){
-            int btValue = this.bluetooth.getValue() + 255;
-            actions(btValue);
-            System.out.println(btValue);
-
-        }
-
         if(this.delayTimer.timeout()){
             this.delayTimer.stop();
         }

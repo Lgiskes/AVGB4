@@ -38,7 +38,7 @@ public class IndicatorController implements Updatable{
         }
         BoeBot.rgbShow();
 
-        //this.beeper.setOn(true);
+        this.beeper.setOn(true);
     }
 
     /**
@@ -116,6 +116,9 @@ public class IndicatorController implements Updatable{
         this.status = 5;
     }
 
+    /**
+     * Toggles the RGB lights cycle
+     */
     public void toggleRGBCycle(){
         if (this.BTLightTimer.isStopped()) {
             this.BTLightCounter = 0;

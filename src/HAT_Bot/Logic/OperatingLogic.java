@@ -3,7 +3,6 @@ package HAT_Bot.Logic;
 import HAT_Bot.Controllers.*;
 import TI.BoeBot;
 
-import java.awt.*;
 import java.util.ArrayList;
 
 /**
@@ -38,22 +37,26 @@ public class OperatingLogic implements Updatable, ObstacleDetectionObserver, Rem
         this.remoteControl = remoteControl;
         this.lineDetectionController = lineDetectionController;
         this.routeController = routeController;
+
         obstacleDetection.setObserver(this);
         remoteControl.setObserver(this);
         lineDetectionController.setObserver(this);
         this.motionController.setManoeuvreObserver(this);
         this.routeController.setObserver(this);
+
         this.status = ObstacleDetectionCommand.None;
-        changeState(HATState.remoteControlled);
+
         this.obstacleSide = ObstacleDetectionSide.None;
+
         ArrayList<RouteCommand> route = new ArrayList<>();
-        route.add(RouteCommand.straight);
+        route.add(RouteCommand.forward);
         route.add(RouteCommand.right);
         route.add(RouteCommand.right);
-        route.add(RouteCommand.right);
-        route.add(RouteCommand.right);
-        route.add(RouteCommand.right);
+        route.add(RouteCommand.forward);
+        route.add(RouteCommand.left);
+        route.add(RouteCommand.stop);
         routeController.setRoute(route);
+
         onRemoteControlDetected(null, RemoteControlCommand.emergencyBrake);
     }
 
@@ -108,6 +111,7 @@ public class OperatingLogic implements Updatable, ObstacleDetectionObserver, Rem
 
         if (command == ObstacleDetectionCommand.SlowDown){
             if(this.forward && side == ObstacleDetectionSide.Front || !this.forward && side == ObstacleDetectionSide.Back || side == ObstacleDetectionSide.Both) {
+                this.motionController.killManoeuvre();
                 this.motionController.goToSpeed(0,500);
             }
 
@@ -116,6 +120,7 @@ public class OperatingLogic implements Updatable, ObstacleDetectionObserver, Rem
             changeState(HATState.obstacleDetected);
         }
         else if(command == ObstacleDetectionCommand.Stop){
+            this.motionController.killManoeuvre();
             this.motionController.emergencyBrake();
             this.indicatorController.inFrontOfObstacleIndication();
             this.status = ObstacleDetectionCommand.Stop;
@@ -123,6 +128,7 @@ public class OperatingLogic implements Updatable, ObstacleDetectionObserver, Rem
         }
         else{
             this.status = ObstacleDetectionCommand.Okay;
+            changeState(HATState.remoteControlled);
             this.indicatorController.standingStillIndication();
         }
 
@@ -308,7 +314,7 @@ public class OperatingLogic implements Updatable, ObstacleDetectionObserver, Rem
         if (this.currentState == HATState.manoeuvre) {
             motionController.slightlyForward(40, 100); // Een klein stukje over het kruispunt heen rijden
             switch (command) {
-                case straight:
+                case forward:
                     motionController.setCommand(ManoeuvreCommand.lineFollowing);
                     break;
                 case right:
@@ -325,7 +331,7 @@ public class OperatingLogic implements Updatable, ObstacleDetectionObserver, Rem
                     motionController.setCommand(ManoeuvreCommand.lineFollowing);
                     break;
                 case stop:
-                    changeState(HATState.lineFollowing);
+                    changeState(HATState.remoteControlled);
                     motionController.emergencyBrake();
                     break;
             }
@@ -366,15 +372,17 @@ public class OperatingLogic implements Updatable, ObstacleDetectionObserver, Rem
             }
         }
         else {
-            if(this.status == ObstacleDetectionCommand.Okay || this.obstacleSide != ObstacleDetectionSide.Back && this.obstacleSide != ObstacleDetectionSide.Both)
-            this.motionController.goToSpeed(-this.currentSpeed);
+            if(this.status == ObstacleDetectionCommand.Okay || this.obstacleSide != ObstacleDetectionSide.Back && this.obstacleSide != ObstacleDetectionSide.Both){
+                this.motionController.goToSpeed(-this.currentSpeed);
 
-            if(this.currentSpeed == 0){
-                this.indicatorController.standingStillIndication();
+                if(this.currentSpeed == 0){
+                    this.indicatorController.standingStillIndication();
+                }
+                else {
+                    this.indicatorController.drivingBackwardsIndication();
+                }
             }
-            else {
-                this.indicatorController.drivingBackwardsIndication();
-            }
+
         }
     }
 

@@ -13,6 +13,7 @@ public class MotionController implements Updatable {
     private Motor leftMotor;
     private Motor rightMotor;
     private MotionObserver observer;
+    private MotionObserver oldObserver;
 
     private StoppableTimer turnAroundTimer;
     private StoppableTimer goToSpeedLeftTimer;
@@ -50,7 +51,9 @@ public class MotionController implements Updatable {
         this.goToSpeedLeftTimer.stop();
         this.goToSpeedRightTimer.stop();
         this.slightlyForwartTimer.stop();
-
+        this.driveSquareTimer.stop();
+        this.driveTriangleTimer.stop();
+        this.driveCircleTimer.stop();
     }
 
     /**
@@ -131,8 +134,6 @@ public class MotionController implements Updatable {
     public void emergencyBrake (){
         this.leftMotor.setSpeed(0);
         this.rightMotor.setSpeed(0);
-        this.rightMotor.setToSpeed(0, 1);
-        this.leftMotor.setToSpeed(0, 1);
         this.toSpeed = 0;
     }
 
@@ -155,6 +156,9 @@ public class MotionController implements Updatable {
             this.leftMotor.update();
             if(this.leftMotor.getSpeed() == this.toSpeed){
                 this.goToSpeedLeftTimer.stop();
+
+                onMotionEnd("goToSpeed(0)");
+
             }
         }
 
@@ -176,7 +180,7 @@ public class MotionController implements Updatable {
             else{
                 this.goToSpeed(0);
                 this.driveSquareTimer.stop();
-                this.observer = null;
+                this.observer = this.oldObserver;
                 this.turnsMade=-1;
                 this.manoeuvreObserver.onManoeuvreDetected(this, this.command);
             }
@@ -191,7 +195,7 @@ public class MotionController implements Updatable {
             else {
                 this.goToSpeed(0);
                 this.driveTriangleTimer.stop();
-                this.observer = null;
+                this.observer = this.oldObserver;
                 this.turnsMade = -1;
                 this.manoeuvreObserver.onManoeuvreDetected(this, this.command);
             }
@@ -203,6 +207,17 @@ public class MotionController implements Updatable {
             this.emergencyBrake();
             this.manoeuvreObserver.onManoeuvreDetected(this, this.command);
         }
+    }
+
+    /**
+     * Stops the current manoeuvre instantly
+     */
+    public void killManoeuvre(){
+        this.observer = this.oldObserver;
+        this.driveTriangleTimer.stop();
+        this.driveSquareTimer.stop();
+        this.driveCircleTimer.stop();
+        this.turnsMade=-1;
     }
 
     /**
@@ -340,6 +355,7 @@ public class MotionController implements Updatable {
         if(this.observer == null){
             this.turnsMade = 0;
             this.driveSquareTimer.start();
+            this.oldObserver = this.observer;
             this.observer = new MotionObserver() {
                 @Override
                 public void onMotionEnd(MotionController sender, String motionFunction) {
@@ -357,6 +373,7 @@ public class MotionController implements Updatable {
 
                 }
             };
+            this.goToSpeed(0);
         }
 
     }
@@ -378,6 +395,7 @@ public class MotionController implements Updatable {
         if(this.observer == null){
             this.turnsMade = 0;
             this.driveTriangleTimer.start();
+            this.oldObserver = this.observer;
             this.observer = new MotionObserver() {
                 @Override
                 public void onMotionEnd(MotionController sender, String motionFunction) {
@@ -394,6 +412,7 @@ public class MotionController implements Updatable {
                     }
                 }
             };
+            this.goToSpeed(0);
         }
     }
 
