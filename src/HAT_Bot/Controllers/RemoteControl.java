@@ -17,7 +17,6 @@ public class RemoteControl implements Updatable {
     private Infrared infrared;
     private StoppableTimer delayTimer;
     private RemoteControlObserver observer;
-    private Bluetooth bluetooth = new Bluetooth();
 
     /**
      * Constructor for the remoteCrontol.
