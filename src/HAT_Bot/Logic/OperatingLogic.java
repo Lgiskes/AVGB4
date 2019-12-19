@@ -3,7 +3,6 @@ package HAT_Bot.Logic;
 import HAT_Bot.Controllers.*;
 import TI.BoeBot;
 
-import java.awt.*;
 import java.util.ArrayList;
 
 /**
@@ -50,10 +49,10 @@ public class OperatingLogic implements Updatable, ObstacleDetectionObserver, Rem
         this.obstacleSide = ObstacleDetectionSide.None;
 
         ArrayList<RouteCommand> route = new ArrayList<>();
-        route.add(RouteCommand.straight);
+        route.add(RouteCommand.forward);
         route.add(RouteCommand.right);
         route.add(RouteCommand.right);
-        route.add(RouteCommand.straight);
+        route.add(RouteCommand.forward);
         route.add(RouteCommand.left);
         route.add(RouteCommand.stop);
         routeController.setRoute(route);
@@ -315,7 +314,7 @@ public class OperatingLogic implements Updatable, ObstacleDetectionObserver, Rem
         if (this.currentState == HATState.manoeuvre) {
             motionController.slightlyForward(40, 100); // Een klein stukje over het kruispunt heen rijden
             switch (command) {
-                case straight:
+                case forward:
                     motionController.setCommand(ManoeuvreCommand.lineFollowing);
                     break;
                 case right:

@@ -1,9 +1,10 @@
 package HAT_Bot.Controllers;
 
 public enum RouteCommand {
-    straight,
+    forward,
     right,
     left,
     turnAround,
-    stop
+    stop,
+    None
 }

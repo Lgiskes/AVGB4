@@ -116,6 +116,9 @@ public class IndicatorController implements Updatable{
         this.status = 5;
     }
 
+    /**
+     * Toggles the RGB lights cycle
+     */
     public void toggleRGBCycle(){
         if (this.BTLightTimer.isStopped()) {
             this.BTLightCounter = 0;

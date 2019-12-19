@@ -209,6 +209,9 @@ public class MotionController implements Updatable {
         }
     }
 
+    /**
+     * Stops the current manoeuvre instantly
+     */
     public void killManoeuvre(){
         this.observer = this.oldObserver;
         this.driveTriangleTimer.stop();
