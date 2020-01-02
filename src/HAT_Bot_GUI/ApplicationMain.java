@@ -309,16 +309,16 @@ import java.util.HashMap;
                         if (this.buttonList[step].getX() - this.buttonList[routeOrder.get(routeOrder.indexOf(step) + 1)].getX() > 0) { // Needs to go west
                             switch (this.facingDirection) {
                                 case NORTH:
-                                    routeSteps += "l";
+                                    routeSteps += "L";
                                     break;
                                 case EAST:
-                                    routeSteps += "b";
+                                    routeSteps += "T";
                                     break;
                                 case SOUTH:
-                                    routeSteps += "r";
+                                    routeSteps += "R";
                                     break;
                                 case WEST:
-                                    routeSteps += "f";
+                                    routeSteps += "F";
                                     break;
                             }
                             this.facingDirection = Directions.WEST;
@@ -326,37 +326,37 @@ import java.util.HashMap;
                         else if (this.buttonList[step].getX() - this.buttonList[routeOrder.get(routeOrder.indexOf(step) + 1)].getX() < 0) { // Needs to go east
                             switch (this.facingDirection) {
                                 case NORTH:
-                                    routeSteps += "r";
+                                    routeSteps += "R";
                                     break;
                                 case EAST:
-                                    routeSteps += "f";
+                                    routeSteps += "F";
                                     break;
                                 case SOUTH:
-                                    routeSteps += "l";
+                                    routeSteps += "L";
                                     break;
                                 case WEST:
-                                    routeSteps += "b";
+                                    routeSteps += "T";
                                     break;
                             }
                             this.facingDirection = Directions.EAST;
                         }
                         for (int i = 1; i < Math.abs(this.buttonList[step].getX() - this.buttonList[routeOrder.get(routeOrder.indexOf(step) + 1)].getX()); i++) {
-                            routeSteps += "f";
+                            routeSteps += "F";
                         }
 
                         if (this.buttonList[step].getY() - this.buttonList[routeOrder.get(routeOrder.indexOf(step) + 1)].getY() > 0) { // Needs to go north
                             switch (this.facingDirection) {
                                 case NORTH:
-                                    routeSteps += "f";
+                                    routeSteps += "F";
                                     break;
                                 case EAST:
-                                    routeSteps += "l";
+                                    routeSteps += "L";
                                     break;
                                 case SOUTH:
-                                    routeSteps += "b";
+                                    routeSteps += "T";
                                     break;
                                 case WEST:
-                                    routeSteps += "r";
+                                    routeSteps += "R";
                                     break;
                             }
                             this.facingDirection = Directions.NORTH;
@@ -364,25 +364,25 @@ import java.util.HashMap;
                         else if (this.buttonList[step].getY() - this.buttonList[routeOrder.get(routeOrder.indexOf(step) + 1)].getY() < 0) { // Needs to go south
                             switch (this.facingDirection) {
                                 case NORTH:
-                                    routeSteps += "b";
+                                    routeSteps += "T";
                                     break;
                                 case EAST:
-                                    routeSteps += "r";
+                                    routeSteps += "R";
                                     break;
                                 case SOUTH:
-                                    routeSteps += "f";
+                                    routeSteps += "F";
                                     break;
                                 case WEST:
-                                    routeSteps += "l";
+                                    routeSteps += "L";
                                     break;
                             }
                             this.facingDirection = Directions.SOUTH;
                         }
                         for (int i = 1; i < Math.abs(this.buttonList[step].getY() - this.buttonList[routeOrder.get(routeOrder.indexOf(step) + 1)].getY()); i++) {
-                            routeSteps += "f";
+                            routeSteps += "F";
                         }
 
-                        routeSteps += "!";
+                        routeSteps += "S";
                     }
                     else {
                         System.out.println(routeSteps);
