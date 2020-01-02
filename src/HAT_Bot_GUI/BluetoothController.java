@@ -31,9 +31,9 @@ public class BluetoothController {
     }
 
 
-    public void sendBinary(byte bin) {
+    public void sendBinary(byte binary) {
         try{
-            serialPort.writeByte(bin);
+            serialPort.writeByte(binary);
         }
         catch (SerialPortException ex){
             System.out.println(ex.getMessage());

@@ -4,6 +4,10 @@ import HAT_Bot.Hardware.Sensors.Bluetooth;
 
 import java.util.ArrayList;
 
+/**
+ * Controls the data coming from the Bluetooth module
+ */
+
 public class BluetoothController implements Updatable {
 
     private Bluetooth bluetooth;
@@ -47,7 +51,7 @@ public class BluetoothController implements Updatable {
                     switch (btValue){
                         case 70: command = RouteCommand.forward;
                         break;
-                        case  82: command= RouteCommand.right;
+                        case  82: command = RouteCommand.right;
                         break;
                         case 76: command = RouteCommand.left;
                         break;

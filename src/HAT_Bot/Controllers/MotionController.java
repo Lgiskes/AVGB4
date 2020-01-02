@@ -19,7 +19,7 @@ public class MotionController implements Updatable {
     private StoppableTimer goToSpeedLeftTimer;
     private StoppableTimer goToSpeedRightTimer;
     private StoppableTimer turnDegreesTimer;
-    private StoppableTimer slightlyForwartTimer;
+    private StoppableTimer slightlyForwardTimer;
 
     private int toSpeed;
     private ManoeuvreObserver manoeuvreObserver;
@@ -45,12 +45,12 @@ public class MotionController implements Updatable {
         this.goToSpeedRightTimer = new StoppableTimer(1000);
         this.goToSpeedLeftTimer = new StoppableTimer(1000);
         this.turnDegreesTimer = new StoppableTimer(1000);
-        this.slightlyForwartTimer = new StoppableTimer(1000);
+        this.slightlyForwardTimer = new StoppableTimer(1000);
         this.turnAroundTimer.stop();
         this.turnDegreesTimer.stop();
         this.goToSpeedLeftTimer.stop();
         this.goToSpeedRightTimer.stop();
-        this.slightlyForwartTimer.stop();
+        this.slightlyForwardTimer.stop();
         this.driveSquareTimer.stop();
         this.driveTriangleTimer.stop();
         this.driveCircleTimer.stop();
@@ -125,7 +125,6 @@ public class MotionController implements Updatable {
         this.rightMotor.setSpeed(-100);
         this.turnAroundTimer.setInterval(500);
         this.turnAroundTimer.start();
-
     }
 
     /**
