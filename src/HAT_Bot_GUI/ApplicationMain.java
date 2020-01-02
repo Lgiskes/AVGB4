@@ -232,7 +232,7 @@ import java.util.HashMap;
     private Node routeButtons() {
             ComboBox comboBox = new ComboBox();
             comboBox.setPrefSize(250, 37.5);
-            comboBox.getItems().add("Current route");
+            comboBox.getItems().add("[New Route]");
             comboBox.getItems().addAll(this.routeController.getRouteNames());
             comboBox.getSelectionModel().selectFirst();
 
@@ -244,16 +244,19 @@ import java.util.HashMap;
             runButton.setOnAction( event -> {
                 runButtonPressed((String)comboBox.getValue());
             });
-        Button saveButton = new Button("Save route");
-        saveButton.setPrefSize(150, 37.5);
-        saveButton.setOnAction(event -> {
-            String route = "Hello World";
+            Button saveButton = new Button("Save route");
+            saveButton.setPrefSize(150, 37.5);
+            saveButton.setOnAction(event -> {
+                    String route = "Hello World";
 
-                    this.routeController.addRoute(textField.getText(), route);
-                    comboBox.getItems().remove(0, comboBox.getItems().size());
+                    if(!textField.getText().equals("[New Route]")){
+                        this.routeController.addRoute(textField.getText(), route);
+                        comboBox.getItems().remove(0, comboBox.getItems().size());
 
-                    comboBox.getItems().addAll("Current route" ,this.routeController.getRouteNames());
-                    comboBox.getSelectionModel().select(textField.getText());
+                        comboBox.getItems().add("[New Route]");
+                        comboBox.getItems().addAll(this.routeController.getRouteNames());
+                        comboBox.getSelectionModel().select(textField.getText());
+                    }
 
             System.out.println("Route saved!");
 
@@ -261,18 +264,17 @@ import java.util.HashMap;
 
 
 
-        HBox hBox = new HBox();
-        hBox.setSpacing(7);
-        VBox vBox1 = new VBox();
-        VBox vBox2 = new VBox();
+            HBox hBox = new HBox();
+            hBox.setSpacing(7);
+            VBox vBox1 = new VBox();
+            VBox vBox2 = new VBox();
 
-        hBox.getChildren().addAll(vBox1, vBox2, emergencyBreak());
+            hBox.getChildren().addAll(vBox1, vBox2, emergencyBreak());
 
-        vBox1.getChildren().addAll(comboBox, textField);
-        vBox2.getChildren().addAll(runButton, saveButton);
-        return hBox;
-
-    }
+            vBox1.getChildren().addAll(comboBox, textField);
+            vBox2.getChildren().addAll(runButton, saveButton);
+            return hBox;
+        }
 
         private void runButtonPressed(String routeName) {
             if (routeName.equals("Current route")) {
