@@ -161,7 +161,7 @@ import java.util.HashMap;
     private Node emergencyBreak() {
         Button emergencyBreak = new Button("EmergencyBrake");
         emergencyBreak.setPrefSize(200, 75);
-        emergencyBreak.setStyle("-fx-background-color: RED");
+        emergencyBreak.setStyle("-fx-background-color: RED; -fx-text-fill: BLACK");
         emergencyBreak.setFont(Font.font("Arial Black", 18));
         emergencyBreak.setOnAction(event -> {
             this.bluetoothController.sendBinary(BluetoothCommands.EMERGENCY_BRAKE);
@@ -236,7 +236,8 @@ import java.util.HashMap;
             comboBox.getItems().addAll(this.routeController.getRouteNames());
             comboBox.getSelectionModel().selectFirst();
 
-            TextField textField = new TextField("Type route name");
+            TextField textField = new TextField("");
+            textField.promptTextProperty().set("Route name");
             textField.setPrefSize(250, 37.5);
 
             Button runButton = new Button("Run route");
