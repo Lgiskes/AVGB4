@@ -1,13 +1,9 @@
 package HAT_Bot_GUI;
 
 import javafx.application.Application;
-import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -16,12 +12,14 @@ import javafx.stage.Stage;
 
 import java.util.ArrayList;
 
-/**
+    /**
      *
      */
     public class ApplicationMain extends Application {
         private KeyboardController keyboardController;
         private BluetoothController bluetoothController;
+        private Font Bold = new Font("Arial Black", 25);
+        private RoundButtonController[] buttonList = new RoundButtonController[20];
 
 
         public static void ApplicationMain(String[] args) {
@@ -35,29 +33,15 @@ import java.util.ArrayList;
          * */
         @Override
         public void start(Stage primaryStage) throws Exception {
+
             this.bluetoothController = new BluetoothController("COM6");
             this.keyboardController = new KeyboardController(this.bluetoothController);
 
-            VBox vBox = new VBox();
-            HBox topHBox = new HBox();
-            HBox bottomHBox = new HBox();
-            vBox.getChildren().addAll(topHBox, bottomHBox);
-            vBox.setSpacing(20);
-            topHBox.setSpacing(62.5);
-            bottomHBox.setSpacing(5);
-            Group group = new Group(vBox);
+            TabPane tabPane = new TabPane(controlTab(), routeTab());
 
-            topHBox.getChildren().addAll(moveButtons(), speedButtons());
-            bottomHBox.getChildren().addAll(emergencyBreak());
-
-            TabPane tabPane = new TabPane();
-            Tab manualControlTab = new Tab("Manual Control");
-            manualControlTab.setContent(group);
-
-            tabPane.getTabs().addAll(manualControlTab, roundButtonGridpane());
             tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
 
-            Scene scene = new Scene(tabPane, 602, 700, Color.WHITE);
+            Scene scene = new Scene(tabPane, 602, 640, Color.WHITE);
             primaryStage.setScene(scene);
             primaryStage.setResizable(false);
             primaryStage.show();
@@ -65,6 +49,49 @@ import java.util.ArrayList;
             scene.setOnKeyPressed(event -> {
                 this.keyboardController.keyPressedHandler(event);
             });
+        }
+
+        private Tab controlTab() {
+            Tab controlTab = new Tab( "Manual Control");
+
+            AnchorPane anchorPane = new AnchorPane();
+
+            Node emergencyBreak = emergencyBreak();
+            Node speedControl = speedButtons();
+            Node directionalControl = moveButtons();
+
+            AnchorPane.setTopAnchor(directionalControl, 100.0);
+            AnchorPane.setTopAnchor(speedControl, 100.0);
+            AnchorPane.setLeftAnchor(directionalControl, 20.0);
+            AnchorPane.setRightAnchor(speedControl, 20.0);
+            AnchorPane.setLeftAnchor(emergencyBreak, 30.0);
+            AnchorPane.setRightAnchor(emergencyBreak, 30.0);
+            AnchorPane.setBottomAnchor(emergencyBreak, 100.0);
+
+            anchorPane.getChildren().addAll(directionalControl, speedControl, emergencyBreak);
+
+            controlTab.setContent(anchorPane);
+
+            return controlTab;
+        }
+
+        private Tab routeTab() {
+            Tab routeTab = new Tab("Route Control");
+
+            AnchorPane anchorPane = new AnchorPane();
+
+            Node roundButtonGridpane = roundButtonGridpane();
+            Node routeButtons = routeButtons();
+
+            AnchorPane.setTopAnchor(roundButtonGridpane, 0.0);
+            AnchorPane.setLeftAnchor(roundButtonGridpane, 0.0);
+            AnchorPane.setRightAnchor(roundButtonGridpane, 0.0);
+            AnchorPane.setBottomAnchor(routeButtons, 0.0);
+            anchorPane.getChildren().addAll(roundButtonGridpane, routeButtons);
+
+            routeTab.setContent(anchorPane);
+
+            return routeTab;
         }
 
         /**
@@ -85,6 +112,7 @@ import java.util.ArrayList;
 
             for (ButtonController b : buttons) {
                 Button button = new Button(b.getText());
+                button.setFont(this.Bold);
                 button.setPrefSize(b.getButtonSize(), b.getButtonSize());
                 moveButtonGp.add(button, b.getX(), b.getY());
                 button.setOnAction(event -> {
@@ -118,6 +146,7 @@ import java.util.ArrayList;
 
             for (ButtonController b : buttons) {
                 Button button = new Button(b.getText());
+                button.setFont(this.Bold);
                 button.setPrefSize(b.getButtonSize(), b.getButtonSize());
                 speedButtonGp.add(button, b.getX(), b.getY());
                 button.setOnAction(event -> {
@@ -140,42 +169,73 @@ import java.util.ArrayList;
             return emergencyBreak;
         }
 
-        private Tab roundButtonGridpane(){
-            HBox hbox = new HBox();
+        private Node roundButtonGridpane(){
             GridPane gridPane = new GridPane();
-            gridPane.setVgap(76);
-            gridPane.setHgap(75);
+            gridPane.setVgap(70);
+            gridPane.setHgap(70);
 
-            Tab routeControlTab = new Tab("Route Control");
             // new Image(url)
             Image image = new Image("file:Resources/Grid.png");
             // new BackgroundSize(width, height, widthAsPercentage, heightAsPercentage, contain, cover)
-            BackgroundSize backgroundSize = new BackgroundSize(100, 100, true, true, true, false);
+            BackgroundSize backgroundSize = new BackgroundSize(100, 100, true, true, true, true);
             // new BackgroundImage(image, repeatX, repeatY, position, size)
             BackgroundImage backgroundImage = new BackgroundImage(image, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, backgroundSize);
             // new Background(images...)
             Background background = new Background(backgroundImage);
             gridPane.setBackground(background);
 
-            for(int x = 1; x < 6; x++){
-                for(int y = 1; y < 5; y++){
+            for(int x = 0; x < 5; x++){
+                for(int y = 0; y < 4; y++){
                     RoundButtonController roundButton = new RoundButtonController("", x, y);
+                    this.buttonList[(x*4) + y] = roundButton;
                     Button button = new Button(roundButton.getName());
+                    button.setFont(new Font("Arial Black", 15));
                     button.setStyle(
                             "-fx-background-radius: 5em; " +
-                                    "-fx-min-width: 30px; " +
-                                    "-fx-min-height: 30px; " +
-                                    "-fx-max-width: 30px; " +
-                                    "-fx-max-height: 30px;"
+                                    "-fx-min-width: 35px; " +
+                                    "-fx-min-height: 35px; " +
+                                    "-fx-max-width: 35px; " +
+                                    "-fx-max-height: 35px;"
                     );
-                    gridPane.add(button, x, y);
+                    roundButton.setMaxOptions(10);
+                    gridPane.add(button, x + 1, y + 1);
+                    button.setOnAction(event -> {
+                        roundButton.buttonPressed();
+                        button.setText(roundButton.getName());
+                        System.out.println(roundButton.getX() + " " + roundButton.getY());
+                    });
+                    gridPane.add(new Label(), 0, 5);
                 }
             }
-            gridPane.getColumnConstraints().add(new ColumnConstraints(6));
-            gridPane.getRowConstraints().add(new RowConstraints(6));
-            routeControlTab.setContent(gridPane);
+            gridPane.getColumnConstraints().add(new ColumnConstraints(12));
+            gridPane.getRowConstraints().add(new RowConstraints(12));
 
-            return routeControlTab;
+            return gridPane;
         }
 
+        private Node routeButtons() {
+            ComboBox comboBox = new ComboBox();
+            comboBox.setPrefSize(250, 37.5);
+            comboBox.getItems().addAll("Current route", "Route 2", "Route 3");
+            comboBox.getSelectionModel().selectFirst();
+
+            Button loadButton = new Button("Run route");
+            loadButton.setPrefSize(150, 37.5);
+            Button saveButton = new Button("Save route");
+            saveButton.setPrefSize(150, 37.5);
+
+            TextField textField = new TextField("Type route name");
+            textField.setPrefSize(250, 37.5);
+
+            HBox hBox = new HBox();
+            hBox.setSpacing(7);
+            VBox vBox1 = new VBox();
+            VBox vBox2 = new VBox();
+
+            hBox.getChildren().addAll(vBox1, vBox2, emergencyBreak());
+
+            vBox1.getChildren().addAll(comboBox, textField);
+            vBox2.getChildren().addAll(loadButton, saveButton);
+            return hBox;
+        }
     }
