@@ -1,5 +1,7 @@
 package HAT_Bot_GUI;
 
+import java.util.ArrayList;
+
 public class RoundButtonController {
     private String name;
     private int X;
