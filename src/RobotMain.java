@@ -1,4 +1,5 @@
 import HAT_Bot.Controllers.*;
+import HAT_Bot.Hardware.Sensors.Bluetooth;
 import HAT_Bot.Hardware.Sensors.LineFollower;
 import HAT_Bot.Logic.OperatingLogic;
 import HAT_Bot.Hardware.Sensors.Ultrasone;
@@ -18,7 +19,8 @@ public class RobotMain {
         ObstacleDetection o = new ObstacleDetection(new Ultrasone(0, 1), new Ultrasone(7,8), null);
         LineDetectionController l = new LineDetectionController(new LineFollower(0), new LineFollower(1), new LineFollower(2), null);
         RouteController e = new RouteController();
-        OperatingLogic a = new OperatingLogic(i, m, o, r, l, e);
+        BluetoothController b = new BluetoothController(r, e);
+        OperatingLogic a = new OperatingLogic(i, m, o, r, l, e, b);
 
 
 
@@ -29,6 +31,7 @@ public class RobotMain {
         updatables.add(i);
         updatables.add(o);
         updatables.add(l);
+        updatables.add(b);
 
         while (true){
 
