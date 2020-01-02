@@ -384,6 +384,10 @@ import java.util.HashMap;
                         routeSteps += "!";
                     }
                     else {
+                        this.bluetoothController.sendBinary((byte)255);
+                        this.bluetoothController.sendString(routeSteps);
+                        this.bluetoothController.sendBinary((byte)0);
+                        
                         System.out.println(routeSteps);
                     }
                 }
