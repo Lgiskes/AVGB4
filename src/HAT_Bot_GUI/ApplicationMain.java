@@ -232,6 +232,7 @@ import java.util.HashMap;
     private Node routeButtons() {
             ComboBox comboBox = new ComboBox();
             comboBox.setPrefSize(250, 37.5);
+            comboBox.getItems().add("Current route");
             comboBox.getItems().addAll(this.routeController.getRouteNames());
             comboBox.getSelectionModel().selectFirst();
 
@@ -241,7 +242,7 @@ import java.util.HashMap;
             Button runButton = new Button("Run route");
             runButton.setPrefSize(150, 37.5);
             runButton.setOnAction( event -> {
-                String routeName =(String) comboBox.getValue();
+                String routeName = (String)comboBox.getValue();
                 String route = this.routeController.getRoute(routeName);
                 runButtonPressed((String)comboBox.getValue());
                 System.out.println(route);
@@ -254,7 +255,8 @@ import java.util.HashMap;
                     this.routeController.addRoute(textField.getText(), route);
                     comboBox.getItems().remove(0, comboBox.getItems().size());
 
-                    comboBox.getItems().addAll("Current route" ,this.routeController.getRouteNames());
+                    comboBox.getItems().add("Current route");
+                    comboBox.getItems().addAll(this.routeController.getRouteNames());
                     comboBox.getSelectionModel().select(textField.getText());
 
                     System.out.println("Route saved!");
