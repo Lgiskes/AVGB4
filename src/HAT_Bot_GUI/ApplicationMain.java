@@ -238,12 +238,12 @@ import java.util.HashMap;
             TextField textField = new TextField("Type route name");
             textField.setPrefSize(250, 37.5);
 
-            Button loadButton = new Button("Run route");
-            loadButton.setPrefSize(150, 37.5);
-            loadButton.setOnAction( event -> {
+            Button runButton = new Button("Run route");
+            runButton.setPrefSize(150, 37.5);
+            runButton.setOnAction( event -> {
                 String routeName =(String) comboBox.getValue();
                 String route = this.routeController.getRoute(routeName);
-                loadButtonPressed((String)comboBox.getValue());
+                runButtonPressed((String)comboBox.getValue());
                 System.out.println(route);
             });
             Button saveButton = new Button("Save route");
@@ -271,23 +271,23 @@ import java.util.HashMap;
             hBox.getChildren().addAll(vBox1, vBox2, emergencyBreak());
 
             vBox1.getChildren().addAll(comboBox, textField);
-            vBox2.getChildren().addAll(loadButton, saveButton);
+            vBox2.getChildren().addAll(runButton, saveButton);
             return hBox;
         }
 
-        private void loadButtonPressed(String route) {
+        private void runButtonPressed(String route) {
             if (route.equals("Current route")) {
                 ArrayList<Integer> routeOrder = new ArrayList<>();
                 boolean calculating = true;
                 int lastButton = 0;
                 while (calculating) {
                     int closestButton = 99;
-                    int arrayPosision = 0;
+                    int arrayPosition = 0;
                     for (RoundButtonController button : this.buttonList) {
                         if (button.getButtonState() != 0 && button.getButtonState() > lastButton) {
                             if (button.getButtonState() < closestButton) {
                                 closestButton = button.getButtonState();
-                                arrayPosision = (button.getX()*4) + button.getY();
+                                arrayPosition = (button.getX()*4) + button.getY();
                             }
                         }
                     }
@@ -296,7 +296,7 @@ import java.util.HashMap;
                         break;
                     }
                     else {
-                        routeOrder.add(arrayPosision);
+                        routeOrder.add(arrayPosition);
                         lastButton = closestButton;
                     }
                 }
