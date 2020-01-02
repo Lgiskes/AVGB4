@@ -21,6 +21,7 @@ import java.util.HashMap;
     private BluetoothController bluetoothController;
     private Font Bold = new Font("Arial Black", 25);
     private RoundButtonController[] buttonList = new RoundButtonController[20];
+    private ArrayList<Button> buttons = new ArrayList<>();
     private RouteController routeController =  new RouteController();
     private Directions facingDirection;
 
@@ -190,6 +191,7 @@ import java.util.HashMap;
                 RoundButtonController roundButton = new RoundButtonController("", x, y);
                 this.buttonList[(x * 4) + y] = roundButton;
                 Button button = new Button(roundButton.getName());
+                this.buttons.add(button);
                 button.setFont(new Font("Arial Black", 15));
                 button.setStyle(
                         "-fx-background-radius: 5em; " +
@@ -245,19 +247,19 @@ import java.util.HashMap;
             runButton.setOnAction( event -> {
                 runButtonPressed((String)comboBox.getValue());
             });
-            Button saveButton = new Button("Save route");
-            saveButton.setPrefSize(150, 37.5);
-            saveButton.setOnAction(event -> {
-                    String route = "Hello World";
+        Button saveButton = new Button("Save route");
+        saveButton.setPrefSize(150, 37.5);
+        saveButton.setOnAction(event -> {
+            String route = "Hello World";
 
-                    if(!textField.getText().equals("[New Route]")){
-                        this.routeController.addRoute(textField.getText(), route);
-                        comboBox.getItems().remove(0, comboBox.getItems().size());
+            if(!textField.getText().equals("[New Route]")){
+                this.routeController.addRoute(textField.getText(), route);
+                comboBox.getItems().remove(0, comboBox.getItems().size());
 
-                        comboBox.getItems().add("[New Route]");
-                        comboBox.getItems().addAll(this.routeController.getRouteNames());
-                        comboBox.getSelectionModel().select(textField.getText());
-                    }
+                comboBox.getItems().add("[New Route]");
+                comboBox.getItems().addAll(this.routeController.getRouteNames());
+                comboBox.getSelectionModel().select(textField.getText());
+            }
 
             System.out.println("Route saved!");
 
@@ -392,6 +394,28 @@ import java.util.HashMap;
             else {
                 String route = this.routeController.getRoute(routeName);
                 System.out.println(route);
+            }
+        }
+
+        public String saveGrid() {
+            String gridString = "";
+            for (RoundButtonController button : this.buttonList) {
+                gridString += button.getName();
+            }
+            return gridString;
+        }
+
+        private void loadGrid(String gridString) {
+            char[] alphabet = {' ', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
+            for (int i = 0; i < 20; i++) {
+                int number = 0;
+                for (char letter : alphabet) {
+                    if (letter == gridString.toUpperCase().charAt(i)) {
+                        this.buttonList[i].setButtonState(number);
+                        this.buttons.get(i).setText(letter+"");
+                    }
+                    number++;
+                }
             }
         }
     }
