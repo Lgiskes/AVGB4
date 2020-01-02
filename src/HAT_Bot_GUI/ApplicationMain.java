@@ -232,7 +232,7 @@ import java.util.HashMap;
     private Node routeButtons() {
             ComboBox comboBox = new ComboBox();
             comboBox.setPrefSize(250, 37.5);
-            comboBox.getItems().add("Current route");
+            comboBox.getItems().add("[New Route]");
             comboBox.getItems().addAll(this.routeController.getRouteNames());
             comboBox.getSelectionModel().selectFirst();
 
@@ -252,12 +252,14 @@ import java.util.HashMap;
             saveButton.setOnAction(event -> {
                     String route = "Hello World";
 
-                    this.routeController.addRoute(textField.getText(), route);
-                    comboBox.getItems().remove(0, comboBox.getItems().size());
+                    if(!textField.getText().equals("[New Route]")){
+                        this.routeController.addRoute(textField.getText(), route);
+                        comboBox.getItems().remove(0, comboBox.getItems().size());
 
-                    comboBox.getItems().add("Current route");
-                    comboBox.getItems().addAll(this.routeController.getRouteNames());
-                    comboBox.getSelectionModel().select(textField.getText());
+                        comboBox.getItems().add("[New Route]");
+                        comboBox.getItems().addAll(this.routeController.getRouteNames());
+                        comboBox.getSelectionModel().select(textField.getText());
+                    }
 
                     System.out.println("Route saved!");
 
@@ -278,7 +280,7 @@ import java.util.HashMap;
         }
 
         private void runButtonPressed(String route) {
-            if (route.equals("Current route")) {
+            if (route.equals("[New Route]")) {
                 ArrayList<Integer> routeOrder = new ArrayList<>();
                 boolean calculating = true;
                 int lastButton = 0;
