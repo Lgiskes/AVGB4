@@ -19,6 +19,7 @@ public class OperatingLogic implements Updatable, ObstacleDetectionObserver, Rem
     private ObstacleDetectionCommand status;
     private HATState currentState;
     private ObstacleDetectionSide obstacleSide;
+    private BluetoothController bluetoothController;
 
     private boolean forward = true;
     private int currentSpeed = 50;
@@ -30,13 +31,14 @@ public class OperatingLogic implements Updatable, ObstacleDetectionObserver, Rem
      * @param remoteControl an objects that manages the control inputs
      * @param lineDetectionController
      */
-    public OperatingLogic(IndicatorController indicatorController, MotionController motionController, ObstacleDetection obstacleDetection, RemoteControl remoteControl, LineDetectionController lineDetectionController, RouteController routeController) {
+    public OperatingLogic(IndicatorController indicatorController, MotionController motionController, ObstacleDetection obstacleDetection, RemoteControl remoteControl, LineDetectionController lineDetectionController, RouteController routeController, BluetoothController bluetoothController) {
         this.indicatorController = indicatorController;
         this.motionController = motionController;
         this.obstacleDetection = obstacleDetection;
         this.remoteControl = remoteControl;
         this.lineDetectionController = lineDetectionController;
         this.routeController = routeController;
+        this.bluetoothController = bluetoothController;
 
         obstacleDetection.setObserver(this);
         remoteControl.setObserver(this);
