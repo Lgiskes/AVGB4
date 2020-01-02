@@ -243,10 +243,7 @@ import java.util.HashMap;
             Button runButton = new Button("Run route");
             runButton.setPrefSize(150, 37.5);
             runButton.setOnAction( event -> {
-                String routeName = (String)comboBox.getValue();
-                String route = this.routeController.getRoute(routeName);
                 runButtonPressed((String)comboBox.getValue());
-                System.out.println(route);
             });
             Button saveButton = new Button("Save route");
             saveButton.setPrefSize(150, 37.5);
@@ -262,9 +259,9 @@ import java.util.HashMap;
                         comboBox.getSelectionModel().select(textField.getText());
                     }
 
-                    System.out.println("Route saved!");
+            System.out.println("Route saved!");
 
-            });
+        });
 
 
 
@@ -280,8 +277,8 @@ import java.util.HashMap;
             return hBox;
         }
 
-        private void runButtonPressed(String route) {
-            if (route.equals("[New Route]")) {
+        private void runButtonPressed(String routeName) {
+            if (routeName.equals("Current route")) {
                 ArrayList<Integer> routeOrder = new ArrayList<>();
                 boolean calculating = true;
                 int lastButton = 0;
@@ -393,7 +390,8 @@ import java.util.HashMap;
                 }
             }
             else {
-
+                String route = this.routeController.getRoute(routeName);
+                System.out.println(route);
             }
         }
     }
