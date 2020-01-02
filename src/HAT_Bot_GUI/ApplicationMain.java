@@ -202,6 +202,21 @@ import java.util.HashMap;
                 gridPane.add(button, x + 1, y + 1);
                 button.setOnAction(event -> {
                     roundButton.buttonPressed();
+                    boolean running = true;
+                    while (running) {
+                        for (RoundButtonController buttonController : this.buttonList){
+                            if (buttonController != roundButton){
+                                if (buttonController.getName().equals(roundButton.getName())){
+                                    roundButton.buttonPressed();
+                                    running = true;
+                                    break;
+                                }
+                                else {
+                                    running = false;
+                                }
+                            }
+                        }
+                    }
                     button.setText(roundButton.getName());
                     System.out.println(roundButton.getX() + " " + roundButton.getY());
                 });
