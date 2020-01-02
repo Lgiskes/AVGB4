@@ -241,42 +241,41 @@ import java.util.HashMap;
             Button runButton = new Button("Run route");
             runButton.setPrefSize(150, 37.5);
             runButton.setOnAction( event -> {
-                String routeName =(String) comboBox.getValue();
-                String route = this.routeController.getRoute(routeName);
                 runButtonPressed((String)comboBox.getValue());
-                System.out.println(route);
             });
-            Button saveButton = new Button("Save route");
-            saveButton.setPrefSize(150, 37.5);
-            saveButton.setOnAction(event -> {
-                    String route = "Hello World";
+        Button saveButton = new Button("Save route");
+        saveButton.setPrefSize(150, 37.5);
+        saveButton.setOnAction(event -> {
+            String route = "Hello World";
 
-                    this.routeController.addRoute(textField.getText(), route);
-                    comboBox.getItems().remove(0, comboBox.getItems().size());
+            this.routeController.addRoute(textField.getText(), route);
+            comboBox.getItems().remove(0, comboBox.getItems().size());
 
-                    comboBox.getItems().addAll("Current route" ,this.routeController.getRouteNames());
-                    comboBox.getSelectionModel().select(textField.getText());
+            comboBox.getItems().addAll(this.routeController.getRouteNames());
+            comboBox.getSelectionModel().select(textField.getText());
+            comboBox.getItems().add("Current route");
 
-                    System.out.println("Route saved!");
+            System.out.println("Route saved!");
 
-            });
+        });
 
 
 
-            HBox hBox = new HBox();
-            hBox.setSpacing(7);
-            VBox vBox1 = new VBox();
-            VBox vBox2 = new VBox();
+        HBox hBox = new HBox();
+        hBox.setSpacing(7);
+        VBox vBox1 = new VBox();
+        VBox vBox2 = new VBox();
 
-            hBox.getChildren().addAll(vBox1, vBox2, emergencyBreak());
+        hBox.getChildren().addAll(vBox1, vBox2, emergencyBreak());
 
-            vBox1.getChildren().addAll(comboBox, textField);
-            vBox2.getChildren().addAll(runButton, saveButton);
-            return hBox;
-        }
+        vBox1.getChildren().addAll(comboBox, textField);
+        vBox2.getChildren().addAll(runButton, saveButton);
+        return hBox;
 
-        private void runButtonPressed(String route) {
-            if (route.equals("Current route")) {
+    }
+
+        private void runButtonPressed(String routeName) {
+            if (routeName.equals("Current route")) {
                 ArrayList<Integer> routeOrder = new ArrayList<>();
                 boolean calculating = true;
                 int lastButton = 0;
@@ -388,7 +387,8 @@ import java.util.HashMap;
                 }
             }
             else {
-
+                String route = this.routeController.getRoute(routeName);
+                System.out.println(route);
             }
         }
     }
