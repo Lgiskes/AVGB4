@@ -21,6 +21,7 @@ import java.util.HashMap;
     private BluetoothController bluetoothController;
     private Font Bold = new Font("Arial Black", 25);
     private RoundButtonController[] buttonList = new RoundButtonController[20];
+    private ArrayList<Button> buttons = new ArrayList<>();
     private RouteController routeController =  new RouteController();
     private Directions facingDirection;
 
@@ -161,7 +162,7 @@ import java.util.HashMap;
     private Node emergencyBreak() {
         Button emergencyBreak = new Button("EmergencyBrake");
         emergencyBreak.setPrefSize(200, 75);
-        emergencyBreak.setStyle("-fx-background-color: RED");
+        emergencyBreak.setStyle("-fx-background-color: RED; -fx-text-fill: BLACK");
         emergencyBreak.setFont(Font.font("Arial Black", 18));
         emergencyBreak.setOnAction(event -> {
             this.bluetoothController.sendBinary(BluetoothCommands.EMERGENCY_BRAKE);
@@ -190,6 +191,7 @@ import java.util.HashMap;
                 RoundButtonController roundButton = new RoundButtonController("", x, y);
                 this.buttonList[(x * 4) + y] = roundButton;
                 Button button = new Button(roundButton.getName());
+                this.buttons.add(button);
                 button.setFont(new Font("Arial Black", 15));
                 button.setStyle(
                         "-fx-background-radius: 5em; " +
@@ -236,7 +238,8 @@ import java.util.HashMap;
             comboBox.getItems().addAll(this.routeController.getRouteNames());
             comboBox.getSelectionModel().selectFirst();
 
-            TextField textField = new TextField("Type route name");
+            TextField textField = new TextField("");
+            textField.promptTextProperty().set("Route name");
             textField.setPrefSize(250, 37.5);
 
             Button runButton = new Button("Run route");
@@ -244,19 +247,19 @@ import java.util.HashMap;
             runButton.setOnAction( event -> {
                 runButtonPressed((String)comboBox.getValue());
             });
-            Button saveButton = new Button("Save route");
-            saveButton.setPrefSize(150, 37.5);
-            saveButton.setOnAction(event -> {
-                    String route = "Hello World";
+        Button saveButton = new Button("Save route");
+        saveButton.setPrefSize(150, 37.5);
+        saveButton.setOnAction(event -> {
+            String route = "Hello World";
 
-                    if(!textField.getText().equals("[New Route]")){
-                        this.routeController.addRoute(textField.getText(), route);
-                        comboBox.getItems().remove(0, comboBox.getItems().size());
+            if(!textField.getText().equals("[New Route]")){
+                this.routeController.addRoute(textField.getText(), route);
+                comboBox.getItems().remove(0, comboBox.getItems().size());
 
-                        comboBox.getItems().add("[New Route]");
-                        comboBox.getItems().addAll(this.routeController.getRouteNames());
-                        comboBox.getSelectionModel().select(textField.getText());
-                    }
+                comboBox.getItems().add("[New Route]");
+                comboBox.getItems().addAll(this.routeController.getRouteNames());
+                comboBox.getSelectionModel().select(textField.getText());
+            }
 
             System.out.println("Route saved!");
 
@@ -308,16 +311,16 @@ import java.util.HashMap;
                         if (this.buttonList[step].getX() - this.buttonList[routeOrder.get(routeOrder.indexOf(step) + 1)].getX() > 0) { // Needs to go west
                             switch (this.facingDirection) {
                                 case NORTH:
-                                    routeSteps += "l";
+                                    routeSteps += "L";
                                     break;
                                 case EAST:
-                                    routeSteps += "b";
+                                    routeSteps += "T";
                                     break;
                                 case SOUTH:
-                                    routeSteps += "r";
+                                    routeSteps += "R";
                                     break;
                                 case WEST:
-                                    routeSteps += "f";
+                                    routeSteps += "F";
                                     break;
                             }
                             this.facingDirection = Directions.WEST;
@@ -325,37 +328,37 @@ import java.util.HashMap;
                         else if (this.buttonList[step].getX() - this.buttonList[routeOrder.get(routeOrder.indexOf(step) + 1)].getX() < 0) { // Needs to go east
                             switch (this.facingDirection) {
                                 case NORTH:
-                                    routeSteps += "r";
+                                    routeSteps += "R";
                                     break;
                                 case EAST:
-                                    routeSteps += "f";
+                                    routeSteps += "F";
                                     break;
                                 case SOUTH:
-                                    routeSteps += "l";
+                                    routeSteps += "L";
                                     break;
                                 case WEST:
-                                    routeSteps += "b";
+                                    routeSteps += "T";
                                     break;
                             }
                             this.facingDirection = Directions.EAST;
                         }
                         for (int i = 1; i < Math.abs(this.buttonList[step].getX() - this.buttonList[routeOrder.get(routeOrder.indexOf(step) + 1)].getX()); i++) {
-                            routeSteps += "f";
+                            routeSteps += "F";
                         }
 
                         if (this.buttonList[step].getY() - this.buttonList[routeOrder.get(routeOrder.indexOf(step) + 1)].getY() > 0) { // Needs to go north
                             switch (this.facingDirection) {
                                 case NORTH:
-                                    routeSteps += "f";
+                                    routeSteps += "F";
                                     break;
                                 case EAST:
-                                    routeSteps += "l";
+                                    routeSteps += "L";
                                     break;
                                 case SOUTH:
-                                    routeSteps += "b";
+                                    routeSteps += "T";
                                     break;
                                 case WEST:
-                                    routeSteps += "r";
+                                    routeSteps += "R";
                                     break;
                             }
                             this.facingDirection = Directions.NORTH;
@@ -363,25 +366,25 @@ import java.util.HashMap;
                         else if (this.buttonList[step].getY() - this.buttonList[routeOrder.get(routeOrder.indexOf(step) + 1)].getY() < 0) { // Needs to go south
                             switch (this.facingDirection) {
                                 case NORTH:
-                                    routeSteps += "b";
+                                    routeSteps += "T";
                                     break;
                                 case EAST:
-                                    routeSteps += "r";
+                                    routeSteps += "R";
                                     break;
                                 case SOUTH:
-                                    routeSteps += "f";
+                                    routeSteps += "F";
                                     break;
                                 case WEST:
-                                    routeSteps += "l";
+                                    routeSteps += "L";
                                     break;
                             }
                             this.facingDirection = Directions.SOUTH;
                         }
                         for (int i = 1; i < Math.abs(this.buttonList[step].getY() - this.buttonList[routeOrder.get(routeOrder.indexOf(step) + 1)].getY()); i++) {
-                            routeSteps += "f";
+                            routeSteps += "F";
                         }
 
-                        routeSteps += "!";
+                        routeSteps += "S";
                     }
                     else {
                         this.bluetoothController.sendBinary((byte)255);
@@ -395,6 +398,28 @@ import java.util.HashMap;
             else {
                 String route = this.routeController.getRoute(routeName);
                 System.out.println(route);
+            }
+        }
+
+        public String saveGrid() {
+            String gridString = "";
+            for (RoundButtonController button : this.buttonList) {
+                gridString += button.getName();
+            }
+            return gridString;
+        }
+
+        private void loadGrid(String gridString) {
+            char[] alphabet = {' ', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
+            for (int i = 0; i < 20; i++) {
+                int number = 0;
+                for (char letter : alphabet) {
+                    if (letter == gridString.toUpperCase().charAt(i)) {
+                        this.buttonList[i].setButtonState(number);
+                        this.buttons.get(i).setText(letter+"");
+                    }
+                    number++;
+                }
             }
         }
     }
