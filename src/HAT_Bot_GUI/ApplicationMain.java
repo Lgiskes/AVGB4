@@ -206,7 +206,7 @@ import java.util.HashMap;
                     while (running) {
                         for (RoundButtonController buttonController : this.buttonList){
                             if (buttonController != roundButton){
-                                if (buttonController.getName().equals(roundButton.getName())){
+                                if (buttonController.getName().equals(roundButton.getName()) && buttonController.getButtonState() != 0){
                                     roundButton.buttonPressed();
                                     running = true;
                                     break;
@@ -254,7 +254,7 @@ import java.util.HashMap;
                     this.routeController.addRoute(textField.getText(), route);
                     comboBox.getItems().remove(0, comboBox.getItems().size());
 
-                    comboBox.getItems().addAll(this.routeController.getRouteNames());
+                    comboBox.getItems().addAll("Current route" ,this.routeController.getRouteNames());
                     comboBox.getSelectionModel().select(textField.getText());
 
                     System.out.println("Route saved!");
@@ -380,17 +380,15 @@ import java.util.HashMap;
                             routeSteps += "f";
                         }
 
-
-
-
-
-
                         routeSteps += "!";
                     }
                     else {
                         System.out.println(routeSteps);
                     }
                 }
+            }
+            else {
+
             }
         }
     }
