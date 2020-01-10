@@ -29,7 +29,6 @@ public class BluetoothController implements Updatable {
         if (this.bluetooth.getBoolean()){
             int btValue = this.bluetooth.getValue();
 
-
             //if the bot is being remote controlled
             if(this.isRemoteControlling){
                 if(btValue == 255) {
@@ -37,7 +36,7 @@ public class BluetoothController implements Updatable {
                     this.routeController.setRoute(new ArrayList<>());
                 }
                 else{
-                    this.remoteControl.actions(btValue);
+                    this.remoteControl.actions(btValue + 255);
                 }
             }
             //if the bot gets a new route

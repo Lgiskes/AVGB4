@@ -314,7 +314,13 @@ public class OperatingLogic implements Updatable, ObstacleDetectionObserver, Rem
     public void onCrossroadDetected(RouteController r, RouteCommand command) {
         changeState(HATState.manoeuvre);
         if (this.currentState == HATState.manoeuvre) {
-            motionController.slightlyForward(40, 100); // Een klein stukje over het kruispunt heen rijden
+            if(command != RouteCommand.stop){
+                if(routeController.getPreviousCommand() == RouteCommand.stop){
+                    motionController.slightlyForward(40, 50);
+                }
+                motionController.slightlyForward(40, 100); // Een klein stukje over het kruispunt heen rijden
+            }
+
             switch (command) {
                 case forward:
                     motionController.setCommand(ManoeuvreCommand.lineFollowing);
@@ -331,10 +337,13 @@ public class OperatingLogic implements Updatable, ObstacleDetectionObserver, Rem
                     break;
                 case turnAround:
                     motionController.setCommand(ManoeuvreCommand.lineFollowing);
+                    motionController.turnRight();
+                    BoeBot.wait(800); // Zodat de BoeBot de bocht kan maken
                     break;
                 case stop:
                     changeState(HATState.remoteControlled);
                     motionController.emergencyBrake();
+                    indicatorController.standingStillIndication();
                     break;
             }
 

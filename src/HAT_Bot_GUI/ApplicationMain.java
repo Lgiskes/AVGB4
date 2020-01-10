@@ -37,7 +37,7 @@ import java.util.HashMap;
     @Override
     public void start(Stage primaryStage) throws Exception {
 
-        this.bluetoothController = new BluetoothController("COM6");
+        this.bluetoothController = new BluetoothController("COM4");
         this.keyboardController = new KeyboardController(this.bluetoothController);
 
         TabPane tabPane = new TabPane(controlTab(), routeTab());
@@ -188,7 +188,7 @@ import java.util.HashMap;
 
         for (int x = 0; x < 5; x++) {
             for (int y = 0; y < 4; y++) {
-                RoundButtonController roundButton = new RoundButtonController("", x, y);
+                RoundButtonController roundButton = new RoundButtonController(" ", x, y);
                 this.buttonList[(x * 4) + y] = roundButton;
                 Button button = new Button(roundButton.getName());
                 this.buttons.add(button);
@@ -250,7 +250,7 @@ import java.util.HashMap;
         Button saveButton = new Button("Save route");
         saveButton.setPrefSize(150, 37.5);
         saveButton.setOnAction(event -> {
-            String route = "Hello World";
+            String route = saveGrid();
 
             if(!textField.getText().equals("[New Route]")){
                 this.routeController.addRoute(textField.getText(), route);
@@ -280,124 +280,124 @@ import java.util.HashMap;
         }
 
         private void runButtonPressed(String routeName) {
-            if (routeName.equals("Current route")) {
-                ArrayList<Integer> routeOrder = new ArrayList<>();
-                boolean calculating = true;
-                int lastButton = 0;
-                while (calculating) {
-                    int closestButton = 99;
-                    int arrayPosition = 0;
-                    for (RoundButtonController button : this.buttonList) {
-                        if (button.getButtonState() != 0 && button.getButtonState() > lastButton) {
-                            if (button.getButtonState() < closestButton) {
-                                closestButton = button.getButtonState();
-                                arrayPosition = (button.getX()*4) + button.getY();
-                            }
+            if(!routeName.equals("[New Route]")){
+                loadGrid(this.routeController.getRoute(routeName));
+            }
+
+            ArrayList<Integer> routeOrder = new ArrayList<>();
+            boolean calculating = true;
+            int lastButton = 0;
+            while (calculating) {
+                int closestButton = 99;
+                int arrayPosition = 0;
+                for (RoundButtonController button : this.buttonList) {
+                    if (button.getButtonState() != 0 && button.getButtonState() > lastButton) {
+                        if (button.getButtonState() < closestButton) {
+                            closestButton = button.getButtonState();
+                            arrayPosition = (button.getX()*4) + button.getY();
                         }
-                    }
-                    if (closestButton == 99) {
-                        calculating = false;
-                        break;
-                    }
-                    else {
-                        routeOrder.add(arrayPosition);
-                        lastButton = closestButton;
                     }
                 }
-                String routeSteps = "";
-                this.facingDirection = Directions.NORTH;
-                for (Integer step : routeOrder) {
-                    if (routeOrder.get(routeOrder.size()-1) != step) {
-                        if (this.buttonList[step].getX() - this.buttonList[routeOrder.get(routeOrder.indexOf(step) + 1)].getX() > 0) { // Needs to go west
-                            switch (this.facingDirection) {
-                                case NORTH:
-                                    routeSteps += "L";
-                                    break;
-                                case EAST:
-                                    routeSteps += "T";
-                                    break;
-                                case SOUTH:
-                                    routeSteps += "R";
-                                    break;
-                                case WEST:
-                                    routeSteps += "F";
-                                    break;
-                            }
-                            this.facingDirection = Directions.WEST;
-                        }
-                        else if (this.buttonList[step].getX() - this.buttonList[routeOrder.get(routeOrder.indexOf(step) + 1)].getX() < 0) { // Needs to go east
-                            switch (this.facingDirection) {
-                                case NORTH:
-                                    routeSteps += "R";
-                                    break;
-                                case EAST:
-                                    routeSteps += "F";
-                                    break;
-                                case SOUTH:
-                                    routeSteps += "L";
-                                    break;
-                                case WEST:
-                                    routeSteps += "T";
-                                    break;
-                            }
-                            this.facingDirection = Directions.EAST;
-                        }
-                        for (int i = 1; i < Math.abs(this.buttonList[step].getX() - this.buttonList[routeOrder.get(routeOrder.indexOf(step) + 1)].getX()); i++) {
-                            routeSteps += "F";
-                        }
-
-                        if (this.buttonList[step].getY() - this.buttonList[routeOrder.get(routeOrder.indexOf(step) + 1)].getY() > 0) { // Needs to go north
-                            switch (this.facingDirection) {
-                                case NORTH:
-                                    routeSteps += "F";
-                                    break;
-                                case EAST:
-                                    routeSteps += "L";
-                                    break;
-                                case SOUTH:
-                                    routeSteps += "T";
-                                    break;
-                                case WEST:
-                                    routeSteps += "R";
-                                    break;
-                            }
-                            this.facingDirection = Directions.NORTH;
-                        }
-                        else if (this.buttonList[step].getY() - this.buttonList[routeOrder.get(routeOrder.indexOf(step) + 1)].getY() < 0) { // Needs to go south
-                            switch (this.facingDirection) {
-                                case NORTH:
-                                    routeSteps += "T";
-                                    break;
-                                case EAST:
-                                    routeSteps += "R";
-                                    break;
-                                case SOUTH:
-                                    routeSteps += "F";
-                                    break;
-                                case WEST:
-                                    routeSteps += "L";
-                                    break;
-                            }
-                            this.facingDirection = Directions.SOUTH;
-                        }
-                        for (int i = 1; i < Math.abs(this.buttonList[step].getY() - this.buttonList[routeOrder.get(routeOrder.indexOf(step) + 1)].getY()); i++) {
-                            routeSteps += "F";
-                        }
-
-                        routeSteps += "S";
-                    }
-                    else {
-                        this.bluetoothController.sendBinary((byte)255);
-                        this.bluetoothController.sendString(routeSteps);
-                        this.bluetoothController.sendBinary((byte)0);
-                        
-                        System.out.println(routeSteps);
-                    }
+                if (closestButton == 99) {
+                    calculating = false;
+                    break;
+                }
+                else {
+                    routeOrder.add(arrayPosition);
+                    lastButton = closestButton;
                 }
             }
-            else {
-                String route = this.routeController.getRoute(routeName);
-                System.out.println(route);
+            String routeSteps = "";
+            this.facingDirection = Directions.NORTH;
+            for (Integer step : routeOrder) {
+                if (routeOrder.get(routeOrder.size()-1) != step) {
+                    if (this.buttonList[step].getX() - this.buttonList[routeOrder.get(routeOrder.indexOf(step) + 1)].getX() > 0) { // Needs to go west
+                        switch (this.facingDirection) {
+                            case NORTH:
+                                routeSteps += "L";
+                                break;
+                            case EAST:
+                                routeSteps += "T";
+                                break;
+                            case SOUTH:
+                                routeSteps += "R";
+                                break;
+                            case WEST:
+                                routeSteps += "F";
+                                break;
+                        }
+                        this.facingDirection = Directions.WEST;
+                    }
+                    else if (this.buttonList[step].getX() - this.buttonList[routeOrder.get(routeOrder.indexOf(step) + 1)].getX() < 0) { // Needs to go east
+                        switch (this.facingDirection) {
+                            case NORTH:
+                                routeSteps += "R";
+                                break;
+                            case EAST:
+                                routeSteps += "F";
+                                break;
+                            case SOUTH:
+                                routeSteps += "L";
+                                break;
+                            case WEST:
+                                routeSteps += "T";
+                                break;
+                        }
+                        this.facingDirection = Directions.EAST;
+                    }
+                    for (int i = 1; i < Math.abs(this.buttonList[step].getX() - this.buttonList[routeOrder.get(routeOrder.indexOf(step) + 1)].getX()); i++) {
+                        routeSteps += "F";
+                    }
+
+                    if (this.buttonList[step].getY() - this.buttonList[routeOrder.get(routeOrder.indexOf(step) + 1)].getY() > 0) { // Needs to go north
+                        switch (this.facingDirection) {
+                            case NORTH:
+                                routeSteps += "F";
+                                break;
+                            case EAST:
+                                routeSteps += "L";
+                                break;
+                            case SOUTH:
+                                routeSteps += "T";
+                                break;
+                            case WEST:
+                                routeSteps += "R";
+                                break;
+                        }
+                        this.facingDirection = Directions.NORTH;
+                    }
+                    else if (this.buttonList[step].getY() - this.buttonList[routeOrder.get(routeOrder.indexOf(step) + 1)].getY() < 0) { // Needs to go south
+                        switch (this.facingDirection) {
+                            case NORTH:
+                                routeSteps += "T";
+                                break;
+                            case EAST:
+                                routeSteps += "R";
+                                break;
+                            case SOUTH:
+                                routeSteps += "F";
+                                break;
+                            case WEST:
+                                routeSteps += "L";
+                                break;
+                        }
+                        this.facingDirection = Directions.SOUTH;
+                    }
+                    for (int i = 1; i < Math.abs(this.buttonList[step].getY() - this.buttonList[routeOrder.get(routeOrder.indexOf(step) + 1)].getY()); i++) {
+                        routeSteps += "F";
+                    }
+
+                    routeSteps += "S";
+                }
+                else {
+
+
+                    this.bluetoothController.sendBinary((byte)255);
+                    this.bluetoothController.sendString(routeSteps);
+                    this.bluetoothController.sendBinary((byte)0);
+
+                    System.out.println(routeSteps);
+                }
             }
         }
 

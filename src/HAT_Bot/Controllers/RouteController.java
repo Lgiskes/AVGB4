@@ -1,6 +1,8 @@
 package HAT_Bot.Controllers;
 
 
+import com.sun.imageio.spi.RAFImageOutputStreamSpi;
+
 import java.util.ArrayList;
 
 /**
@@ -11,10 +13,12 @@ public class RouteController {
     private RouteObserver observer;
     private int index;
     private ArrayList<RouteCommand> route;
+    private RouteCommand previousCommand;
 
     public RouteController() {
         this.observer = null;
         this.route = new ArrayList<>();
+        this.previousCommand = RouteCommand.None;
     }
 
     public void setObserver(RouteObserver observer) {
@@ -49,16 +53,22 @@ public class RouteController {
         this.route.add(routeCommand);
     }
 
+    public RouteCommand getPreviousCommand(){
+        return this.previousCommand;
+    }
+
     /**
      * hanldes the motion when the bot is at an intersection
      */
     public void crossroadManoeuvre() {
         if (this.index < this.route.size()) {
             this.observer.onCrossroadDetected(this, this.route.get(this.index));
+            this.previousCommand = this.route.get(this.index);
             this.index++;
         }
         else {
             this.observer.onCrossroadDetected(this, RouteCommand.stop);
+            this.previousCommand = RouteCommand.stop;
         }
     }
 }
