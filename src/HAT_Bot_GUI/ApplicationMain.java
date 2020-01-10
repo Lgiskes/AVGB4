@@ -543,15 +543,15 @@ import java.util.ArrayList;
 
         /**
          * Checks a string if it is null or if it only contains spaces and invisible characters
-         * @param str The string to check
+         * @param string The string to check
          * @return
          */
-        private boolean stringIsNullOrBlank(String str){
+        private boolean stringIsNullOrBlank(String string){
             boolean result = true;
 
-            if(str != null){
-                for(int i = 0; i < str.length() && result; i++){
-                    char strChar = str.charAt(i);
+            if(string != null){
+                for(int i = 0; i < string.length() && result; i++){
+                    char strChar = string.charAt(i);
                     // De meeste karakters met een waarde hoger dan Spatie (0x20) zijn zichtbaar, en dus niet blank
                     if(strChar > 0x20){
                         result = false;
