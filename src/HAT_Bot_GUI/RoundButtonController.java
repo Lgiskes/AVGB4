@@ -2,6 +2,10 @@ package HAT_Bot_GUI;
 
 import java.util.ArrayList;
 
+/**
+ * Controls the round buttons for indicating a route
+ */
+
 public class RoundButtonController {
     private String name;
     private int X;
@@ -17,6 +21,10 @@ public class RoundButtonController {
         this.buttonState = 0;
     }
 
+    /**
+     * How many possible points are available for use.
+     * @param amount the amount of point currently being ussed
+     */
     public void setMaxOptions(int amount) {
         this.maxOptions = Math.max(amount, 2);
         this.maxOptions = Math.min(this.maxOptions, 26);
@@ -33,6 +41,10 @@ public class RoundButtonController {
     public int getY() {
         return y;
     }
+
+    /**
+     * Sets a point on the route
+     */
 
     public void buttonPressed() {
         this.buttonState++;

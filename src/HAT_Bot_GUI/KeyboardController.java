@@ -3,6 +3,10 @@ package HAT_Bot_GUI;
 import HAT_Bot.Hardware.Sensors.Bluetooth;
 import javafx.scene.input.KeyEvent;
 
+/**
+ * Reads the keyboard input
+ */
+
 public class KeyboardController {
     private BluetoothController bluetoothController;
 

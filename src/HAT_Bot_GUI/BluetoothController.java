@@ -3,6 +3,10 @@ package HAT_Bot_GUI;
 import jssc.SerialPort;
 import jssc.SerialPortException;
 
+/**
+ * Controls the information that is being sent to the BoeBot
+ */
+
 public class BluetoothController {
     private String port;
     private SerialPort serialPort;
@@ -21,9 +25,13 @@ public class BluetoothController {
         }
     }
 
+    /**
+     * Sends a string to the BoeBot
+     * @param text the String that is being sent.
+     */
     public void sendString(String text) {
         try{
-            serialPort.writeString(text);
+            this.serialPort.writeString(text);
         }
         catch (SerialPortException ex){
             System.out.println(ex.getMessage());
@@ -31,6 +39,10 @@ public class BluetoothController {
     }
 
 
+    /**
+     * Sends a byte to the BoeBot
+     * @param binary the byte that is being sent.
+     */
     public void sendBinary(byte binary) {
         try{
             serialPort.writeByte(binary);

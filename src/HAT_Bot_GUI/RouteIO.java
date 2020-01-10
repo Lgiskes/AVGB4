@@ -3,7 +3,16 @@ package HAT_Bot_GUI;
 import java.io.*;
 import java.util.HashMap;
 
+/**
+ * Writes and reads the file in which the routes are saved.
+ */
+
 public class RouteIO {
+
+    /**
+     * Writes a route to the datafile
+     * @param map Hashmap in which the route is saved.
+     */
 
     public static void write(HashMap<String,String> map){
        try{
@@ -19,6 +28,11 @@ public class RouteIO {
         System.out.println("Error initializing stream");
         }
     }
+
+    /**
+     * Reads the Hashmap containing all the routes
+     * @return the Hashmap with the routes
+     */
 
     public static HashMap<String,String> read(){
         try {

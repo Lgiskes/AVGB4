@@ -118,16 +118,6 @@ public class MotionController implements Updatable {
     }
 
     /**
-     * turns the bot 180 degrees
-     */
-    public void turnAround(){
-        this.leftMotor.setSpeed(-100);
-        this.rightMotor.setSpeed(-100);
-        this.turnAroundTimer.setInterval(500);
-        this.turnAroundTimer.start();
-    }
-
-    /**
      * Stops the bot instantly
      */
     public void emergencyBrake (){

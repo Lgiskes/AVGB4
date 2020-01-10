@@ -1,5 +1,9 @@
 package HAT_Bot_GUI;
 
+/**
+ * Controls the GUI buttons with a few more attributes
+ */
+
 public class ButtonController {
     private String text;
     private byte command;

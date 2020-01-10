@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * Saves, loads and sends the routes to the BoeBot
+ */
+
 public class RouteController {
 
     private HashMap<String, String> routes;
@@ -11,6 +15,12 @@ public class RouteController {
     public RouteController(){
         this.routes = RouteIO.read();
     }
+
+    /**
+     * Adds a route to the datafile
+     * @param name The name of the route
+     * @param route the route
+     */
 
     public void addRoute(String name, String route){
         for(String routeName : this.getRouteNames()){
