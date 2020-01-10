@@ -1,8 +1,6 @@
 package HAT_Bot_GUI;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 /**
  * Saves, loads and sends the routes to the BoeBot

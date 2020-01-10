@@ -11,8 +11,6 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-
     /**
      *
      */
@@ -37,7 +35,7 @@ import java.util.HashMap;
     @Override
     public void start(Stage primaryStage) throws Exception {
 
-        this.bluetoothController = new BluetoothController("COM4");
+        this.bluetoothController = new BluetoothController("COM6");
         this.keyboardController = new KeyboardController(this.bluetoothController);
 
         TabPane tabPane = new TabPane(controlTab(), routeTab());
@@ -70,7 +68,7 @@ import java.util.HashMap;
         AnchorPane.setRightAnchor(speedControl, 20.0);
         AnchorPane.setLeftAnchor(emergencyBreak, 30.0);
         AnchorPane.setRightAnchor(emergencyBreak, 30.0);
-        AnchorPane.setBottomAnchor(emergencyBreak, 100.0);
+        AnchorPane.setBottomAnchor(emergencyBreak, 75.0);
 
         anchorPane.getChildren().addAll(directionalControl, speedControl, emergencyBreak);
 
@@ -107,7 +105,9 @@ import java.util.HashMap;
         moveButtonGp.setVgap(2.5);
 
         ArrayList<ButtonController> buttons = new ArrayList<>();
+        buttons.add(new ButtonController("Mute", BluetoothCommands.MUTE, 0, 0, 100));
         buttons.add(new ButtonController("^", BluetoothCommands.FORWARD, 1, 0, 100));
+        buttons.add(new ButtonController("Light", BluetoothCommands.LIGHTS, 2,0, 100));
         buttons.add(new ButtonController("<", BluetoothCommands.LEFT, 0, 1, 100));
         buttons.add(new ButtonController("stop", BluetoothCommands.STOP, 1, 1, 100));
         buttons.add(new ButtonController(">", BluetoothCommands.RIGHT, 2, 1, 100));
@@ -115,7 +115,12 @@ import java.util.HashMap;
 
         for (ButtonController b : buttons) {
             Button button = new Button(b.getText());
-            button.setFont(this.Bold);
+            if (button.getText().equals("Mute") || button.getText().equals("Light")) {
+                button.setFont(new Font("Arial Black", 21));
+            }
+            else {
+                button.setFont(this.Bold);
+            }
             button.setPrefSize(b.getButtonSize(), b.getButtonSize());
             moveButtonGp.add(button, b.getX(), b.getY());
             button.setOnAction(event -> {
@@ -161,7 +166,7 @@ import java.util.HashMap;
 
     private Node emergencyBreak() {
         Button emergencyBreak = new Button("EmergencyBrake");
-        emergencyBreak.setPrefSize(200, 75);
+        emergencyBreak.setPrefSize(200, 112.5);
         emergencyBreak.setStyle("-fx-background-color: RED; -fx-text-fill: BLACK");
         emergencyBreak.setFont(Font.font("Arial Black", 18));
         emergencyBreak.setOnAction(event -> {
@@ -255,7 +260,7 @@ import java.util.HashMap;
             }
         });
 
-            Button runButton = new Button("Run route");
+            Button runButton = new Button("Upload route");
             runButton.setPrefSize(150, 37.5);
             runButton.setOnAction( event -> {
                 runButtonPressed((String)comboBox.getValue());
@@ -278,17 +283,27 @@ import java.util.HashMap;
 
         });
 
+        Button followLine = new Button("Run Route");
+        followLine.setPrefSize(250, 37.5);
+        followLine.setOnAction(event -> {
+            this.bluetoothController.sendBinary(BluetoothCommands.FOLLOW_LINE);
+        });
 
+        Button clear = new Button("Clear Route");
+        clear.setPrefSize(150, 37.5);
+        clear.setOnAction(event -> {
+            loadGrid("                         ");
+        });
 
-            HBox hBox = new HBox();
+        HBox hBox = new HBox();
             hBox.setSpacing(7);
             VBox vBox1 = new VBox();
             VBox vBox2 = new VBox();
 
             hBox.getChildren().addAll(vBox1, vBox2, emergencyBreak());
 
-            vBox1.getChildren().addAll(comboBox, textField);
-            vBox2.getChildren().addAll(runButton, saveButton);
+            vBox1.getChildren().addAll(comboBox, textField, followLine);
+            vBox2.getChildren().addAll(runButton, saveButton, clear);
             return hBox;
         }
 

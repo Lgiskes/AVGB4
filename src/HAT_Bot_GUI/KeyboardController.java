@@ -64,6 +64,8 @@ public class KeyboardController {
             case L:
                 bluetoothController.sendBinary(BluetoothCommands.LIGHTS);
                 break;
+            case M:
+                bluetoothController.sendBinary(BluetoothCommands.MUTE);
             case ENTER:
                 bluetoothController.sendBinary(BluetoothCommands.EMERGENCY_BRAKE);
                 break;
