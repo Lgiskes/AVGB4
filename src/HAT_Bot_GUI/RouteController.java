@@ -23,6 +23,8 @@ public class RouteController {
     public void addRoute(String name, String route){
         for(String routeName : this.getRouteNames()){
             if(routeName.equals(name)){
+                this.routes.replace(routeName, route);
+                RouteIO.write(this.routes);
                 return;
             }
         }
@@ -31,10 +33,33 @@ public class RouteController {
         RouteIO.write(this.routes);
     }
 
+    /**
+     * Removes a route from the file
+     * @param name The route name that needs to be removed
+     */
+    public void removeRoute(String name){
+        for(String routeName : this.getRouteNames()){
+            if(routeName.equals(name)){
+                this.routes.remove(routeName);
+                RouteIO.write(this.routes);
+                return;
+            }
+        }
+    }
+
+    /**
+     * Gets a route from the routes file
+     * @param name
+     * @return
+     */
     public String getRoute(String name){
         return this.routes.get(name);
     }
 
+    /**
+     * Gets an array with all the routes saved in the file
+     * @return
+     */
     public String[] getRouteNames(){
         String[] result = new String[this.routes.keySet().size()];
         this.routes.keySet().toArray(result);

@@ -251,7 +251,6 @@ import java.util.ArrayList;
                         }
                     }
                     button.setText(roundButton.getName());
-                    System.out.println(roundButton.getX() + " " + roundButton.getY());
                 });
                 gridPane.add(new Label(), 0, 5);
             }
@@ -280,69 +279,121 @@ import java.util.ArrayList;
         comboBox.setOnAction(event -> {
             String routeName = (String)comboBox.getValue();
 
-            if(!routeName.equals("[New Route]")){
-                loadGrid(this.routeController.getRoute(routeName));
-                textField.setText(routeName);
+            if(routeName != null){
+                if(!routeName.equals("[New Route]")){
+                    loadGrid(this.routeController.getRoute(routeName));
+                    textField.setText(routeName);
+                }
+                else{
+                    loadGrid("                    ");
+                    textField.setText("");
+                }
             }
-            else{
-                loadGrid("                    ");
-                textField.setText("");
-            }
+
         });
 
             Button runButton = new Button("Upload route");
             runButton.setPrefSize(150, 37.5);
             runButton.setOnAction( event -> {
-                runButtonPressed((String)comboBox.getValue());
+                uploadButtonPressed();
+
+                Alert dialog = new Alert(Alert.AlertType.INFORMATION, "Route was uploaded successfully.");
+                dialog.setTitle("Route upload");
+                dialog.setHeaderText("");
+                dialog.showAndWait();
             });
         Button saveButton = new Button("Save route");
         saveButton.setPrefSize(150, 37.5);
         saveButton.setOnAction(event -> {
             String route = saveGrid();
+            String routeName = textField.getText();
 
-            if(!textField.getText().equals("[New Route]")){
-                this.routeController.addRoute(textField.getText(), route);
+            if(!routeName.equals("[New Route]") && !this.stringIsNullOrBlank(routeName)){
+                this.routeController.addRoute(routeName, route);
                 comboBox.getItems().remove(0, comboBox.getItems().size());
 
                 comboBox.getItems().add("[New Route]");
                 comboBox.getItems().addAll(this.routeController.getRouteNames());
-                comboBox.getSelectionModel().select(textField.getText());
-            }
+                comboBox.getSelectionModel().select(routeName);
 
-            System.out.println("Route saved!");
+                Alert dialog = new Alert(Alert.AlertType.INFORMATION, "Route was saved successfully.");
+                dialog.setTitle("Route saved");
+                dialog.setHeaderText("");
+                dialog.showAndWait();
+            }
+            else{
+                Alert dialog = new Alert(Alert.AlertType.WARNING, "Enter a valid route name.");
+                dialog.setTitle("Route name");
+                dialog.setHeaderText("");
+                dialog.showAndWait();
+            }
 
         });
 
         Button followLine = new Button("Run Route");
-        followLine.setPrefSize(250, 37.5);
+        followLine.setPrefSize(125, 37.5);
         followLine.setOnAction(event -> {
             this.bluetoothController.sendBinary(BluetoothCommands.FOLLOW_LINE);
         });
 
         Button clear = new Button("Clear Route");
-        clear.setPrefSize(150, 37.5);
+        clear.setPrefSize(125, 37.5);
         clear.setOnAction(event -> {
             loadGrid("                         ");
+        });
+
+        Button delete = new Button("Delete Route");
+        delete.setPrefSize(150 , 37.5);
+        delete.setOnAction(event -> {
+            String routeName = (String)comboBox.getValue();
+
+            Alert dialog = new Alert(Alert.AlertType.WARNING, "Are you sure you want to delete '" + routeName + "'?");
+            dialog.setTitle("Route delete");
+            dialog.setHeaderText("");
+            dialog.getButtonTypes().setAll(ButtonType.YES, ButtonType.NO);
+            dialog.showAndWait().ifPresent(buttonType -> {
+                if(buttonType == ButtonType.YES){
+                    if(routeName != null) {
+                        if (!routeName.equals("[New Route]")) {
+                            this.routeController.removeRoute(routeName);
+                            textField.setText("");
+
+                            comboBox.getItems().remove(0, comboBox.getItems().size());
+
+                            comboBox.getItems().add("[New Route]");
+                            comboBox.getItems().addAll(this.routeController.getRouteNames());
+                            comboBox.getSelectionModel().selectFirst();
+                        }
+
+                    }
+
+
+                    loadGrid("                         ");
+                }
+            });
+
         });
 
         HBox hBox = new HBox();
             hBox.setSpacing(7);
             VBox vBox1 = new VBox();
             VBox vBox2 = new VBox();
+            HBox hbox2 = new HBox();
+
+            hbox2.getChildren().addAll(followLine, clear);
 
             hBox.getChildren().addAll(vBox1, vBox2, emergencyBreak());
 
-            vBox1.getChildren().addAll(comboBox, textField, followLine);
-            vBox2.getChildren().addAll(runButton, saveButton, clear);
+            vBox1.getChildren().addAll(comboBox, textField, hbox2);
+            vBox2.getChildren().addAll(runButton, saveButton, delete);
             return hBox;
         }
 
-
         /**
-         * Runs the route when the according button is pressed
-         * @param routeName the name of the route that will be run
+         * Uploads the route when the according button is pressed
+         *
          */
-        private void runButtonPressed(String routeName) {
+            private void uploadButtonPressed() {
 
             ArrayList<Integer> routeOrder = new ArrayList<>();
             boolean calculating = true;
@@ -455,8 +506,6 @@ import java.util.ArrayList;
                     this.bluetoothController.sendBinary((byte)255);
                     this.bluetoothController.sendString(routeSteps);
                     this.bluetoothController.sendBinary((byte)0);
-
-                    System.out.println(routeSteps);
                 }
             }
         }
@@ -490,6 +539,27 @@ import java.util.ArrayList;
                     number++;
                 }
             }
+        }
+
+        /**
+         * Checks a string if it is null or if it only contains spaces and invisible characters
+         * @param str The string to check
+         * @return
+         */
+        private boolean stringIsNullOrBlank(String str){
+            boolean result = true;
+
+            if(str != null){
+                for(int i = 0; i < str.length() && result; i++){
+                    char strChar = str.charAt(i);
+                    // De meeste karakters met een waarde hoger dan Spatie (0x20) zijn zichtbaar, en dus niet blank
+                    if(strChar > 0x20){
+                        result = false;
+                    }
+                }
+            }
+
+            return result;
         }
     }
 
