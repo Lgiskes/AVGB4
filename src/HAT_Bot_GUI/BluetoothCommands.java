@@ -18,4 +18,6 @@ public class BluetoothCommands {
     public static final byte SPEED90 = 17;
     public static final byte SPEED100 = 19;
     public static final byte LIGHTS = 113;
+    public static final byte FOLLOW_LINE = 75;
+    public static final byte MUTE = 41;
 }
