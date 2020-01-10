@@ -299,7 +299,7 @@ public class OperatingLogic implements Updatable, ObstacleDetectionObserver, Rem
                     break;
                 case stop:
                     motionController.setCommand(ManoeuvreCommand.lineFollowing);
-                    motionController.emergencyBrake();
+                    motionController.goToSpeed(0);
                     break;
                 case crossroad:
                     changeState(HATState.routeFollowing);

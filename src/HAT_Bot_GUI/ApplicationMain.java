@@ -232,15 +232,28 @@ import java.util.HashMap;
     }
 
     private Node routeButtons() {
-            ComboBox comboBox = new ComboBox();
-            comboBox.setPrefSize(250, 37.5);
-            comboBox.getItems().add("[New Route]");
-            comboBox.getItems().addAll(this.routeController.getRouteNames());
-            comboBox.getSelectionModel().selectFirst();
+        ComboBox comboBox = new ComboBox();
+        comboBox.setPrefSize(250, 37.5);
+        comboBox.getItems().add("[New Route]");
+        comboBox.getItems().addAll(this.routeController.getRouteNames());
+        comboBox.getSelectionModel().selectFirst();
 
-            TextField textField = new TextField("");
-            textField.promptTextProperty().set("Route name");
-            textField.setPrefSize(250, 37.5);
+        TextField textField = new TextField("");
+        textField.promptTextProperty().set("Route name");
+        textField.setPrefSize(250, 37.5);
+
+        comboBox.setOnAction(event -> {
+            String routeName = (String)comboBox.getValue();
+
+            if(!routeName.equals("[New Route]")){
+                loadGrid(this.routeController.getRoute(routeName));
+                textField.setText(routeName);
+            }
+            else{
+                loadGrid("                    ");
+                textField.setText("");
+            }
+        });
 
             Button runButton = new Button("Run route");
             runButton.setPrefSize(150, 37.5);
@@ -280,9 +293,6 @@ import java.util.HashMap;
         }
 
         private void runButtonPressed(String routeName) {
-            if(!routeName.equals("[New Route]")){
-                loadGrid(this.routeController.getRoute(routeName));
-            }
 
             ArrayList<Integer> routeOrder = new ArrayList<>();
             boolean calculating = true;
@@ -411,7 +421,7 @@ import java.util.HashMap;
 
         private void loadGrid(String gridString) {
             char[] alphabet = {' ', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
-            for (int i = 0; i < 20; i++) {
+            for (int i = 0; i < 20 && i < gridString.length(); i++) {
                 int number = 0;
                 for (char letter : alphabet) {
                     if (letter == gridString.toUpperCase().charAt(i)) {
