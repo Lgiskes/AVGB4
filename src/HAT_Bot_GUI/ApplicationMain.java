@@ -24,7 +24,7 @@ import java.util.ArrayList;
     private Directions facingDirection;
 
         /**
-         * The GUI for creating and sending routes to the BoeBot
+         * The GUI used for controlling the BoeBot and creating and sending routes to the BoeBot
          * @param args
          */
 
