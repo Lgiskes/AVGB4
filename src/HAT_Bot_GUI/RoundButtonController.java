@@ -16,7 +16,7 @@ public class RoundButtonController {
 
     public RoundButtonController(String name, int x, int y) {
         this.name = name;
-        X = x;
+        this.X = x;
         this.y = y;
         this.buttonState = 0;
     }
@@ -31,15 +31,15 @@ public class RoundButtonController {
     }
 
     public String getName() {
-        return name;
+        return this.name;
     }
 
     public int getX() {
-        return X;
+        return this.X;
     }
 
     public int getY() {
-        return y;
+        return this.y;
     }
 
     /**
@@ -55,7 +55,7 @@ public class RoundButtonController {
     }
 
     public int getButtonState() {
-        return buttonState;
+        return this.buttonState;
     }
 
     public void setButtonState(int buttonState) {

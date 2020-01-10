@@ -23,12 +23,17 @@ import java.util.ArrayList;
     private RouteController routeController =  new RouteController();
     private Directions facingDirection;
 
+        /**
+         * The GUI for creating and sending routes to the BoeBot
+         * @param args
+         */
 
     public static void ApplicationMain(String[] args) {
         launch(ApplicationMain.class);
     }
 
     /**
+     * Starts the GUI
      * @param primaryStage
      * @throws Exception
      */
@@ -52,6 +57,11 @@ import java.util.ArrayList;
             this.keyboardController.keyPressedHandler(event);
         });
     }
+
+        /**
+         * Creates the tab used for controlling the BoeBot
+         * @return the tab created
+         */
 
     private Tab controlTab() {
         Tab controlTab = new Tab("Manual Control");
@@ -77,6 +87,11 @@ import java.util.ArrayList;
         return controlTab;
     }
 
+
+        /**
+         * Creates the tab used for sending and creating routes
+         * @return the tab created for the routes
+         */
     private Tab routeTab() {
         Tab routeTab = new Tab("Route Control");
 
@@ -97,7 +112,8 @@ import java.util.ArrayList;
     }
 
     /**
-     * @return
+     * Creates all the buttons for controlling the BoeBot
+     * @return the controlling buttons
      */
     private Node moveButtons() {
         GridPane moveButtonGp = new GridPane();
@@ -132,7 +148,8 @@ import java.util.ArrayList;
     }
 
     /**
-     * @return
+     * Creates all the buttons used for the speed controlling
+     * @return the speed buttons
      */
     private Node speedButtons() {
         GridPane speedButtonGp = new GridPane();
@@ -164,6 +181,11 @@ import java.util.ArrayList;
         return speedButtonGp;
     }
 
+
+        /**
+         * Creates the Emergency brake button
+         * @return the Emergency brake button
+         */
     private Node emergencyBreak() {
         Button emergencyBreak = new Button("EmergencyBrake");
         emergencyBreak.setPrefSize(200, 112.5);
@@ -176,6 +198,10 @@ import java.util.ArrayList;
         return emergencyBreak;
     }
 
+        /**
+         * Creates the buttons for indicating a route
+         * @return the round buttons
+         */
     private Node roundButtonGridpane() {
         GridPane gridPane = new GridPane();
         gridPane.setVgap(70);
@@ -236,6 +262,10 @@ import java.util.ArrayList;
         return gridPane;
     }
 
+        /**
+         * Creates the buttons for sending, loading and running the route
+         * @return the buttons
+         */
     private Node routeButtons() {
         ComboBox comboBox = new ComboBox();
         comboBox.setPrefSize(250, 37.5);
@@ -307,6 +337,11 @@ import java.util.ArrayList;
             return hBox;
         }
 
+
+        /**
+         * Runs the route when the according button is pressed
+         * @param routeName the name of the route that will be run
+         */
         private void runButtonPressed(String routeName) {
 
             ArrayList<Integer> routeOrder = new ArrayList<>();
@@ -426,6 +461,11 @@ import java.util.ArrayList;
             }
         }
 
+        /**
+         * Saves the grid indications
+         * @return a codated String
+         */
+
         public String saveGrid() {
             String gridString = "";
             for (RoundButtonController button : this.buttonList) {
@@ -434,6 +474,10 @@ import java.util.ArrayList;
             return gridString;
         }
 
+        /**
+         * Loads a codated String to the grid indicators
+         * @param gridString the Codated String to show on the GUI
+         */
         private void loadGrid(String gridString) {
             char[] alphabet = {' ', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
             for (int i = 0; i < 20 && i < gridString.length(); i++) {

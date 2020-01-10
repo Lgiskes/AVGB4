@@ -3,7 +3,6 @@ package HAT_Bot.Hardware.Actuators;
 import HAT_Bot.Controllers.*;
 import TI.Servo;
 import TI.StoppableTimer;
-import TI.Timer;
 
 public class Motor implements Updatable {
 

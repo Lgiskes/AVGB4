@@ -148,67 +148,67 @@ public class OperatingLogic implements Updatable, ObstacleDetectionObserver, Rem
         switch (command) {
             case setSpeed10:
                 changeState(HATState.manoeuvre);
-                motionController.setCommand(ManoeuvreCommand.remoteControl);
+                this.motionController.setCommand(ManoeuvreCommand.remoteControl);
                 this.currentSpeed = 10;
                 drive();
                 break;
             case setSpeed20:
                 changeState(HATState.manoeuvre);
-                motionController.setCommand(ManoeuvreCommand.remoteControl);
+                this.motionController.setCommand(ManoeuvreCommand.remoteControl);
                 this.currentSpeed = 20;
                 drive();
                 break;
             case setSpeed30:
                 changeState(HATState.manoeuvre);
-                motionController.setCommand(ManoeuvreCommand.remoteControl);
+                this.motionController.setCommand(ManoeuvreCommand.remoteControl);
                 this.currentSpeed = 30;
                 drive();
                 break;
             case setSpeed40:
                 changeState(HATState.manoeuvre);
-                motionController.setCommand(ManoeuvreCommand.remoteControl);
+                this.motionController.setCommand(ManoeuvreCommand.remoteControl);
                 this.currentSpeed = 40;
                 drive();
                 break;
             case setSpeed50:
                 changeState(HATState.manoeuvre);
-                motionController.setCommand(ManoeuvreCommand.remoteControl);
+                this.motionController.setCommand(ManoeuvreCommand.remoteControl);
                 this.currentSpeed = 50;
                 drive();
                 break;
             case setSpeed60:
                 changeState(HATState.manoeuvre);
-                motionController.setCommand(ManoeuvreCommand.remoteControl);
+                this.motionController.setCommand(ManoeuvreCommand.remoteControl);
                 this.currentSpeed = 60;
                 drive();
                 break;
             case setSpeed70:
                 changeState(HATState.manoeuvre);
-                motionController.setCommand(ManoeuvreCommand.remoteControl);
+                this.motionController.setCommand(ManoeuvreCommand.remoteControl);
                 this.currentSpeed = 70;
                 drive();
                 break;
             case setSpeed80:
                 changeState(HATState.manoeuvre);
-                motionController.setCommand(ManoeuvreCommand.remoteControl);
+                this.motionController.setCommand(ManoeuvreCommand.remoteControl);
                 this.currentSpeed = 80;
                 drive();
                 break;
             case setSpeed90:
                 changeState(HATState.manoeuvre);
-                motionController.setCommand(ManoeuvreCommand.remoteControl);
+                this.motionController.setCommand(ManoeuvreCommand.remoteControl);
                 this.currentSpeed = 90;
                 drive();
                 break;
             case setSpeed100:
                 changeState(HATState.manoeuvre);
-                motionController.setCommand(ManoeuvreCommand.remoteControl);
+                this.motionController.setCommand(ManoeuvreCommand.remoteControl);
                 this.currentSpeed = 100;
                 drive();
                 break;
             case setSpeed0:
                 changeState(HATState.manoeuvre);
-                motionController.setCommand(ManoeuvreCommand.remoteControl);
+                this.motionController.setCommand(ManoeuvreCommand.remoteControl);
                 this.currentSpeed = 0;
                 drive();
                 break;
@@ -249,31 +249,31 @@ public class OperatingLogic implements Updatable, ObstacleDetectionObserver, Rem
             case driveSquare:
                 if (this.currentState == HATState.remoteControlled) {
                     changeState(HATState.manoeuvre);
-                    motionController.setCommand(ManoeuvreCommand.remoteControl);
+                    this.motionController.setCommand(ManoeuvreCommand.remoteControl);
                     this.motionController.driveSquare();
                 }
                 break;
             case driveCircle:
                 if (this.currentState == HATState.remoteControlled) {
                     changeState(HATState.manoeuvre);
-                    motionController.setCommand(ManoeuvreCommand.remoteControl);
+                    this.motionController.setCommand(ManoeuvreCommand.remoteControl);
                     this.motionController.driveCircle();
                 }
                 break;
             case driveTriangle:
                 if (this.currentState == HATState.remoteControlled) {
                     changeState(HATState.manoeuvre);
-                    motionController.setCommand(ManoeuvreCommand.remoteControl);
+                    this.motionController.setCommand(ManoeuvreCommand.remoteControl);
                     this.motionController.driveTriangle();
                 }
                 break;
             case resume:
                 changeState(HATState.lineFollowing);
-                indicatorController.drivingIndication();
-                lineDetectionController.setPreviousCommand(LineDetectionCommand.none);
+                this.indicatorController.drivingIndication();
+                this.lineDetectionController.setPreviousCommand(LineDetectionCommand.none);
                 break;
             case toggleLights:
-                indicatorController.toggleRGBCycle();
+                this.indicatorController.toggleRGBCycle();
                 break;
         }
     }
@@ -292,24 +292,24 @@ public class OperatingLogic implements Updatable, ObstacleDetectionObserver, Rem
 
             switch (command) {
                 case left:
-                    motionController.setCommand(ManoeuvreCommand.lineFollowing);
-                    motionController.turningLeft(30);
+                    this.motionController.setCommand(ManoeuvreCommand.lineFollowing);
+                    this.motionController.turningLeft(30);
                     break;
                 case right:
-                    motionController.setCommand(ManoeuvreCommand.lineFollowing);
-                    motionController.turningRight(30);
+                    this.motionController.setCommand(ManoeuvreCommand.lineFollowing);
+                    this.motionController.turningRight(30);
                     break;
                 case forward:
-                    motionController.setCommand(ManoeuvreCommand.lineFollowing);
-                    motionController.setSpeed(speed);
+                    this.motionController.setCommand(ManoeuvreCommand.lineFollowing);
+                    this.motionController.setSpeed(speed);
                     break;
                 case stop:
-                    motionController.setCommand(ManoeuvreCommand.lineFollowing);
-                    motionController.goToSpeed(0);
+                    this.motionController.setCommand(ManoeuvreCommand.lineFollowing);
+                    this.motionController.goToSpeed(0);
                     break;
                 case crossroad:
                     changeState(HATState.routeFollowing);
-                    routeController.crossroadManoeuvre();
+                    this.routeController.crossroadManoeuvre();
                     break;
             }
         }
@@ -327,34 +327,34 @@ public class OperatingLogic implements Updatable, ObstacleDetectionObserver, Rem
         if (this.currentState == HATState.manoeuvre) {
             if(command != RouteCommand.stop){
                 if(this.routeController.getPreviousCommand() == RouteCommand.stop){
-                    motionController.slightlyForward(40, 50);
+                    this.motionController.slightlyForward(40, 50);
                 }
-                motionController.slightlyForward(40, 100); // Drives a bit past the intersection
+                this.motionController.slightlyForward(40, 100); // Drives a bit past the intersection
             }
 
             switch (command) {
                 case forward:
-                    motionController.setCommand(ManoeuvreCommand.lineFollowing);
+                    this.motionController.setCommand(ManoeuvreCommand.lineFollowing);
                     break;
                 case right:
-                    motionController.setCommand(ManoeuvreCommand.lineFollowing);
-                    motionController.turnRight();
+                    this.motionController.setCommand(ManoeuvreCommand.lineFollowing);
+                    this.motionController.turnRight();
                     BoeBot.wait(400); // So that the BoeBot is able to make a turn
                     break;
                 case left:
-                    motionController.setCommand(ManoeuvreCommand.lineFollowing);
-                    motionController.turnLeft();
+                    this.motionController.setCommand(ManoeuvreCommand.lineFollowing);
+                    this.motionController.turnLeft();
                     BoeBot.wait(400); // So that the BoeBot is able to make a turn
                     break;
                 case turnAround:
-                    motionController.setCommand(ManoeuvreCommand.lineFollowing);
-                    motionController.turnRight();
+                    this.motionController.setCommand(ManoeuvreCommand.lineFollowing);
+                    this.motionController.turnRight();
                     BoeBot.wait(800); // So that the BoeBot is able to make a turn
                     break;
                 case stop:
                     changeState(HATState.remoteControlled);
-                    motionController.emergencyBrake();
-                    indicatorController.standingStillIndication();
+                    this.motionController.emergencyBrake();
+                    this.indicatorController.standingStillIndication();
                     break;
             }
 

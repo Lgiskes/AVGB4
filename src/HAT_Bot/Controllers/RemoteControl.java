@@ -44,70 +44,70 @@ public class RemoteControl implements Updatable {
     public void actions(int buttonValue){
         switch (buttonValue){
             case 256: // button 1
-                observer.onRemoteControlDetected(this, RemoteControlCommand.setSpeed10);
+                this.observer.onRemoteControlDetected(this, RemoteControlCommand.setSpeed10);
                 break;
             case 258: // button 2
-                observer.onRemoteControlDetected(this, RemoteControlCommand.setSpeed20);
+                this.observer.onRemoteControlDetected(this, RemoteControlCommand.setSpeed20);
                 break;
             case 260: // button 3
-                observer.onRemoteControlDetected(this, RemoteControlCommand.setSpeed30);
+                this.observer.onRemoteControlDetected(this, RemoteControlCommand.setSpeed30);
                 break;
             case 262: // button 4
-                observer.onRemoteControlDetected(this, RemoteControlCommand.setSpeed40);
+                this.observer.onRemoteControlDetected(this, RemoteControlCommand.setSpeed40);
                 break;
             case 264: // button 5
-                observer.onRemoteControlDetected(this, RemoteControlCommand.setSpeed50);
+                this.observer.onRemoteControlDetected(this, RemoteControlCommand.setSpeed50);
                 break;
             case 266: // button 6
-                observer.onRemoteControlDetected(this, RemoteControlCommand.setSpeed60);
+                this.observer.onRemoteControlDetected(this, RemoteControlCommand.setSpeed60);
                 break;
             case 268: // button 7
-                observer.onRemoteControlDetected(this, RemoteControlCommand.setSpeed70);
+                this.observer.onRemoteControlDetected(this, RemoteControlCommand.setSpeed70);
                 break;
             case 270: // button 8
-                observer.onRemoteControlDetected(this, RemoteControlCommand.setSpeed80);
+                this.observer.onRemoteControlDetected(this, RemoteControlCommand.setSpeed80);
                 break;
             case 272: // button 9
-                observer.onRemoteControlDetected(this, RemoteControlCommand.setSpeed90);
+                this.observer.onRemoteControlDetected(this, RemoteControlCommand.setSpeed90);
                 break;
             case 274: // button 0
-                observer.onRemoteControlDetected(this, RemoteControlCommand.setSpeed100);
+                this.observer.onRemoteControlDetected(this, RemoteControlCommand.setSpeed100);
                 break;
             case 280: // arrow
-                observer.onRemoteControlDetected(this, RemoteControlCommand.setSpeed0);
+                this.observer.onRemoteControlDetected(this, RemoteControlCommand.setSpeed0);
                 break;
             case 298: // break button
-                observer.onRemoteControlDetected(this, RemoteControlCommand.emergencyBrake);
+                this.observer.onRemoteControlDetected(this, RemoteControlCommand.emergencyBrake);
                 break;
             case 288: // forward
-                observer.onRemoteControlDetected(this, RemoteControlCommand.forward);
+                this.observer.onRemoteControlDetected(this, RemoteControlCommand.forward);
                 break;
             case 290: // backwards
-                observer.onRemoteControlDetected(this, RemoteControlCommand.backward);
+                this.observer.onRemoteControlDetected(this, RemoteControlCommand.backward);
                 break;
             case 294: // turn left
-                observer.onRemoteControlDetected(this, RemoteControlCommand.turnLeft);
+                this.observer.onRemoteControlDetected(this, RemoteControlCommand.turnLeft);
                 break;
             case 292: // turn right
-                observer.onRemoteControlDetected(this, RemoteControlCommand.turnRight);
+                this.observer.onRemoteControlDetected(this, RemoteControlCommand.turnRight);
                 break;
             case 296: // mute button
-                observer.onRemoteControlDetected(this, RemoteControlCommand.mute);
+                this.observer.onRemoteControlDetected(this, RemoteControlCommand.mute);
                 break;
             case 922: // drive square
-                observer.onRemoteControlDetected(this, RemoteControlCommand.driveSquare);
+                this.observer.onRemoteControlDetected(this, RemoteControlCommand.driveSquare);
                 break;
             case 314: // drive circle
-                observer.onRemoteControlDetected(this, RemoteControlCommand.driveCircle);
+                this.observer.onRemoteControlDetected(this, RemoteControlCommand.driveCircle);
                 break;
             case 924: // drive triangle
-                observer.onRemoteControlDetected(this, RemoteControlCommand.driveTriangle);
+                this.observer.onRemoteControlDetected(this, RemoteControlCommand.driveTriangle);
                 break;
             case 330: // resume
-                observer.onRemoteControlDetected(this, RemoteControlCommand.resume);
+                this.observer.onRemoteControlDetected(this, RemoteControlCommand.resume);
                 break;
             case 368: // RGB toggle
-                observer.onRemoteControlDetected(this, RemoteControlCommand.toggleLights);
+                this.observer.onRemoteControlDetected(this, RemoteControlCommand.toggleLights);
                 break;
         }
     }

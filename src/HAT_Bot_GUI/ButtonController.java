@@ -20,22 +20,22 @@ public class ButtonController {
     }
 
     public String getText() {
-        return text;
+        return this.text;
     }
 
     public byte getCommand() {
-        return command;
+        return this.command;
     }
 
     public int getX() {
-        return x;
+        return this.x;
     }
 
     public int getY() {
-        return y;
+        return this.y;
     }
 
     public int getButtonSize() {
-        return buttonSize;
+        return this.buttonSize;
     }
 }
